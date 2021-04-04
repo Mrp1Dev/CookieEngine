@@ -5,17 +5,7 @@
 
 namespace cookie
 {
-	
-	class IncompleteEntity
-	{
-	public:
-
-		template<class... Query>
-		virtual std::tuple<Query*...> QueryEntity() = 0;
-	};
-
-	template<class... Archetype>
-	class Entity: public IncompleteEntity
+	/*class Entity
 	{
 		std::tuple<Archetype...> components;
 
@@ -29,7 +19,7 @@ namespace cookie
 		{
 			return std::tuple<Query*...>(&std::get<Query>(components)...);
 		}
-	};
+	};*/
 
 	
 }
