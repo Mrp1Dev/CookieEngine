@@ -2,49 +2,15 @@
 #include <vector>
 #include <unordered_map>
 #include <typeinfo>
-#include "ECS/Component.h"
 #include <memory>
 #include <any>
 #include <optional>
 #include <iostream>
+#include "Query.h"
 
 namespace cookie
 {
-	class Position : public Component
-	{
-	public:
-		float x {};
-		Position(float bleh) : x { bleh }
-		{
-		};
-	};
-	class Rotation : public Component
-	{
-	public:
-		float x {};
-		Rotation(float bleh) : x { bleh }
-		{
-		};
-	};
-	template<class T>
-	class Ref
-	{
-		std::vector<std::optional<T>>* vector;
-		unsigned long int index;
-	public:
-		Ref(std::vector<std::optional<T>>* vector, unsigned long int index)
-			: vector { vector }, index { index }{};
-		T& operator*()
-		{
-			return vector->at(index).value();
-		}
-
-		T* operator->()
-		{
-			return &vector->at(index).value();
-		}
-	};
-
+	
 	class World
 	{
 
@@ -62,7 +28,14 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		std::vector<std::tuple<Ref<QueryTypes>...>> QueryEntities()
+		void ForEachEntity(std::function<void(cookie::Ref<QueryTypes>...)> function)
+		{
+			Query query { QueryEntities<QueryTypes...>() };
+			query.For(move(function));
+		}
+
+		template<class... QueryTypes>
+		Query<QueryTypes...> QueryEntities()
 		{
 			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
 			for (int i = 0; i < EntityCount; i++)
@@ -73,7 +46,7 @@ namespace cookie
 					result.push_back(query.value());
 				}
 			}
-			return result;
+			return Query(result);
 		}
 	private:
 

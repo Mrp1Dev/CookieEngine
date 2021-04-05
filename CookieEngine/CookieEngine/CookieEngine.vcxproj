@@ -149,9 +149,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ECS\Component.h" />
     <ClInclude Include="ECS\Entity.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="ECS\Query.h" />
+    <ClInclude Include="ECS\Ref.h" />
+    <ClInclude Include="ECS\World.h" />
+    <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
