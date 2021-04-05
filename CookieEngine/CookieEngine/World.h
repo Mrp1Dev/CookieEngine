@@ -6,6 +6,7 @@
 #include <memory>
 #include <any>
 #include <optional>
+#include <iostream>
 
 namespace cookie
 {
@@ -19,10 +20,16 @@ namespace cookie
 	};
 	class temp_rotation : public Component
 	{
+	public:
+		float x {};
+		temp_rotation(float bleh) : x { bleh }
+		{
+		};
 	};
 
 	class World
 	{
+
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::any> ComponentsMap;
@@ -42,10 +49,11 @@ namespace cookie
 			std::vector<std::tuple<QueryTypes*...>> result {};
 			for (int i = 0; i < EntityCount; i++)
 			{
-				auto query = queryEntity<QueryTypes...>(i);
+				auto query { queryEntity<QueryTypes...>(i) };
 				if (query.has_value())
 				{
 					result.push_back(query.value());
+					query.reset();
 				}
 			}
 			return result;
@@ -88,10 +96,9 @@ namespace cookie
 			bool isIncompleteQuery { false };
 			auto resultTuple = std::tuple<QueryTypes*...> { queryComponent<QueryTypes>(index)... };
 
-			std::apply([this, isIncompleteQuery](auto&... pointers) mutable
+			std::apply([this, &isIncompleteQuery](auto&... pointers) mutable
 				{
-					(setValueIfNullptr<QueryTypes>(pointers, &isIncompleteQuery, true), ...); ///Test if fake or real error, probably fake
-				
+					(setValueIfNullptr<QueryTypes>(pointers, &isIncompleteQuery, true), ...); 
 				}, resultTuple
 			);
 
@@ -108,6 +115,7 @@ namespace cookie
 			auto componentVector =
 				std::any_cast<std::vector<std::optional<QueryType>>>(
 					&ComponentsMap[typeid(QueryType).hash_code()]);
+			if (componentVector == nullptr) return nullptr;
 			if (index >= componentVector->size())
 			{
 				componentVector->resize(EntityCount);

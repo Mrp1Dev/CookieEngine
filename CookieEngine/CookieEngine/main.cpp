@@ -5,10 +5,11 @@
 int main()
 {
 	cookie::World world {};
-	world.SpawnEntity(cookie::Position {1}, cookie::temp_rotation {});
+	world.SpawnEntity(cookie::Position {1}, cookie::temp_rotation {32.0f});
 	world.SpawnEntity(cookie::Position {3});
-	auto query { world.QueryEntities<cookie::Position>() };
+	auto query { world.QueryEntities<cookie::temp_rotation>() };
 	float currX = 1.0f;
+
 	/*for (auto& tuple : query)
 	{
 		auto pos = std::get<0>(tuple);
@@ -19,6 +20,6 @@ int main()
 	for (auto& tuple : query)
 	{
 		auto pos = std::get<0>(tuple);
-		std::cout << pos->x;
+		//std::cout << pos->x;
 	}
 }
