@@ -18,13 +18,31 @@ namespace cookie
 		{
 		};
 	};
-	class temp_rotation : public Component
+	class Rotation : public Component
 	{
 	public:
 		float x {};
-		temp_rotation(float bleh) : x { bleh }
+		Rotation(float bleh) : x { bleh }
 		{
 		};
+	};
+	template<class T>
+	class Ref
+	{
+		std::vector<std::optional<T>>* vector;
+		unsigned long int index;
+	public:
+		Ref(std::vector<std::optional<T>>* vector, unsigned long int index)
+			: vector { vector }, index { index }{};
+		T& operator*()
+		{
+			return vector->at(index).value();
+		}
+
+		T* operator->()
+		{
+			return &vector->at(index).value();
+		}
 	};
 
 	class World
@@ -44,16 +62,15 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		std::vector<std::tuple<QueryTypes*...>> QueryEntities()
+		std::vector<std::tuple<Ref<QueryTypes>...>> QueryEntities()
 		{
-			std::vector<std::tuple<QueryTypes*...>> result {};
+			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
 			for (int i = 0; i < EntityCount; i++)
 			{
 				auto query { queryEntity<QueryTypes...>(i) };
 				if (query.has_value())
 				{
 					result.push_back(query.value());
-					query.reset();
 				}
 			}
 			return result;
@@ -91,31 +108,35 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<QueryTypes*...>> queryEntity(unsigned int index)
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index)
 		{
 			bool isIncompleteQuery { false };
-			auto resultTuple = std::tuple<QueryTypes*...> { queryComponent<QueryTypes>(index)... };
+			auto queryTuple = std::tuple<std::optional<Ref<QueryTypes>>...> { queryComponent<QueryTypes>(index)... };
 
 			std::apply([this, &isIncompleteQuery](auto&... pointers) mutable
 				{
-					(setValueIfNullptr<QueryTypes>(pointers, &isIncompleteQuery, true), ...); 
-				}, resultTuple
+					(setValueIfNullopt<Ref<QueryTypes>>(pointers, &isIncompleteQuery, true), ...);
+				}, queryTuple
 			);
 
 			if (!isIncompleteQuery)
 			{
+				std::tuple<Ref<QueryTypes>...> resultTuple
+				{
+					std::get<std::optional<Ref<QueryTypes>>>(queryTuple).value()...
+				};
 				return resultTuple;
 			}
 			return {};
 		}
 
 		template<class QueryType>
-		QueryType* queryComponent(unsigned int index)
+		std::optional<Ref<QueryType>> queryComponent(unsigned int index)
 		{
 			auto componentVector =
 				std::any_cast<std::vector<std::optional<QueryType>>>(
 					&ComponentsMap[typeid(QueryType).hash_code()]);
-			if (componentVector == nullptr) return nullptr;
+			if (componentVector == nullptr) return {};
 			if (index >= componentVector->size())
 			{
 				componentVector->resize(EntityCount);
@@ -123,15 +144,15 @@ namespace cookie
 
 			if (componentVector->at(index).has_value())
 			{
-				return &componentVector->at(index).value();
+				return Ref<QueryType>(componentVector, index);
 			}
-			return nullptr;
+			return {};
 		}
 
 		template<class Type>
-		void setValueIfNullptr(Type* pointer, bool* boolToSet, bool value)
+		void setValueIfNullopt(std::optional<Type> opt, bool* boolToSet, bool value)
 		{
-			if (pointer == nullptr)
+			if (!opt.has_value())
 			{
 				*boolToSet = value;
 			}
