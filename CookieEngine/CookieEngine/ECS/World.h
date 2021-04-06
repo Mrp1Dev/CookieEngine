@@ -6,32 +6,62 @@
 #include <any>
 #include <optional>
 #include <iostream>
+#include <deque>
 #include "Query.h"
+#include "System.h"
 
 namespace cookie
 {
 	
 	class World
 	{
-
+		std::vector<std::unique_ptr<System>> systems;
+		std::deque<std::function<void()>> commands;
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::any> ComponentsMap;
+		bool GameRunning { true };
 
-		template<class... Components>
-		World* SpawnEntity(Components... components)
+		template<class... Systems>
+		void Start(Systems... systems)
 		{
-			(addComponentVector<Components>(), ...);
-			(assignComponent<Components>(components, EntityCount), ...);
-			EntityCount++;
-			return this;
+			(this->systems.push_back(std::make_unique<Systems>(systems)), ...);
+
+			for (auto& system : this->systems)
+			{
+				system->Start(this);
+				for (int i = 0; i < commands.size(); i++)
+				{
+					commands.front()();
+					commands.pop_front();
+				}
+			}
+
+			while (GameRunning)
+			{
+				for (int i = 0; i < commands.size(); i++)
+				{
+					commands.front()();
+					commands.pop_front();
+				}
+				for (auto& system : this->systems)
+				{
+					system->Update(this);
+				}
+			}
+
+			for (auto& system : this->systems)
+			{
+				system->Destroy(this);
+			}
 		}
 
-		template<class... QueryTypes>
-		void ForEachEntity(std::function<void(cookie::Ref<QueryTypes>...)> function)
+		template<class... Components>
+		World* EnqueueEntitySpawn(Components... components)
 		{
-			Query query { QueryEntities<QueryTypes...>() };
-			query.For(move(function));
+			auto f = std::bind(&World::spawnEntity<Components...>, this, components...);
+			commands.push_back(f);
+			return this;
 		}
 
 		template<class... QueryTypes>
@@ -49,6 +79,14 @@ namespace cookie
 			return Query(result);
 		}
 	private:
+
+		template<class... Components>
+		void spawnEntity(Components... components)
+		{
+			(addComponentVector<Components>(), ...);
+			(assignComponent<Components>(components, EntityCount), ...);
+			EntityCount++;
+		}
 
 		template<class ComponentType>
 		void addComponentVector()

@@ -30,6 +30,9 @@
     <ClInclude Include="ECS\Query.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ECS\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
