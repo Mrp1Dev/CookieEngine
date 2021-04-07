@@ -1,25 +1,16 @@
 #pragma once
-#include "Component.h"
-#include <map>
-#include <tuple>
+#include <unordered_map>
+#include <memory>
+#include "Ref.h"
 
 namespace cookie
 {
-	/*class Entity
+	class Entity
 	{
-		std::tuple<Archetype...> components;
-
 	public:
-		explicit Entity(Archetype... components) : components { components... }
-		{
-		};
-
-		template<class... Query>
-		virtual std::tuple<Query*...> QueryEntity() override
-		{
-			return std::tuple<Query*...>(&std::get<Query>(components)...);
-		}
-	};*/
+		std::unordered_map<size_t, std::unique_ptr<BaseRef>> components;
+		bool IsAlive { true };
+	};
 
 	
 }

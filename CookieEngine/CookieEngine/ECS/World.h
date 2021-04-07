@@ -9,6 +9,7 @@
 #include <deque>
 #include "Query.h"
 #include "System.h"
+#include "Entity.h"
 
 namespace cookie
 {
@@ -17,6 +18,7 @@ namespace cookie
 	{
 		std::vector<std::unique_ptr<System>> systems;
 		std::deque<std::function<void()>> commands;
+		std::vector<Entity> entities;
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::any> ComponentsMap;
@@ -74,9 +76,9 @@ namespace cookie
 		Query<QueryTypes...> QueryEntities()
 		{
 			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
-			for (unsigned int i = 0; i < EntityCount; i++)
+			for (auto& entity : entities)
 			{
-				auto query { queryEntity<QueryTypes...>(i) };
+				auto query { queryEntity<QueryTypes...>(entity) };
 				if (query.has_value())
 				{
 					result.push_back(query.value());
@@ -89,9 +91,10 @@ namespace cookie
 		template<class... Components>
 		void spawnEntity(Components... components)
 		{
+			Entity spawnedEntity {};
 			(addComponentVector<Components>(), ...);
-			(assignComponent<Components>(components, EntityCount), ...);
-			EntityCount++;
+			(assignComponent<Components>(components, &spawnedEntity), ...);
+			entities.push_back(spawnedEntity);
 		}
 
 		template<class ComponentType>
@@ -103,7 +106,7 @@ namespace cookie
 					std::pair(
 						typeid(ComponentType).hash_code(),
 						static_cast<std::any>(
-							std::vector<std::optional<ComponentType>>(EntityCount + 1u)
+							std::vector<ComponentType>()
 							)
 					)
 				);
@@ -111,24 +114,28 @@ namespace cookie
 		}
 
 		template<class ComponentType>
-		void assignComponent(ComponentType component, int entityIndex)
+		void assignComponent(ComponentType component, Entity* entity)
 		{
+			size_t typeId = typeid(ComponentType).hash_code();
 			auto componentVector =
-				std::any_cast<std::vector<std::optional<ComponentType>>>(
+				std::any_cast<std::vector<ComponentType>>(
 					&(ComponentsMap[typeid(ComponentType).hash_code()])
 					);
-			if (entityIndex >= componentVector->size())
-			{
-				componentVector->resize(EntityCount + 1);
-			}
-			componentVector->at(entityIndex) = component;
+			componentVector->push_back(component);
+			/*entity->components.insert(
+				std::pair {
+					typeId,
+					std::make_unique<Ref<ComponentType>>(componentVector,
+					componentVector->size() - 1)
+				}
+			);*/
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index)
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(Entity& entity)
 		{
 			bool isIncompleteQuery { false };
-			auto queryTuple = std::tuple<std::optional<Ref<QueryTypes>>...> { queryComponent<QueryTypes>(index)... };
+			auto queryTuple = std::tuple<std::optional<Ref<QueryTypes>>...> { queryComponent<QueryTypes>(entity)... };
 
 			std::apply([this, &isIncompleteQuery](auto&... pointers) mutable
 				{
@@ -148,20 +155,12 @@ namespace cookie
 		}
 
 		template<class QueryType>
-		std::optional<Ref<QueryType>> queryComponent(unsigned int index)
+		std::optional<Ref<QueryType>> queryComponent(Entity& entity)
 		{
-			auto componentVector =
-				std::any_cast<std::vector<std::optional<QueryType>>>(
-					&ComponentsMap[typeid(QueryType).hash_code()]);
-			if (componentVector == nullptr) return {};
-			if (index >= componentVector->size())
+			size_t typeId = typeid(QueryType).hash_code();
+			if (entity.components.find(typeId) != entity.components.end())
 			{
-				componentVector->resize(EntityCount);
-			}
-
-			if (componentVector->at(index).has_value())
-			{
-				return Ref<QueryType>(componentVector, index);
+				return *static_cast<Ref<QueryType>*>(entity.components[typeId].get());
 			}
 			return {};
 		}

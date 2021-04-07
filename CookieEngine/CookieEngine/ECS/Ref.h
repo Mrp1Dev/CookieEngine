@@ -2,22 +2,25 @@
 
 namespace cookie
 {
-	template<class T>
-	class Ref
+	class BaseRef
 	{
-		std::vector<std::optional<T>>* vector;
-		unsigned long int index;
+	};
+	template<class T>
+	class Ref : public BaseRef
+	{
+		std::vector<T>* vector;
+		unsigned int index;
 	public:
-		Ref(std::vector<std::optional<T>>* vector, unsigned long int index)
+		Ref(std::vector<T>* vector, unsigned int index)
 			: vector { vector }, index { index }{};
 		T& operator*()
 		{
-			return vector->at(index).value();
+			return vector->at(index);
 		}
 
 		T* operator->()
 		{
-			return &vector->at(index).value();
+			return &vector->at(index);
 		}
 	};
 }
