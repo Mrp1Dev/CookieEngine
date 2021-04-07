@@ -12,7 +12,7 @@
 
 namespace cookie
 {
-	
+
 	class World
 	{
 		std::vector<std::unique_ptr<System>> systems;
@@ -23,33 +23,39 @@ namespace cookie
 		bool GameRunning { true };
 
 		template<class... Systems>
-		void Start(Systems... systems)
+		World(Systems... systems)
 		{
 			(this->systems.push_back(std::make_unique<Systems>(systems)), ...);
+		}
 
+		void StartSystems()
+		{
 			for (auto& system : this->systems)
 			{
 				system->Start(this);
-				for (int i = 0; i < commands.size(); i++)
-				{
-					commands.front()();
-					commands.pop_front();
-				}
 			}
-
-			while (GameRunning)
+			for (int i = 0; i < commands.size(); i++)
 			{
-				for (int i = 0; i < commands.size(); i++)
-				{
-					commands.front()();
-					commands.pop_front();
-				}
-				for (auto& system : this->systems)
-				{
-					system->Update(this);
-				}
+				commands.front()();
+				commands.pop_front();
 			}
+		}
 
+		void UpdateSystems()
+		{
+			for (int i = 0; i < commands.size(); i++)
+			{
+				commands.front()();
+				commands.pop_front();
+			}
+			for (auto& system : this->systems)
+			{
+				system->Update(this);
+			}
+		}
+
+		void DestroySystems()
+		{
 			for (auto& system : this->systems)
 			{
 				system->Destroy(this);
@@ -68,7 +74,7 @@ namespace cookie
 		Query<QueryTypes...> QueryEntities()
 		{
 			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
-			for (int i = 0; i < EntityCount; i++)
+			for (unsigned int i = 0; i < EntityCount; i++)
 			{
 				auto query { queryEntity<QueryTypes...>(i) };
 				if (query.has_value())
@@ -97,7 +103,7 @@ namespace cookie
 					std::pair(
 						typeid(ComponentType).hash_code(),
 						static_cast<std::any>(
-							std::vector<std::optional<ComponentType>>(EntityCount + 1)
+							std::vector<std::optional<ComponentType>>(EntityCount + 1u)
 							)
 					)
 				);
