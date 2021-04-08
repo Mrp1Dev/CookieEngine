@@ -39,13 +39,12 @@ int main()
 	world.StartSystems();
 	auto t2 = std::chrono::steady_clock::now();
 	auto d = t2 - t1;
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d).count() << '\n';
 
-	//SPAWNING TAKES: About 4400ms
+	//SPAWNING TAKES: About 175ms
 
 	auto t3 = std::chrono::steady_clock::now();
-	//world.StartSystems();
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		world.UpdateSystems();
 	}
@@ -53,5 +52,5 @@ int main()
 	auto d1 = t4 - t3;
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d1).count();
 
-	//QUERYING TAKES: About 3000ms
+	//QUERYING TAKES: About 70ms
 }
