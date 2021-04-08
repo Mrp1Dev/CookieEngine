@@ -53,5 +53,8 @@ int main()
 	auto d1 = t4 - t3;
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d1).count();
 
+	while (true)
+	{
+	}
 	//QUERYING TAKES: About 3000ms
 }
