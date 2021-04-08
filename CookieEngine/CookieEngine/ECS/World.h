@@ -122,13 +122,13 @@ namespace cookie
 					&(ComponentsMap[typeid(ComponentType).hash_code()])
 					);
 			componentVector->push_back(component);
-			/*entity->components.insert(
+			entity->components.insert( move(
 				std::pair {
 					typeId,
-					std::make_unique<Ref<ComponentType>>(componentVector,
+					std::make_shared<Ref<ComponentType>>(componentVector,
 					componentVector->size() - 1)
-				}
-			);*/
+				})
+			);
 		}
 
 		template<class... QueryTypes>
