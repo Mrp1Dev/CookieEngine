@@ -9,6 +9,7 @@
 #include <deque>
 #include "Query.h"
 #include "System.h"
+#include <map>
 
 namespace cookie
 {
@@ -73,10 +74,23 @@ namespace cookie
 		template<class... QueryTypes>
 		Query<QueryTypes...> QueryEntities()
 		{
-			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
+			auto result = std::vector<std::tuple<Ref<QueryTypes>...>>();
+			std::tuple<std::vector<std::optional<QueryTypes>>*...> vectorPointers{
+				getVectorPointer<QueryTypes>()... 
+			};
+			result.reserve(EntityCount + 1);
+			bool queryValid { true };
+			std::apply([this, &queryValid](auto&... pointers)
+				{
+					(setValueIfNullopt(pointers, &queryValid, false), ...);
+				}, vectorPointers
+			);
+
+			if (!queryValid) return Query(result);
+
 			for (unsigned int i = 0; i < EntityCount; i++)
 			{
-				auto query { queryEntity<QueryTypes...>(i) };
+				auto query = queryEntity<QueryTypes...>(i, vectorPointers);
 				if (query.has_value())
 				{
 					result.push_back(query.value());
@@ -125,10 +139,13 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index)
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::tuple<std::vector<std::optional<QueryTypes>>*...> componentVectorPointers)
 		{
 			bool isIncompleteQuery { false };
-			auto queryTuple = std::tuple<std::optional<Ref<QueryTypes>>...> { queryComponent<QueryTypes>(index)... };
+			std::tuple<std::optional<Ref<QueryTypes>>...> queryTuple {
+				queryComponent<QueryTypes>(
+					index, std::get<std::vector<std::optional<QueryTypes>>*>(componentVectorPointers)
+					)... };
 
 			std::apply([this, &isIncompleteQuery](auto&... pointers) mutable
 				{
@@ -148,15 +165,11 @@ namespace cookie
 		}
 
 		template<class QueryType>
-		std::optional<Ref<QueryType>> queryComponent(unsigned int index)
+		std::optional<Ref<QueryType>> queryComponent(unsigned int index, std::vector<std::optional<QueryType>>* componentVector)
 		{
-			auto componentVector =
-				std::any_cast<std::vector<std::optional<QueryType>>>(
-					&ComponentsMap[typeid(QueryType).hash_code()]);
-			if (componentVector == nullptr) return {};
 			if (index >= componentVector->size())
 			{
-				componentVector->resize(EntityCount);
+				return {};
 			}
 
 			if (componentVector->at(index).has_value())
@@ -166,10 +179,31 @@ namespace cookie
 			return {};
 		}
 
+		template<class VectorType>
+		std::vector<std::optional<VectorType>>* getVectorPointer()
+		{
+			auto pairfromMap = ComponentsMap.find(typeid(VectorType).hash_code());
+			if (pairfromMap != ComponentsMap.end())
+			{
+				return std::any_cast<std::vector<std::optional<VectorType>>>(
+					&pairfromMap->second);
+			}
+			return nullptr;
+		}
+
 		template<class Type>
 		void setValueIfNullopt(std::optional<Type> opt, bool* boolToSet, bool value)
 		{
 			if (!opt.has_value())
+			{
+				*boolToSet = value;
+			}
+		}
+
+		template<class Type>
+		void setValueIfNullopt(Type* pointer, bool* boolToSet, bool value)
+		{
+			if (pointer == nullptr)
 			{
 				*boolToSet = value;
 			}

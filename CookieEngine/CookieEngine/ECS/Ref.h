@@ -6,9 +6,9 @@ namespace cookie
 	class Ref
 	{
 		std::vector<std::optional<T>>* vector;
-		unsigned long int index;
+		unsigned int index;
 	public:
-		Ref(std::vector<std::optional<T>>* vector, unsigned long int index)
+		Ref(std::vector<std::optional<T>>* vector, unsigned int index)
 			: vector { vector }, index { index }{};
 		T& operator*()
 		{
