@@ -10,8 +10,8 @@ namespace cookie
 	{
 		std::vector<std::tuple<cookie::Ref<QueryTypes>...>> query;
 	public:
-		Query(std::vector<std::tuple<cookie::Ref<QueryTypes>...>> query)
-			: query { query }
+		Query(std::vector<std::tuple<cookie::Ref<QueryTypes>...>>& query)
+			: query { std::move(query) }
 		{
 		};
 

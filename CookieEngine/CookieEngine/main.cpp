@@ -23,9 +23,9 @@ public:
 	virtual void Start(cookie::World* world) override
 	{
 		world->EnqueueEntitySpawn(100.0f, 200, 399L, 1.0, 159u);
-		for (int i = 0; i < 10000000; i++)
+		for (int i = 0; i < 1000000; i++)
 		{
-			world->EnqueueEntitySpawn(i);
+			world->EnqueueEntitySpawn(i + 1);
 		}
 	}
 };
@@ -39,7 +39,7 @@ int main()
 	world.StartSystems();
 	auto t2 = std::chrono::steady_clock::now();
 	auto d = t2 - t1;
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d).count() << '\n';
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d).count() << "ms\n";
 
 	//SPAWNING TAKES: About 175ms
 
@@ -50,7 +50,7 @@ int main()
 	}
 	auto t4 = std::chrono::steady_clock::now();
 	auto d1 = t4 - t3;
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d1).count();
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d1).count() << "ms\n";
 
 	//QUERYING TAKES: About 70ms
 }

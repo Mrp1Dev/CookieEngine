@@ -35,7 +35,8 @@ namespace cookie
 			{
 				system->Start(this);
 			}
-			for (int i = 0; i < commands.size(); i++)
+			unsigned int commandsLength = commands.size();
+			for (int i = 0; i < commandsLength; i++)
 			{
 				commands.front()();
 				commands.pop_front();
@@ -44,7 +45,8 @@ namespace cookie
 
 		void UpdateSystems()
 		{
-			for (int i = 0; i < commands.size(); i++)
+			unsigned int commandsLength = commands.size();
+			for (int i = 0; i < commandsLength; i++)
 			{
 				commands.front()();
 				commands.pop_front();
@@ -74,32 +76,11 @@ namespace cookie
 		template<class... QueryTypes>
 		Query<QueryTypes...> QueryEntities()
 		{
-			auto result = std::vector<std::tuple<Ref<QueryTypes>...>>();
-			std::tuple<std::vector<std::optional<QueryTypes>>*...> vectorPointers{
-				getVectorPointer<QueryTypes>()... 
-			};
-			result.reserve(EntityCount + 1);
-			bool queryValid { true };
-			std::apply([this, &queryValid](auto&... pointers)
-				{
-					(setValueIfNullopt(pointers, &queryValid, false), ...);
-				}, vectorPointers
-			);
-
-			if (!queryValid) return Query(result);
-
-			for (unsigned int i = 0; i < EntityCount; i++)
-			{
-				auto query = queryEntity<QueryTypes...>(i, vectorPointers);
-				if (query.has_value())
-				{
-					result.push_back(query.value());
-				}
-			}
-			return Query(result);
+			return queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...);
 		}
 	private:
 
+		
 		template<class... Components>
 		void spawnEntity(Components... components)
 		{
@@ -125,59 +106,66 @@ namespace cookie
 		}
 
 		template<class ComponentType>
-		void assignComponent(ComponentType component, int entityIndex)
+		void assignComponent(ComponentType& component, int entityIndex)
 		{
 			auto componentVector =
 				std::any_cast<std::vector<std::optional<ComponentType>>>(
-					&(ComponentsMap[typeid(ComponentType).hash_code()])
+					&(ComponentsMap.find(typeid(ComponentType).hash_code())->second)
 					);
 			if (entityIndex >= componentVector->size())
 			{
 				componentVector->resize(EntityCount + 1);
 			}
-			componentVector->at(entityIndex) = component;
+			componentVector->at(entityIndex) = std::move(component);
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::tuple<std::vector<std::optional<QueryTypes>>*...> componentVectorPointers)
+		Query<QueryTypes...> queryEntitiesWithPointers(std::vector<std::optional<QueryTypes>>*... vectorPointers)
 		{
-			bool isIncompleteQuery { false };
-			std::tuple<std::optional<Ref<QueryTypes>>...> queryTuple {
-				queryComponent<QueryTypes>(
-					index, std::get<std::vector<std::optional<QueryTypes>>*>(componentVectorPointers)
-					)... };
-
-			std::apply([this, &isIncompleteQuery](auto&... pointers) mutable
-				{
-					(setValueIfNullopt<Ref<QueryTypes>>(pointers, &isIncompleteQuery, true), ...);
-				}, queryTuple
-			);
-
-			if (!isIncompleteQuery)
+			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
+			bool isValidQuery = ((vectorPointers != nullptr) && ...);
+			if (!isValidQuery) return Query(result);
+			result.reserve(EntityCount);
+			for (unsigned int i = 0; i < EntityCount; i++)
 			{
-				std::tuple<Ref<QueryTypes>...> resultTuple
+				auto query { queryEntity(i, vectorPointers...) };
+				if (query.has_value())
 				{
-					std::get<std::optional<Ref<QueryTypes>>>(queryTuple).value()...
-				};
-				return resultTuple;
+					result.push_back(query.value());
+				}
+			}
+			return Query(result);
+		}
+
+		template<class... QueryTypes>
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors)
+		{
+			bool isCompleteQuery = ((componentVectors->size() > index ) && ...);
+			if (isCompleteQuery)
+			{
+				isCompleteQuery = (componentVectors->at(index).has_value() && ...);
+				if (isCompleteQuery)
+				{
+					return std::tuple<Ref<QueryTypes>...>{Ref<QueryTypes>(componentVectors, index)...};
+				}
 			}
 			return {};
 		}
 
-		template<class QueryType>
-		std::optional<Ref<QueryType>> queryComponent(unsigned int index, std::vector<std::optional<QueryType>>* componentVector)
-		{
-			if (index >= componentVector->size())
-			{
-				return {};
-			}
+		//template<class QueryType>
+		//std::optional<Ref<QueryType>> queryComponent(unsigned int index, std::vector<std::optional<QueryType>>* componentVector)
+		//{
+		//	if (index >= componentVector->size())
+		//	{
+		//		return {};
+		//	}
 
-			if (componentVector->at(index).has_value())
-			{
-				return Ref<QueryType>(componentVector, index);
-			}
-			return {};
-		}
+		//	if (componentVector->at(index).has_value())
+		//	{
+		//		return Ref<QueryType>(componentVector, index);
+		//	}
+		//	return {};
+		//}
 
 		template<class VectorType>
 		std::vector<std::optional<VectorType>>* getVectorPointer()
