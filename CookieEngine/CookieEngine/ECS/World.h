@@ -1,16 +1,14 @@
 #pragma once
-#include <vector>
 #include <unordered_map>
 #include <typeinfo>
 #include <memory>
-#include <any>
-#include <optional>
 #include <iostream>
 #include <deque>
+#include "ComponentArray.h"
 #include "Query.h"
 #include "System.h"
 #include <map>
-
+#include "Entity.h"
 namespace cookie
 {
 
@@ -18,9 +16,11 @@ namespace cookie
 	{
 		std::vector<std::unique_ptr<System>> systems;
 		std::deque<std::function<void()>> commands;
+		std::deque<unsigned int> despawnedEntities;
+
 	public:
 		unsigned int EntityCount { 0 };
-		std::unordered_map<size_t, std::any> ComponentsMap;
+		std::unordered_map<size_t, std::unique_ptr<BaseComponentArray>> ComponentsMap;
 		bool GameRunning { true };
 
 		template<class... Systems>
@@ -73,20 +73,45 @@ namespace cookie
 			return this;
 		}
 
+		World* EnqueueEntityDespawn(Entity entity)
+		{
+			auto f = std::bind(&World::despawnEntity, this, entity.index);
+			commands.push_back(f);
+			return this;
+		}
+
+
 		template<class... QueryTypes>
 		Query<QueryTypes...> QueryEntities()
 		{
 			return queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...);
 		}
+
 	private:
 
-		
 		template<class... Components>
 		void spawnEntity(Components... components)
 		{
 			(addComponentVector<Components>(), ...);
-			(assignComponent<Components>(components, EntityCount), ...);
+			if (despawnedEntities.size() > 0)
+			{
+				(assignComponent<Components>(components, despawnedEntities.front()), ...);
+				despawnedEntities.pop_front();
+			}
+			else
+			{
+				(assignComponent<Components>(components, EntityCount), ...);
+			}
 			EntityCount++;
+		}
+
+		void despawnEntity(unsigned int index)
+		{
+			despawnedEntities.push_back(index);
+			for (auto& pair : ComponentsMap)
+			{
+				pair.second->clear(index);
+			}
 		}
 
 		template<class ComponentType>
@@ -97,9 +122,8 @@ namespace cookie
 				ComponentsMap.insert(
 					std::pair(
 						typeid(ComponentType).hash_code(),
-						static_cast<std::any>(
-							std::vector<std::optional<ComponentType>>(EntityCount + 1u)
-							)
+						std::make_unique<ComponentArray<ComponentType>>(
+							std::vector<std::optional<ComponentType>>(EntityCount + 1u))
 					)
 				);
 			};
@@ -109,32 +133,35 @@ namespace cookie
 		void assignComponent(ComponentType& component, int entityIndex)
 		{
 			auto componentVector =
-				std::any_cast<std::vector<std::optional<ComponentType>>>(
-					&(ComponentsMap.find(typeid(ComponentType).hash_code())->second)
+				static_cast<ComponentArray<ComponentType>*>(
+					ComponentsMap.find(typeid(ComponentType).hash_code())->second.get()
 					);
-			if (entityIndex >= componentVector->size())
+			if (entityIndex >= componentVector->Components.size())
 			{
-				componentVector->resize(EntityCount + 1);
+				componentVector->Components.resize(EntityCount + 1);
 			}
-			componentVector->at(entityIndex) = std::move(component);
+			componentVector->Components.at(entityIndex) = std::move(component);
 		}
 
 		template<class... QueryTypes>
 		Query<QueryTypes...> queryEntitiesWithPointers(std::vector<std::optional<QueryTypes>>*... vectorPointers)
 		{
 			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
+			std::vector<Entity> entities {};
 			bool isValidQuery = ((vectorPointers != nullptr) && ...);
-			if (!isValidQuery) return Query(result);
+			if (!isValidQuery) return Query(result, entities);
 			result.reserve(EntityCount);
+			entities.reserve(EntityCount);
 			for (unsigned int i = 0; i < EntityCount; i++)
 			{
 				auto query { queryEntity(i, vectorPointers...) };
 				if (query.has_value())
 				{
 					result.push_back(query.value());
+					entities.push_back(Entity { i });
 				}
 			}
-			return Query(result);
+			return Query(result, entities);
 		}
 
 		template<class... QueryTypes>
@@ -152,29 +179,14 @@ namespace cookie
 			return {};
 		}
 
-		//template<class QueryType>
-		//std::optional<Ref<QueryType>> queryComponent(unsigned int index, std::vector<std::optional<QueryType>>* componentVector)
-		//{
-		//	if (index >= componentVector->size())
-		//	{
-		//		return {};
-		//	}
-
-		//	if (componentVector->at(index).has_value())
-		//	{
-		//		return Ref<QueryType>(componentVector, index);
-		//	}
-		//	return {};
-		//}
-
 		template<class VectorType>
 		std::vector<std::optional<VectorType>>* getVectorPointer()
 		{
 			auto pairfromMap = ComponentsMap.find(typeid(VectorType).hash_code());
 			if (pairfromMap != ComponentsMap.end())
 			{
-				return std::any_cast<std::vector<std::optional<VectorType>>>(
-					&pairfromMap->second);
+				return &static_cast<ComponentArray<VectorType>*>(
+					pairfromMap->second.get())->Components;
 			}
 			return nullptr;
 		}

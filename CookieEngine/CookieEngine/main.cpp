@@ -9,11 +9,12 @@ class QueryLots : public cookie::System
 public:
 	virtual void Update(cookie::World* world) override
 	{
-		auto query = world->QueryEntities<int>() ;
-		query.For([](auto f)
-			{
-				*f += 2;
-			});
+		auto query = world->QueryEntities<int>();
+			query.For([](auto i)
+				{
+					*i += 2;
+				});
+		
 	}
 };
 
@@ -22,11 +23,11 @@ class SpawnEntities : public cookie::System
 public:
 	virtual void Start(cookie::World* world) override
 	{
-		world->EnqueueEntitySpawn(100.0f, 200, 399L, 1.0, 159u);
-		for (int i = 0; i < 1000000; i++)
+		for (int i = 9; i >= 0; i--)
 		{
 			world->EnqueueEntitySpawn(i + 1);
 		}
+
 	}
 };
 int main()
@@ -44,7 +45,7 @@ int main()
 	//SPAWNING TAKES: About 175ms
 
 	auto t3 = std::chrono::steady_clock::now();
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		world.UpdateSystems();
 	}
