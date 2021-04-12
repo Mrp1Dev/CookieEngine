@@ -11,13 +11,16 @@
 #include "Entity.h"
 namespace cookie
 {
-
+	template<class... Types>
+	class TypePack
+	{
+	};
 	class World
 	{
 		std::vector<std::unique_ptr<System>> systems;
 		std::deque<std::function<void()>> commands;
 		std::deque<unsigned int> despawnedEntities;
-
+		std::unordered_map<size_t, std::unique_ptr<QueryBase>> cachedQueries;
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::unique_ptr<BaseComponentArray>> ComponentsMap;
@@ -82,9 +85,22 @@ namespace cookie
 
 
 		template<class... QueryTypes>
-		Query<QueryTypes...> QueryEntities()
+		Query<QueryTypes...>* QueryEntities()
 		{
-			return queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...);
+			size_t typeId = typeid(TypePack<QueryTypes...>{}).hash_code();
+			auto cacheFind = cachedQueries.find(typeId);
+			if (cacheFind != cachedQueries.end())
+			{
+				return static_cast<Query<QueryTypes...>*>(cacheFind->second.get());
+			}
+			return static_cast<Query<QueryTypes...>*>(cachedQueries.insert(
+				std::pair {
+				typeId,
+				std::make_unique<Query<QueryTypes...>>(
+					queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...))
+				}
+			).first->second.get());
+
 		}
 
 	private:
@@ -167,7 +183,7 @@ namespace cookie
 		template<class... QueryTypes>
 		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors)
 		{
-			bool isCompleteQuery = ((componentVectors->size() > index ) && ...);
+			bool isCompleteQuery = ((componentVectors->size() > index) && ...);
 			if (isCompleteQuery)
 			{
 				isCompleteQuery = (componentVectors->at(index).has_value() && ...);

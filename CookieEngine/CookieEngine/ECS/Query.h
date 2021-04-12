@@ -6,12 +6,16 @@
 
 namespace cookie
 {
-	template<class... QueryTypes>
-	class Query
+	class QueryBase
 	{
-		std::vector<std::tuple<cookie::Ref<QueryTypes>...>> query;
+
+	};
+	template<class... QueryTypes>
+	class Query : public QueryBase
+	{
 		std::vector<Entity> entities;
 	public:
+		std::vector<std::tuple<cookie::Ref<QueryTypes>...>> query;
 		Query(std::vector<std::tuple<cookie::Ref<QueryTypes>...>>& query, std::vector<Entity>& entities)
 			: query { std::move(query) }, entities { std::move(entities) }
 		{

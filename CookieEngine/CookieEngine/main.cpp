@@ -10,11 +10,15 @@ public:
 	virtual void Update(cookie::World* world) override
 	{
 		auto query = world->QueryEntities<int>();
-			query.For([](auto i)
-				{
-					*i += 2;
-				});
-		
+		for (auto& tuple : query->query)
+		{
+			auto& i = *std::get<cookie::Ref<int>>(tuple);
+			i += 2;
+		}
+		/*query->For([](auto i)
+			{
+				*i += 2;
+			});*/
 	}
 };
 
@@ -23,7 +27,7 @@ class SpawnEntities : public cookie::System
 public:
 	virtual void Start(cookie::World* world) override
 	{
-		for (int i = 9; i >= 0; i--)
+		for (int i = 0; i < 1000000; i++)
 		{
 			world->EnqueueEntitySpawn(i + 1);
 		}
@@ -36,8 +40,9 @@ int main()
 	SpawnEntities {}, QueryLots {}
 	};
 
-	auto t1 = std::chrono::steady_clock::now();
 	world.StartSystems();
+	auto t1 = std::chrono::steady_clock::now();
+	world.UpdateSystems();
 	auto t2 = std::chrono::steady_clock::now();
 	auto d = t2 - t1;
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d).count() << "ms\n";
@@ -45,7 +50,7 @@ int main()
 	//SPAWNING TAKES: About 175ms
 
 	auto t3 = std::chrono::steady_clock::now();
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		world.UpdateSystems();
 	}
@@ -53,5 +58,5 @@ int main()
 	auto d1 = t4 - t3;
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(d1).count() << "ms\n";
 
-	//QUERYING TAKES: About 70ms
+	//QUERYING TAKES: About 16ms
 }
