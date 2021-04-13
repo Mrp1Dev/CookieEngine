@@ -21,6 +21,7 @@ namespace cookie
 		std::deque<std::function<void()>> commands;
 		std::deque<unsigned int> despawnedEntities;
 		std::unordered_map<size_t, std::unique_ptr<QueryBase>> cachedQueries;
+		std::vector<Entity> currentEntities;
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::unique_ptr<BaseComponentArray>> ComponentsMap;
@@ -78,8 +79,11 @@ namespace cookie
 
 		World* EnqueueEntityDespawn(Entity entity)
 		{
-			auto f = std::bind(&World::despawnEntity, this, entity.index);
-			commands.push_back(f);
+			if (entity.gen == currentEntities.at(entity.index).gen)
+			{
+				auto f = std::bind(&World::despawnEntity, this, entity.index);
+				commands.push_back(f);
+			}
 			return this;
 		}
 
@@ -97,10 +101,21 @@ namespace cookie
 				std::pair {
 				typeId,
 				std::make_unique<Query<QueryTypes...>>(
-					queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...))
+					queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...)
+					)
 				}
 			).first->second.get());
 
+		}
+
+		template<class... ComponentTypes>
+		std::optional<std::tuple<Ref<ComponentTypes>...>> TryGetComponents(Entity entity)
+		{
+			if (entity.gen < currentEntities.at(entity.index).gen)
+			{
+				return {};
+			}
+			return queryEntity<ComponentTypes...>(entity.index, getVectorPointer<ComponentTypes>()...);
 		}
 
 	private:
@@ -117,6 +132,7 @@ namespace cookie
 			else
 			{
 				(assignComponent<Components>(components, EntityCount), ...);
+				currentEntities.push_back(Entity(EntityCount, 0));
 			}
 			EntityCount++;
 		}
@@ -124,6 +140,7 @@ namespace cookie
 		void despawnEntity(unsigned int index)
 		{
 			despawnedEntities.push_back(index);
+			currentEntities.at(index).gen++;
 			for (auto& pair : ComponentsMap)
 			{
 				pair.second->clear(index);
@@ -160,7 +177,7 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		Query<QueryTypes...> queryEntitiesWithPointers(std::vector<std::optional<QueryTypes>>*... vectorPointers)
+		Query<QueryTypes...> queryEntitiesWithPointers(std::vector<std::optional<QueryTypes>>*... vectorPointers) const
 		{
 			std::vector<std::tuple<Ref<QueryTypes>...>> result {};
 			std::vector<Entity> entities {};
@@ -174,16 +191,17 @@ namespace cookie
 				if (query.has_value())
 				{
 					result.push_back(query.value());
-					entities.push_back(Entity { i });
+					entities.push_back(currentEntities.at(i));
 				}
 			}
 			return Query(result, entities);
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors)
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors) const
 		{
-			bool isCompleteQuery = ((componentVectors->size() > index) && ...);
+			bool isCompleteQuery = (((componentVectors->size() > index) && ...) && ((componentVectors != nullptr) && ...));
+			
 			if (isCompleteQuery)
 			{
 				isCompleteQuery = (componentVectors->at(index).has_value() && ...);
@@ -196,7 +214,7 @@ namespace cookie
 		}
 
 		template<class VectorType>
-		std::vector<std::optional<VectorType>>* getVectorPointer()
+		std::vector<std::optional<VectorType>>* getVectorPointer() const
 		{
 			auto pairfromMap = ComponentsMap.find(typeid(VectorType).hash_code());
 			if (pairfromMap != ComponentsMap.end())

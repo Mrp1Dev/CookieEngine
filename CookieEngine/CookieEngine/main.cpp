@@ -4,21 +4,36 @@
 #include "ECS/World.h"
 #include "temporary_types.h"
 #include <chrono>
+
+struct IStoreEntity
+{
+	cookie::Entity entity;
+};
+
 class QueryLots : public cookie::System
 {
 public:
 	virtual void Update(cookie::World* world) override
 	{
 		auto query = world->QueryEntities<int>();
-		for (auto& tuple : query->query)
-		{
-			auto& i = *std::get<cookie::Ref<int>>(tuple);
-			i += 2;
-		}
-		/*query->For([](auto i)
+		query->For([&world](cookie::Entity entity, auto i)
 			{
 				*i += 2;
-			});*/
+				if (*i == 29)
+				{
+					world->EnqueueEntitySpawn(IStoreEntity { entity });
+					std::cout << "shit spawned" << '\n';
+				}
+			});
+		auto storeQuery = world->QueryEntities<IStoreEntity>();
+		std::cout << storeQuery->query.size();
+		storeQuery->For([&world](auto store)
+			{
+				auto i = std::get<0>(world->TryGetComponents<int>(store->entity).value());
+				std::cout << "bleh" << '\n';
+				std::cout << *i << '\n';
+				*i *= 2;
+			});
 	}
 };
 
@@ -31,7 +46,6 @@ public:
 		{
 			world->EnqueueEntitySpawn(i + 1);
 		}
-
 	}
 };
 int main()

@@ -5,9 +5,9 @@ namespace cookie
 	template<class T>
 	class Ref
 	{
+	public:
 		std::vector<std::optional<T>>* vector;
 		unsigned int index;
-	public:
 		Ref(std::vector<std::optional<T>>* vector, unsigned int index)
 			: vector { vector }, index { index }
 		{
