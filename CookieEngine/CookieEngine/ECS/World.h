@@ -22,6 +22,7 @@ namespace cookie
 		std::deque<unsigned int> despawnedEntities;
 		std::unordered_map<size_t, std::unique_ptr<QueryBase>> cachedQueries;
 		std::vector<Entity> currentEntities;
+		bool queriesDirty { true };
 	public:
 		unsigned int EntityCount { 0 };
 		std::unordered_map<size_t, std::unique_ptr<BaseComponentArray>> ComponentsMap;
@@ -59,6 +60,7 @@ namespace cookie
 			{
 				system->Update(this);
 			}
+				queriesDirty = false;
 		}
 
 		void DestroySystems()
@@ -93,17 +95,15 @@ namespace cookie
 		{
 			size_t typeId = typeid(TypePack<QueryTypes...>{}).hash_code();
 			auto cacheFind = cachedQueries.find(typeId);
-			if (cacheFind != cachedQueries.end())
+			if (cacheFind != cachedQueries.end() && !queriesDirty)
 			{
 				return static_cast<Query<QueryTypes...>*>(cacheFind->second.get());
 			}
-			return static_cast<Query<QueryTypes...>*>(cachedQueries.insert(
-				std::pair {
+			return static_cast<Query<QueryTypes...>*>(cachedQueries.insert_or_assign(
 				typeId,
 				std::make_unique<Query<QueryTypes...>>(
 					queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...)
 					)
-				}
 			).first->second.get());
 
 		}
@@ -116,6 +116,17 @@ namespace cookie
 				return {};
 			}
 			return queryEntity<ComponentTypes...>(entity.index, getVectorPointer<ComponentTypes>()...);
+		}
+
+		template<class T>
+		std::optional<Ref<T>> TryGetComponent(Entity entity)
+		{
+			auto component = TryGetComponents<T>(entity);
+			if (component.has_value())
+			{
+				return std::get<0>(component.value());
+			}
+			return {};
 		}
 
 	private:
@@ -135,6 +146,7 @@ namespace cookie
 				currentEntities.push_back(Entity(EntityCount, 0));
 			}
 			EntityCount++;
+			queriesDirty = true;
 		}
 
 		void despawnEntity(unsigned int index)
@@ -145,6 +157,7 @@ namespace cookie
 			{
 				pair.second->clear(index);
 			}
+			queriesDirty = true;
 		}
 
 		template<class ComponentType>
@@ -201,7 +214,7 @@ namespace cookie
 		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors) const
 		{
 			bool isCompleteQuery = (((componentVectors->size() > index) && ...) && ((componentVectors != nullptr) && ...));
-			
+
 			if (isCompleteQuery)
 			{
 				isCompleteQuery = (componentVectors->at(index).has_value() && ...);
