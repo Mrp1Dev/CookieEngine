@@ -1,55 +1,58 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
-#include <functional>
-#include "ECS/World.h"
 
-struct IStoreEntity
+void processInput(GLFWwindow* window)
 {
-	cookie::Entity entity;
-};
-
-class QueryLots : public cookie::System
-{
-public:
-	virtual void Update(cookie::World* world) override
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
-		auto storeQuery = world->QueryEntities<IStoreEntity>();
-		storeQuery->Foreach([&world](auto& store)
-			{
-				auto i = world->TryGetComponent<int>(store.entity).value();
-				std::cout << *i << '\n';
-			});
-
-		auto query = world->QueryEntities<int>();
-			query->EntityForeach([&world](cookie::Entity entity, auto& i)
-				{
-					if (i == 2)
-					{
-						world->EnqueueEntitySpawn(IStoreEntity { entity });
-						std::cout << "shit spawned" << '\n';
-					}
-					i += 1;
-				});
+		glfwSetWindowShouldClose(window, true);
 	}
-};
+}
 
-class SpawnEntities : public cookie::System
-{
-public:
-	virtual void Start(cookie::World* world) override
-	{
-		for (int i = 0; i < 1000000; i++)
-		{
-			world->EnqueueEntitySpawn(i + 1);
-		}
-	}
-};
 int main()
 {
-	cookie::World world {
-	SpawnEntities {}, QueryLots {}
-	};
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	world.StartSystems();
-	world.UpdateSystems();
-	world.UpdateSystems();
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "window 1", nullptr, nullptr);
+	if (window == nullptr)
+	{
+		std::cout << "Failed to create GLFW Window.\n";
+		glfwTerminate();
+		return -1;
+	}
+
+	GLFWwindow* window2 = glfwCreateWindow(1280, 720, "Window 2", nullptr, nullptr);
+	if (window == nullptr)
+	{
+		std::cout << "Failed to create GLFW Window.\n";
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window2);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD\n";
+		return -1;
+	}
+	glViewport(0, 0, 1280, 720);
+
+	
+	while (!glfwWindowShouldClose(window2))
+	{
+		processInput(window);
+		glClearColor(0.7, 0.7, 0.7, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glfwSwapBuffers(window);
+		glfwSwapBuffers(window2);
+		glfwPollEvents();
+	}
+
+	glfwTerminate();
 }
+

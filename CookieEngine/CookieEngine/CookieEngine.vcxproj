@@ -158,6 +158,7 @@
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

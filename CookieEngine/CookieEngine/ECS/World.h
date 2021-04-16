@@ -71,6 +71,13 @@ namespace cookie
 			}
 		}
 
+		template<class T>
+		World* AddSystem(T system, bool callStart = true)
+		{
+			this->systems.push_back(std::make_unique<System>(system));
+			if (callStart) systems.back->Start();
+		}
+
 		template<class... Components>
 		World* EnqueueEntitySpawn(Components... components)
 		{
