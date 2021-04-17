@@ -2,12 +2,18 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+
+
 void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
+}
+
+void i(int*& ptr)
+{
 }
 
 int main()
@@ -25,15 +31,7 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
-
-	GLFWwindow* window2 = glfwCreateWindow(1280, 720, "Window 2", nullptr, nullptr);
-	if (window == nullptr)
-	{
-		std::cout << "Failed to create GLFW Window.\n";
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window2);
+	glfwMakeContextCurrent(window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -43,13 +41,18 @@ int main()
 	glViewport(0, 0, 1280, 720);
 
 	
-	while (!glfwWindowShouldClose(window2))
+	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 		glClearColor(0.7, 0.7, 0.7, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+
+
+
+
+
 		glfwSwapBuffers(window);
-		glfwSwapBuffers(window2);
 		glfwPollEvents();
 	}
 

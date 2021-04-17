@@ -9,6 +9,7 @@
 #include "System.h"
 #include <map>
 #include "Entity.h"
+
 namespace cookie
 {
 	template<class... Types>

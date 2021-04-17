@@ -149,12 +149,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentArray.h" />
+    <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
     <ClInclude Include="ECS\Ref.h" />
     <ClInclude Include="ECS\System.h" />
     <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Rendering\Mesh.h" />
+    <ClInclude Include="Rendering\ModelData.h" />
+    <ClInclude Include="Rendering\ModelInitSystem.h" />
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>
