@@ -12,12 +12,12 @@
 
 namespace cookie
 {
-	template<class... Types>
-	class TypePack
-	{
-	};
 	class World
 	{
+		template<class... Types>
+		class TypePack
+		{
+		};
 		std::vector<std::unique_ptr<System>> systems;
 		std::deque<std::function<void()>> commands;
 		std::deque<unsigned int> despawnedEntities;
@@ -61,7 +61,7 @@ namespace cookie
 			{
 				system->Update(this);
 			}
-				queriesDirty = false;
+			queriesDirty = false;
 		}
 
 		void DestroySystems()

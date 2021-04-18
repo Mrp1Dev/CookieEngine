@@ -155,8 +155,10 @@
     <ClInclude Include="ECS\System.h" />
     <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="Rendering\Mesh.h" />
-    <ClInclude Include="Rendering\ModelData.h" />
+    <ClInclude Include="Rendering\Model.h" />
+    <ClInclude Include="Rendering\ModelRendererData.h" />
     <ClInclude Include="Rendering\ModelInitSystem.h" />
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>

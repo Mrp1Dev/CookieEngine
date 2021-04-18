@@ -42,10 +42,16 @@
     <ClInclude Include="ECS\ComponentArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\ModelData.h">
+    <ClInclude Include="Rendering\ModelRendererData.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ModelInitSystem.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Model.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
