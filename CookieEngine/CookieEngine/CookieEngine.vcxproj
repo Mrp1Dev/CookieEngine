@@ -160,11 +160,18 @@
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Rendering\ModelRendererData.h" />
     <ClInclude Include="Rendering\ModelInitSystem.h" />
+    <ClInclude Include="Rendering\ModelRenderingSystem.h" />
+    <ClInclude Include="Rendering\ShaderData.h" />
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rendering\Model.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment_shader.glsl" />
+    <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

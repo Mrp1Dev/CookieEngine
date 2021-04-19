@@ -54,6 +54,12 @@
     <ClInclude Include="Rendering\Model.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\ModelRenderingSystem.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\ShaderData.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,5 +68,12 @@
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\Model.cpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex_shader.glsl" />
+    <None Include="fragment_shader.glsl" />
   </ItemGroup>
 </Project>
