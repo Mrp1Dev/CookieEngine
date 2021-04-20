@@ -4,14 +4,22 @@
 #include <unordered_map>
 #include "../Rendering/ModelRendererData.h"
 #include "../Rendering/ShaderData.h"
-
 namespace cookie
 {
+	struct PairHash
+	{
+		template <class T1, class T2>
+		std::size_t operator() (const std::pair<T1, T2>& pair) const
+		{
+			return (std::hash<T1>()(pair.first) * 327423) ^ std::hash<T2>()(pair.second);
+		}
+	};
 	class AssetManager
 	{
 	public:
 		static std::unordered_map<std::string, Model> models;
-		static std::unordered_map<std::pair<std::string, std::string>, Shader> shaders;
+		static std::unordered_map<std::pair<std::string, std::string>, Shader, PairHash> shaders;
+
 		static unsigned int TextureFromFile(const char* path, const std::string& directory)
 		{
 			stbi_set_flip_vertically_on_load(true);
@@ -51,32 +59,9 @@ namespace cookie
 			}
 			return textureID;
 		}
-		static ModelRendererData GetModel(const std::string&& path, bool active)
-		{
-			auto existing = AssetManager::models.find(path);
-			if (existing != AssetManager::models.end())
-			{
-				return ModelRendererData { &existing->second, active };
-			}
-			return ModelRendererData { &AssetManager::models.insert(std::pair { path, Model(path) }).first->second, active };
-		}
+		static ModelRendererData GetModel(const std::string&& path, bool active);
 
-		static ShaderData GetShader(const std::string&& vertexShaderPath, const std::string&& fragmentShaderPath)
-		{
-			auto existing = AssetManager::shaders.find({ vertexShaderPath, fragmentShaderPath });
-			if (existing != AssetManager::shaders.end())
-			{
-				return ShaderData { &existing->second };
-			}
-			return ShaderData {
-				&AssetManager::shaders.insert(
-					std::pair {
-						std::pair{
-						vertexShaderPath, fragmentShaderPath
-					},
-					Shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str()) }).first->second
-			};
-		}
+		static ShaderData GetShader(const std::string&& vertexShaderPath, const std::string&& fragmentShaderPath);
 	};
 
 }
