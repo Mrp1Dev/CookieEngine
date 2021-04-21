@@ -9,6 +9,8 @@
 #include "System.h"
 #include <map>
 #include "Entity.h"
+#include <any>
+#include <typeindex>
 
 namespace cookie
 {
@@ -23,6 +25,8 @@ namespace cookie
 		std::deque<unsigned int> despawnedEntities;
 		std::unordered_map<size_t, std::unique_ptr<QueryBase>> cachedQueries;
 		std::vector<Entity> currentEntities;
+		std::unordered_map<size_t, std::any> resources;
+
 		bool queriesDirty { true };
 	public:
 		unsigned int EntityCount { 0 };
@@ -77,6 +81,23 @@ namespace cookie
 		{
 			this->systems.push_back(std::make_unique<System>(system));
 			if (callStart) systems.back->Start();
+		}
+
+		template<class T>
+		World* AddResource(T res)
+		{
+			resources.insert_or_assign(std::type_index(typeid(T)), res);
+		}
+
+		template<class T>
+		T* GetResource()
+		{
+			auto existing = resources.find(std::type_index(typeid(T)));
+			if (existing != resources.end)
+			{
+				return &existing->second;
+			}
+			return nullptr;
 		}
 
 		template<class... Components>

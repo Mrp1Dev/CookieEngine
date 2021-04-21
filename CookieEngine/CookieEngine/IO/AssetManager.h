@@ -59,7 +59,7 @@ namespace cookie
 			}
 			return textureID;
 		}
-		static ModelRendererData GetModel(const std::string&& path, bool active);
+		static ModelRendererData GetModel(const std::string&& path, bool active = true);
 
 		static ShaderData GetShader(const std::string&& vertexShaderPath, const std::string&& fragmentShaderPath);
 	};

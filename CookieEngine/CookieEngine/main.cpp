@@ -5,6 +5,7 @@
 #include <cookie/Camera.h>
 #include "ECS/World.h"
 #include "Rendering/ModelRenderingSystem.h"
+#include "Rendering/SetPerspectiveMatrixSystem.h"
 namespace ck = cookie;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -12,7 +13,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 float lastX = 1280 / 2.0f;
 float lastY = 720 / 2.0f;
 bool firstMouse = true;
@@ -28,7 +29,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "window 1", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Cookie", nullptr, nullptr);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW Window.\n";
@@ -39,6 +40,7 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -46,18 +48,23 @@ int main()
 		return -1;
 	}
 	glViewport(0, 0, 1280, 720);
+	glEnable(GL_DEPTH_TEST);
 
-	
 	ck::ShaderData shaderData =
 		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl");
-	glm::mat4 projection =
+	shaderData.shader->Use();
+	/*glm::mat4 projection =
 		glm::perspective(glm::radians(camera.Zoom), (float)1280 / (float)720, 0.1f, 100.0f);
-	shaderData.shader->SetMat4("projection", projection);
-	ck::World world(ck::ModelRenderingSystem {});
+	shaderData.shader->SetMat4("projection", projection);*/
+	ck::World world(
+		ck::SetPerspectiveMatrixSystem {},
+		ck::ModelRenderingSystem {}
+	);
 	glm::mat4 model(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 25.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.0f));
 	shaderData.shader->SetMat4("model", model);
 	world.EnqueueEntitySpawn(ck::AssetManager::GetModel("backpack/backpack.obj", true), shaderData);
+	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true });
 	world.StartSystems();
 	float lastFrame { static_cast<float>(glfwGetTime()) };
 
@@ -65,12 +72,15 @@ int main()
 	{
 		deltaTime = glfwGetTime() - lastFrame;
 		lastFrame = glfwGetTime();
+
 		processInput(window);
+
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glm::mat4 view = camera.GetViewMatrix();
 		shaderData.shader->SetMat4("view", view);
 		world.UpdateSystems();
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

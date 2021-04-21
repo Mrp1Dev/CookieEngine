@@ -16,31 +16,16 @@
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{c91eda20-3cd9-49b8-8295-83b25f957570}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{0c0fb6d3-addd-4bf7-8093-0e8c82d8e204}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ECS\World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="temporary_types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\Ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\Query.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\System.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Mesh.h">
       <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS\ComponentArray.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ModelRendererData.h">
       <Filter>Header Files\Rendering</Filter>
@@ -58,6 +43,33 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ShaderData.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\ComponentArray.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\Query.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\Ref.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\System.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\World.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\CameraData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Transform.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
