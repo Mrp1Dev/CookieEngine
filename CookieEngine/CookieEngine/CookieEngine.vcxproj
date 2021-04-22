@@ -156,15 +156,17 @@
     <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="IO\AssetManager.h" />
+    <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\CameraData.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Rendering\ModelRendererData.h" />
     <ClInclude Include="Rendering\ModelInitSystem.h" />
     <ClInclude Include="Rendering\ModelRenderingSystem.h" />
+    <ClInclude Include="Rendering\SetModelMatricesSystem.h" />
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h" />
     <ClInclude Include="Rendering\ShaderData.h" />
-    <ClInclude Include="Rendering\Transform.h" />
+    <ClInclude Include="Rendering\TransformData.h" />
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>

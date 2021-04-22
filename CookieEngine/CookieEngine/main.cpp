@@ -6,6 +6,7 @@
 #include "ECS/World.h"
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetPerspectiveMatrixSystem.h"
+#include "Rendering/SetModelMatricesSystem.h"
 namespace ck = cookie;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -52,18 +53,19 @@ int main()
 
 	ck::ShaderData shaderData =
 		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl");
-	shaderData.shader->Use();
-	/*glm::mat4 projection =
-		glm::perspective(glm::radians(camera.Zoom), (float)1280 / (float)720, 0.1f, 100.0f);
-	shaderData.shader->SetMat4("projection", projection);*/
 	ck::World world(
+		ck::SetModelMatricesSystem {},
 		ck::SetPerspectiveMatrixSystem {},
 		ck::ModelRenderingSystem {}
 	);
-	glm::mat4 model(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.0f));
-	shaderData.shader->SetMat4("model", model);
-	world.EnqueueEntitySpawn(ck::AssetManager::GetModel("backpack/backpack.obj", true), shaderData);
+
+	world.EnqueueEntitySpawn(
+		ck::AssetManager::GetModel("backpack/backpack.obj", true),
+		shaderData,
+		ck::TransformData {
+			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(45, 0, 0))
+		}
+	);
 	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true });
 	world.StartSystems();
 	float lastFrame { static_cast<float>(glfwGetTime()) };

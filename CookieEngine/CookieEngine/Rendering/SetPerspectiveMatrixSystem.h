@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Transform.h"
+#include "TransformData.h"
 #include "CameraData.h"
 
 namespace cookie
@@ -33,6 +33,7 @@ namespace cookie
 				auto query { world->QueryEntities<ShaderData>() };
 				query->Foreach([perspectiveMatrix](ShaderData& shader)
 					{
+						shader.shader->Use();
 						//TODO: USE A CONST STRING FOR SHADER UNIFORM
 						shader.shader->SetMat4("projection", perspectiveMatrix);
 					});
