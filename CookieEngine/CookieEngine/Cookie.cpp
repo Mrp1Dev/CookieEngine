@@ -1,18 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include "IO/AssetManager.h"
-#include <cookie/Camera.h>
-#include "ECS/World.h"
-#include "Rendering/ModelRenderingSystem.h"
-#include "Rendering/SetPerspectiveMatrixSystem.h"
-#include "Rendering/SetModelMatricesSystem.h"
-namespace ck = cookie;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow* window);
+#include "Cookie.h"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 float lastX = 1280 / 2.0f;
@@ -59,13 +45,29 @@ int main()
 		ck::ModelRenderingSystem {}
 	);
 
+	//InitGame(&world);
 	world.EnqueueEntitySpawn(
 		ck::AssetManager::GetModel("backpack/backpack.obj", true),
-		shaderData,
+		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
 		ck::TransformData {
-			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(45, 0, 0))
+			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 0, 0))
 		}
 	);
+	world.EnqueueEntitySpawn(
+		ck::AssetManager::GetModel("backpack/backpack.obj", true),
+		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
+		ck::TransformData {
+			glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 45, 0))
+		}
+	);
+	world.EnqueueEntitySpawn(
+		ck::AssetManager::GetModel("backpack/backpack.obj", true),
+		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
+		ck::TransformData {
+			glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 90, 0))
+		}
+	);
+
 	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true });
 	world.StartSystems();
 	float lastFrame { static_cast<float>(glfwGetTime()) };
@@ -82,6 +84,7 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		shaderData.shader->SetMat4("view", view);
 		world.UpdateSystems();
+		std::cout << camera.Position.x << ' ' << camera.Position.y << ' ' << camera.Position.z << '\n';
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -141,4 +144,3 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
 }
-

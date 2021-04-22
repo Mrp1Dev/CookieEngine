@@ -19,6 +19,9 @@
     <Filter Include="Header Files\ECS">
       <UniqueIdentifier>{0c0fb6d3-addd-4bf7-8093-0e8c82d8e204}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{43fac3e6-bd65-4b82-8257-13aba7547218}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="temporary_types.h">
@@ -75,12 +78,12 @@
     <ClInclude Include="Rendering\SetModelMatricesSystem.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Math.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\Game\SpawnBagsSystem.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Cookie.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c">
@@ -93,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Cookie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

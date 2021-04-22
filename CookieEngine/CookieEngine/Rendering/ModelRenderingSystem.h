@@ -2,6 +2,7 @@
 #include "../ECS/World.h"
 #include "ModelRendererData.h"
 #include "ShaderData.h"
+#include "TransformData.h"
 
 namespace cookie
 {
@@ -10,13 +11,20 @@ namespace cookie
 	public:
 		virtual void Update(World* world) override
 		{
-			auto query { world->QueryEntities<ModelRendererData, ShaderData>() };
-			query->Foreach([this](auto& model, auto& shader)
+			auto query { world->QueryEntities<ModelRendererData, ShaderData, TransformData>() };
+			query->Foreach([this](auto& model, auto& shader, auto& transform)
 				{
 					if (model.enabled)
 					{
 						for (auto& mesh : model.model->meshes)
 						{
+							glm::mat4 matrix(1.0f);
+							matrix = matrix * glm::mat4_cast(transform.rotation);
+							matrix = glm::scale(matrix, transform.scale);
+							matrix = glm::translate(matrix, transform.position);
+							shader.shader->Use();
+							//TODO: USE CONST STRING
+							shader.shader->SetMat4("model", matrix);
 							DrawMesh(shader.shader, mesh);
 						}
 					}

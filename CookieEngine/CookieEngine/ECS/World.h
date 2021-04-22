@@ -80,7 +80,8 @@ namespace cookie
 		World* AddSystem(T system, bool callStart = true)
 		{
 			this->systems.push_back(std::make_unique<System>(system));
-			if (callStart) systems.back->Start();
+			if (callStart) systems.back()->Start(this);
+			return this;
 		}
 
 		template<class T>

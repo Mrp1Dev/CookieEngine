@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
     <ClInclude Include="ECS\Ref.h" />
@@ -156,7 +157,6 @@
     <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="IO\AssetManager.h" />
-    <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\CameraData.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\Model.h" />
@@ -171,8 +171,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
+    <ClCompile Include="..\..\Game\game.cpp" />
+    <ClCompile Include="Cookie.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Cookie.h" />
     <ClCompile Include="Rendering\Model.cpp" />
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
