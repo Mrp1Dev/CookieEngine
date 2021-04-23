@@ -12,6 +12,11 @@ namespace cookie
 	class SetPerspectiveMatrixSystem : public System
 	{
 	public:
+		virtual void Start(World* world) override
+		{
+			std::cout << "Start called on setperspectivemtrix\n";
+		}
+
 		virtual void Update(World* world) override
 		{
 			auto cameraQuery { world->QueryEntities<CameraData>() };

@@ -75,11 +75,11 @@
     <ClInclude Include="Rendering\TransformData.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\SetModelMatricesSystem.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\BaseColorData.h">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

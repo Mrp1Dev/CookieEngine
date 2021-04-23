@@ -1,4 +1,4 @@
-#include "../CookieEngine/Cookie.h"
+#include "../CookieEngine/CookieEngine/Cookie.h"
 #include "SpawnBagsSystem.h"
 
 void InitGame(ck::World* ecsWorld)

@@ -40,33 +40,11 @@ int main()
 	ck::ShaderData shaderData =
 		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl");
 	ck::World world(
-		ck::SetModelMatricesSystem {},
 		ck::SetPerspectiveMatrixSystem {},
 		ck::ModelRenderingSystem {}
 	);
 
-	//InitGame(&world);
-	world.EnqueueEntitySpawn(
-		ck::AssetManager::GetModel("backpack/backpack.obj", true),
-		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
-		ck::TransformData {
-			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 0, 0))
-		}
-	);
-	world.EnqueueEntitySpawn(
-		ck::AssetManager::GetModel("backpack/backpack.obj", true),
-		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
-		ck::TransformData {
-			glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 45, 0))
-		}
-	);
-	world.EnqueueEntitySpawn(
-		ck::AssetManager::GetModel("backpack/backpack.obj", true),
-		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl"),
-		ck::TransformData {
-			glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 90, 0))
-		}
-	);
+	InitGame(&world);
 
 	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true });
 	world.StartSystems();

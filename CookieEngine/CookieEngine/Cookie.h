@@ -7,7 +7,6 @@
 #include "ECS/World.h"
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetPerspectiveMatrixSystem.h"
-#include "Rendering/SetModelMatricesSystem.h"
 namespace ck = cookie;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -17,9 +16,6 @@ void processInput(GLFWwindow* window);
 
 void InitGame(ck::World* ecsWorld);
 
-
-
-int main();
 
 
 
