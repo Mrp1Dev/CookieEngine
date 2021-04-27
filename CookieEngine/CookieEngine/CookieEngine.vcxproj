@@ -78,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
+    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
+    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Rendering\ModelInitSystem.h" />
     <ClInclude Include="Rendering\ModelRenderingSystem.h" />
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h" />
+    <ClInclude Include="Rendering\SetViewMatrixSystem.h" />
     <ClInclude Include="Rendering\ShaderData.h" />
     <ClInclude Include="Rendering\TransformData.h" />
     <ClInclude Include="temporary_types.h" />

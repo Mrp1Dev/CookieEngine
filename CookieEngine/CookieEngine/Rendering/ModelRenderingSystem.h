@@ -24,7 +24,7 @@ namespace cookie
 							matrix = glm::scale(matrix, transform.scale);
 							matrix = glm::translate(matrix, transform.position);
 							shader.shader->Use();
-							//TODO: USE CONST STRING
+							//TODO: USE CONST STRINGS
 							shader.shader->SetMat4("model", matrix);
 							auto baseColor = world->TryGetComponent<BaseColorData>(entity);
 							if (baseColor.has_value())

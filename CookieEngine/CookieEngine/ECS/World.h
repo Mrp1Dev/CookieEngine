@@ -289,3 +289,4 @@ namespace cookie
 
 
 }
+namespace ck = cookie;

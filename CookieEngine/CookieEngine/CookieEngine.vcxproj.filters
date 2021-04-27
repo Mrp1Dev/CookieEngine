@@ -81,6 +81,12 @@
     <ClInclude Include="Rendering\BaseColorData.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\SetViewMatrixSystem.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

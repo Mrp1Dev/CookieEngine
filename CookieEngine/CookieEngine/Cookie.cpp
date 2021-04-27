@@ -46,7 +46,7 @@ int main()
 
 	InitGame(&world);
 
-	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true });
+	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true }, ck::TransformData {});
 	world.StartSystems();
 	float lastFrame { static_cast<float>(glfwGetTime()) };
 
@@ -60,7 +60,7 @@ int main()
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glm::mat4 view = camera.GetViewMatrix();
-		shaderData.shader->SetMat4("view", view);
+		//shaderData.shader->SetMat4("view", view);
 		world.UpdateSystems();
 		std::cout << camera.Position.x << ' ' << camera.Position.y << ' ' << camera.Position.z << '\n';
 
