@@ -24,7 +24,7 @@ namespace cookie
 									"view",
 									glm::lookAt(
 										transform.position,
-										transform.rotation * glm::vec3(0, 0, 1),
+										transform.position + transform.rotation * glm::vec3(0, 0, 1),
 										transform.rotation * glm::vec3(0, 1, 0)
 									)
 								);
