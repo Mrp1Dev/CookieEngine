@@ -169,6 +169,7 @@
     <ClInclude Include="Rendering\SetViewMatrixSystem.h" />
     <ClInclude Include="Rendering\ShaderData.h" />
     <ClInclude Include="Rendering\TransformData.h" />
+    <ClInclude Include="ResourceTypes\Time.h" />
     <ClInclude Include="temporary_types.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,5 @@
 #include "Cookie.h"
 
-Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
-float lastX = 1280 / 2.0f;
-float lastY = 720 / 2.0f;
-bool firstMouse = true;
-
-// timing
-float deltaTime = 0.0f;
 
 int main()
 {
@@ -24,9 +17,6 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -37,32 +27,27 @@ int main()
 	glViewport(0, 0, 1280, 720);
 	glEnable(GL_DEPTH_TEST);
 
-	ck::ShaderData shaderData =
-		ck::AssetManager::GetShader("vertex_shader.glsl", "fragment_shader.glsl");
 	ck::World world(
 		ck::SetPerspectiveMatrixSystem {},
+		ck::SetViewMatrixSystem {},
 		ck::ModelRenderingSystem {}
 	);
 
+	addResources(&world);
 	InitGame(&world);
-
-	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true }, ck::TransformData {});
+	world.EnqueueEntitySpawn(ck::CameraData { 90.0f, true }, ck::TransformData {});
 	world.StartSystems();
-	float lastFrame { static_cast<float>(glfwGetTime()) };
 
+	float lastFrame { static_cast<float>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
-		deltaTime = glfwGetTime() - lastFrame;
-		lastFrame = glfwGetTime();
-
+		updateTime(world.GetResource<ck::Time>(), &lastFrame);
+		std::cout << "FPS: " << 1.0f / world.GetResource<ck::Time>()->deltaTime << '\n';
 		processInput(window);
 
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glm::mat4 view = camera.GetViewMatrix();
-		//shaderData.shader->SetMat4("view", view);
 		world.UpdateSystems();
-		std::cout << camera.Position.x << ' ' << camera.Position.y << ' ' << camera.Position.z << '\n';
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -75,50 +60,19 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void addResources(ck::World* world)
 {
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
+	world->AddResource(ck::Time {});
 }
 
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void updateTime(ck::Time* time, float* lastFrame)
 {
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	time->time = glfwGetTime();
+	time->deltaTime = glfwGetTime() - *lastFrame;
+	*lastFrame = glfwGetTime();
 }
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera.ProcessMouseScroll(yoffset);
-}
+
+

@@ -87,16 +87,17 @@ namespace cookie
 		template<class T>
 		World* AddResource(T res)
 		{
-			resources.insert_or_assign(std::type_index(typeid(T)), res);
+			resources.insert_or_assign(std::type_index(typeid(T)).hash_code(), res);
+			return this;
 		}
 
 		template<class T>
 		T* GetResource()
 		{
-			auto existing = resources.find(std::type_index(typeid(T)));
-			if (existing != resources.end)
+			auto existing = resources.find(std::type_index(typeid(T)).hash_code());
+			if (existing != resources.end())
 			{
-				return &existing->second;
+				return std::any_cast<T>(&existing->second);
 			}
 			return nullptr;
 		}

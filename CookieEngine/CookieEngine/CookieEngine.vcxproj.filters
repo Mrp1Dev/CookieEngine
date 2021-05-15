@@ -22,6 +22,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{43fac3e6-bd65-4b82-8257-13aba7547218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceTypes">
+      <UniqueIdentifier>{2854ebba-a81d-46ae-b1c5-68646a7131b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="temporary_types.h">
@@ -86,6 +89,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceTypes\Time.h">
+      <Filter>Header Files\ResourceTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
