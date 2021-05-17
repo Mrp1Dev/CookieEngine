@@ -151,12 +151,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
+    <ClInclude Include="Constants\DefaultShaders .h" />
     <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
     <ClInclude Include="ECS\Ref.h" />
     <ClInclude Include="ECS\System.h" />
     <ClInclude Include="ECS\World.h" />
-    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Input\Key.h" />
+    <ClInclude Include="Input\Keycode.h" />
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
@@ -170,7 +172,7 @@
     <ClInclude Include="Rendering\ShaderData.h" />
     <ClInclude Include="Rendering\TransformData.h" />
     <ClInclude Include="ResourceTypes\Time.h" />
-    <ClInclude Include="temporary_types.h" />
+    <ClInclude Include="ResourceTypes\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
@@ -182,8 +184,8 @@
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragment_shader.glsl" />
-    <None Include="vertex_shader.glsl" />
+    <None Include="Shaders\default_lit_fragment.glsl" />
+    <None Include="Shaders\default_lit_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

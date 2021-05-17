@@ -5,7 +5,6 @@
 #include <cookie/Shader.h>
 #include "Mesh.h"
 
-
 namespace cookie
 {
 	class Model

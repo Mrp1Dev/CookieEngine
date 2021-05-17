@@ -244,7 +244,8 @@ namespace cookie
 		template<class... QueryTypes>
 		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors) const
 		{
-			bool isCompleteQuery = (((componentVectors->size() > index) && ...) && ((componentVectors != nullptr) && ...));
+			
+			bool isCompleteQuery = (((componentVectors != nullptr) && ...) && ((componentVectors->size() > index) && ...));
 
 			if (isCompleteQuery)
 			{

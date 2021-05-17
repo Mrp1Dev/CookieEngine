@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "TransformData.h"
 #include "CameraData.h"
+#include "../ResourceTypes/Window.h"
 
 namespace cookie
 {
@@ -22,7 +23,8 @@ namespace cookie
 			auto cameraQuery { world->QueryEntities<CameraData>() };
 			bool doesCamExist { false };
 			float FOV { 60.0f };
-			cameraQuery->Foreach([&doesCamExist, &FOV](CameraData& camera)
+			auto* window { world->GetResource<Window>() };
+			cameraQuery->Foreach([&doesCamExist, &FOV, &window](CameraData& camera)
 				{
 					if (camera.isActive)
 					{
@@ -32,9 +34,8 @@ namespace cookie
 				});
 			if (doesCamExist)
 			{
-				//TODO: USE ACTUAL SCREEN SIZE
 				auto perspectiveMatrix =
-					glm::perspective(glm::radians(FOV), (float)1280 / (float)720, 0.1f, 100.0f);
+					glm::perspective(glm::radians(FOV), (float)window->width / (float)window->height, 0.1f, 10000.0f);
 				auto query { world->QueryEntities<ShaderData>() };
 				query->Foreach([perspectiveMatrix](ShaderData& shader)
 					{

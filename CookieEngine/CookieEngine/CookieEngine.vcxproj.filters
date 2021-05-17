@@ -5,94 +5,101 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Rendering">
-      <UniqueIdentifier>{c91eda20-3cd9-49b8-8295-83b25f957570}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ECS">
-      <UniqueIdentifier>{0c0fb6d3-addd-4bf7-8093-0e8c82d8e204}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{43fac3e6-bd65-4b82-8257-13aba7547218}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ResourceTypes">
+    <Filter Include="ECS">
+      <UniqueIdentifier>{0c0fb6d3-addd-4bf7-8093-0e8c82d8e204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{c91eda20-3cd9-49b8-8295-83b25f957570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceTypes">
       <UniqueIdentifier>{2854ebba-a81d-46ae-b1c5-68646a7131b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{9ec5618c-9eff-4555-8485-02417fb39ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Constants">
+      <UniqueIdentifier>{8998df79-da92-417c-be54-50441659429f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{036c3e72-28b0-4480-ba44-15157768652c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="temporary_types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\Mesh.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ModelRendererData.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ModelInitSystem.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\AssetManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Model.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ModelRenderingSystem.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\ShaderData.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="ECS\ComponentArray.h">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\ECS</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="ECS\Query.h">
-      <Filter>Header Files\ECS</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="ECS\Ref.h">
-      <Filter>Header Files\ECS</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="ECS\System.h">
-      <Filter>Header Files\ECS</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="ECS\World.h">
-      <Filter>Header Files\ECS</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\CameraData.h">
-      <Filter>Header Files</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\TransformData.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\BaseColorData.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\SetViewMatrixSystem.h">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="ResourceTypes\Time.h">
-      <Filter>Header Files\ResourceTypes</Filter>
+      <Filter>ResourceTypes</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceTypes\Window.h">
+      <Filter>ResourceTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\AssetManager.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\CameraData.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\DefaultShaders .h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Key.h" />
+    <ClInclude Include="Input\Keycode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -102,12 +109,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\Model.cpp">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\AssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Game\game.cpp">
@@ -116,9 +120,16 @@
     <ClCompile Include="Cookie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IO\AssetManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex_shader.glsl" />
-    <None Include="fragment_shader.glsl" />
+    <None Include="Shaders\default_lit_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\default_lit_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
