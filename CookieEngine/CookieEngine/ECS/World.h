@@ -85,10 +85,9 @@ namespace cookie
 		}
 
 		template<class T>
-		World* AddResource(T res)
+		T* AddResource(T res)
 		{
-			resources.insert_or_assign(std::type_index(typeid(T)).hash_code(), res);
-			return this;
+			return resources.insert_or_assign(std::type_index(typeid(T)).hash_code(), res);
 		}
 
 		template<class T>

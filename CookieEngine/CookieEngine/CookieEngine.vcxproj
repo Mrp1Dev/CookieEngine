@@ -157,8 +157,12 @@
     <ClInclude Include="ECS\Ref.h" />
     <ClInclude Include="ECS\System.h" />
     <ClInclude Include="ECS\World.h" />
+    <ClInclude Include="Input\InitializeInputSystem.h" />
+    <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Input\Key.h" />
-    <ClInclude Include="Input\Keycode.h" />
+    <ClInclude Include="Input\KeyCode.h" />
+    <ClInclude Include="Input\SetCurrentInputSystem.h" />
+    <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />

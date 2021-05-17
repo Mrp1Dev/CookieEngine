@@ -99,7 +99,11 @@
       <Filter>Constants</Filter>
     </ClInclude>
     <ClInclude Include="Input\Key.h" />
-    <ClInclude Include="Input\Keycode.h" />
+    <ClInclude Include="Input\KeyCode.h" />
+    <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Input\SetCurrentInputSystem.h" />
+    <ClInclude Include="Input\SetInputKeysSystem.h" />
+    <ClInclude Include="Input\InitializeInputSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
