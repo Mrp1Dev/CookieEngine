@@ -32,19 +32,26 @@ int main()
 	ck::World world(
 		ck::SetPerspectiveMatrixSystem {},
 		ck::SetViewMatrixSystem {},
-		ck::ModelRenderingSystem {}
+		ck::ModelRenderingSystem {},
+		ck::InitializeInputSystem {},
+		ck::SetInputKeysSystem {}
 	);
 
 	addResources(&world, ck::Window { BASE_WIDTH, BASE_HEIGHT, window });
 	InitGame(&world);
-	world.EnqueueEntitySpawn(ck::CameraData { 90.0f, true }, ck::TransformData {});
+	world.EnqueueEntitySpawn(ck::CameraData { 60.0f, true, 0.1f, 10000.0f }, ck::TransformData {});
 	world.StartSystems();
 
 	float lastFrame { static_cast<float>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
 		updateTime(world.GetResource<ck::Time>(), &lastFrame);
-		std::cout << "FPS: " << 1.0f / world.GetResource<ck::Time>()->deltaTime << '\n';
+		//std::cout << "FPS: " << 1.0f / world.GetResource<ck::Time>()->deltaTime << '\n';
+		auto query { world.QueryEntities<ck::CameraData, ck::TransformData>() };
+		query->Foreach([](auto& cam, ck::TransformData& transform)
+			{
+				std::cout << transform.position.x << ' ' << transform.position.y << ' ' << transform.position.z << '\n';
+			});
 		processInput(window);
 
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);

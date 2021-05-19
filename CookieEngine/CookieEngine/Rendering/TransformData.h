@@ -9,6 +9,5 @@ namespace cookie
 		glm::vec3 position {};
 		glm::vec3 scale {glm::vec3(1, 1, 1)};
 		glm::fquat rotation {glm::fquat()};
-
 	};
 }

@@ -101,9 +101,9 @@
     <ClInclude Include="Input\Key.h" />
     <ClInclude Include="Input\KeyCode.h" />
     <ClInclude Include="Input\Input.h" />
-    <ClInclude Include="Input\SetCurrentInputSystem.h" />
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\InitializeInputSystem.h" />
+    <ClInclude Include="Resources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

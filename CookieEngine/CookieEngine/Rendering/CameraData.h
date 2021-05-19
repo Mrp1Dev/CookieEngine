@@ -5,7 +5,9 @@ namespace cookie
 	struct CameraData
 	{
 	public:
-		float FOV {};
+		float fov {};
 		bool isActive {};
+		float nearClippingPlane {};
+		float farClippingPlane {};
 	};
 }

@@ -1,4 +1,5 @@
 #pragma once
+#define GLM_FORCE_LEFT_HANDED
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -6,9 +7,10 @@
 #include "ECS/World.h"
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetPerspectiveMatrixSystem.h"
-#include "ResourceTypes/Time.h"
 #include "Rendering/SetViewMatrixSystem.h"
-#include "ResourceTypes/Window.h"
+#include "Resources.h"
+#include "Input/InitializeInputSystem.h"
+#include "Input/SetInputKeysSystem.h"
 namespace ck = cookie;
 
 void addResources(ck::World* world, ck::Window window);

@@ -22,20 +22,26 @@ namespace cookie
 		{
 			auto cameraQuery { world->QueryEntities<CameraData>() };
 			bool doesCamExist { false };
-			float FOV { 60.0f };
+			CameraData* cam { nullptr };
 			auto* window { world->GetResource<Window>() };
-			cameraQuery->Foreach([&doesCamExist, &FOV, &window](CameraData& camera)
+			cameraQuery->Foreach([&doesCamExist, &window, &cam](CameraData& camera)
 				{
 					if (camera.isActive)
 					{
 						doesCamExist = true;
-						FOV = camera.FOV;
+						cam = &camera;
 					}
 				});
 			if (doesCamExist)
 			{
 				auto perspectiveMatrix =
-					glm::perspective(glm::radians(FOV), (float)window->width / (float)window->height, 0.1f, 10000.0f);
+					glm::perspective(
+						glm::radians(cam->fov),
+						(float)window->width / (float)window->height,
+						cam->nearClippingPlane,
+						cam->farClippingPlane
+					);
+
 				auto query { world->QueryEntities<ShaderData>() };
 				query->Foreach([perspectiveMatrix](ShaderData& shader)
 					{

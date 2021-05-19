@@ -4,6 +4,7 @@
 #include <Rendering/TransformData.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "../CookieEngine/CookieEngine/Resources.h"
 
 class FirstPersonCameraSystem : public ck::System
 {
@@ -13,41 +14,42 @@ public:
 		auto cameraQuery { world->QueryEntities<ck::CameraData, ck::TransformData>() };
 		auto* time { world->GetResource<ck::Time>() };
 		auto* window { world->GetResource<ck::Window>() };
-		constexpr float speed = 120.0f;
+		constexpr float speed = 150.0f;
 		constexpr float rotSpeed = 50.0f;
-		cameraQuery->Foreach([&time, &window](ck::CameraData& camera, ck::TransformData& transform)
+		auto* input { world->GetResource<ck::Input>() };
+		cameraQuery->Foreach([&time, &window, &input](ck::CameraData& camera, ck::TransformData& transform)
 			{
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_W) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::W).pressed)
 					transform.position += transform.rotation * glm::vec3(0, 0, 1) * speed * time->deltaTime;
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_S) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::S).pressed)
 					transform.position += transform.rotation * glm::vec3(0, 0, -1) * speed * time->deltaTime;
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_A) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::A).pressed)
 					transform.position += transform.rotation * glm::vec3(-1, 0, 0) * speed * time->deltaTime;
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_D) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::D).pressed)
 					transform.position += transform.rotation * glm::vec3(1, 0, 0) * speed * time->deltaTime;
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_UP) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::UpArrow).pressed)
 					transform.rotation =
 					glm::rotate(
 						transform.rotation, glm::radians(rotSpeed * time->deltaTime), glm::vec3(1, 0, 0)
 					);
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::DownArrow).pressed)
 					transform.rotation =
 					glm::rotate(
 						transform.rotation, glm::radians(-rotSpeed * time->deltaTime), glm::vec3(1, 0, 0)
 					);
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::LeftArrow).pressed)
 					transform.rotation =
 					glm::rotate(
 						transform.rotation, glm::radians(-rotSpeed * time->deltaTime), glm::vec3(0, 1, 0)
 					);
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::RightArrow).pressed == GLFW_PRESS)
 					transform.rotation =
 					glm::rotate(
 						transform.rotation, glm::radians(rotSpeed * time->deltaTime), glm::vec3(0, 1, 0)
 					);
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_J) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::J).pressed)
 					transform.position += transform.rotation * glm::vec3(0, 1, 0) * speed * time->deltaTime;
-				if (glfwGetKey(window->glfwWindow, GLFW_KEY_K) == GLFW_PRESS)
+				if (input->keys.at(ck::KeyCode::K).pressed)
 					transform.position += transform.rotation * glm::vec3(0, -1, 0) * speed * time->deltaTime;
 			});
 	}

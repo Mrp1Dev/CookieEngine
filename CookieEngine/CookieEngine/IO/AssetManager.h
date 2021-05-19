@@ -20,9 +20,9 @@ namespace cookie
 		static std::unordered_map<std::string, Model> models;
 		static std::unordered_map<std::pair<std::string, std::string>, Shader, PairHash> shaders;
 
-		static unsigned int TextureFromFile(const char* path, const std::string& directory)
+		static unsigned int TextureFromFile(const char* path, const std::string& directory, bool flip = false)
 		{
-			stbi_set_flip_vertically_on_load(true);
+			stbi_set_flip_vertically_on_load(flip);
 			std::string filename = std::string(path);
 			filename = directory + '/' + filename;
 
