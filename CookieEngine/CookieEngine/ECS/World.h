@@ -87,7 +87,10 @@ namespace cookie
 		template<class T>
 		T* AddResource(T res)
 		{
-			return std::any_cast<T>(&resources.insert_or_assign(std::type_index(typeid(T)).hash_code(), res).first->second);
+			auto insertedResource = resources.insert_or_assign(std::type_index(typeid(T)).hash_code(), res);
+			auto& first = insertedResource.first;
+
+			return std::any_cast<T>(&first->second);
 		}
 
 		template<class T>

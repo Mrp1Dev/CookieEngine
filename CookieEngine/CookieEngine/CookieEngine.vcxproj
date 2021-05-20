@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
+    <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
     <ClInclude Include="Constants\DefaultShaders .h" />
     <ClInclude Include="ECS\ComponentArray.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Input\Key.h" />
     <ClInclude Include="Input\KeyCode.h" />
     <ClInclude Include="Input\SetInputKeysSystem.h" />
+    <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />

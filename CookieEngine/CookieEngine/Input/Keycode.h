@@ -4,52 +4,58 @@
 
 namespace cookie
 {
-	constexpr int KEYS = 41;
-	enum class KeyCode
+	constexpr int KEYS = 44;
+	namespace KeyCode
 	{
-		A,
-		B,
-		C,
-		D,
-		E,
-		F,
-		G,
-		H,
-		I,
-		J,
-		K,
-		L,
-		M,
-		N,
-		O,
-		P,
-		Q,
-		R,
-		S,
-		T,
-		U,
-		V,
-		W,
-		X,
-		Y,
-		Z,
-		UpArrow,
-		DownArrow,
-		LeftArrow,
-		RightArrow,
-		Num0,
-		Num1,
-		Num2,
-		Num3,
-		Num4,
-		Num5,
-		Num6,
-		Num7,
-		Num8,
-		Num9,
-		Enter
-	};
+		enum KeyCode
+		{
+			A,
+			B,
+			C,
+			D,
+			E,
+			F,
+			G,
+			H,
+			I,
+			J,
+			K,
+			L,
+			M,
+			N,
+			O,
+			P,
+			Q,
+			R,
+			S,
+			T,
+			U,
+			V,
+			W,
+			X,
+			Y,
+			Z,
+			UpArrow,
+			DownArrow,
+			LeftArrow,
+			RightArrow,
+			Num0,
+			Num1,
+			Num2,
+			Num3,
+			Num4,
+			Num5,
+			Num6,
+			Num7,
+			Num8,
+			Num9,
+			Enter,
+			MouseButtonLeft,
+			MouseButtonRight,
+			MouseButtonMiddle,
+		};
 
+	}
 	constexpr std::array<int, KEYS> GLFW_KEY_CODES = {
 		GLFW_KEY_A,
 		GLFW_KEY_B,
@@ -91,6 +97,9 @@ namespace cookie
 		GLFW_KEY_7,
 		GLFW_KEY_8,
 		GLFW_KEY_9,
-		GLFW_KEY_ENTER
+		GLFW_KEY_ENTER,
+		GLFW_MOUSE_BUTTON_LEFT,
+		GLFW_MOUSE_BUTTON_RIGHT,
+		GLFW_MOUSE_BUTTON_MIDDLE
 	};
 }

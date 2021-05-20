@@ -104,6 +104,8 @@
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\InitializeInputSystem.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="Input\SetMouseInputSystem.h" />
+    <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

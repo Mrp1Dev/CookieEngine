@@ -5,19 +5,28 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../CookieEngine/CookieEngine/Resources.h"
+#include "FirstPersonControllerData.h"
 
 class FirstPersonCameraSystem : public ck::System
 {
+	ck::Input* input {};
 public:
+	virtual void Start(ck::World* world)
+	{
+		input = world->GetResource<ck::Input>();
+		input->lockCursor = true;
+	}
 	virtual void Update(ck::World* world) override
 	{
-		auto cameraQuery { world->QueryEntities<ck::CameraData, ck::TransformData>() };
+		auto cameraQuery { world->QueryEntities<ck::CameraData, ck::TransformData, FirstPersonControllerData>() };
 		auto* time { world->GetResource<ck::Time>() };
 		auto* window { world->GetResource<ck::Window>() };
 		constexpr float speed = 150.0f;
 		constexpr float rotSpeed = 50.0f;
-		auto* input { world->GetResource<ck::Input>() };
-		cameraQuery->Foreach([&time, &window, &input](ck::CameraData& camera, ck::TransformData& transform)
+		constexpr float mouseSenstivity = 0.05f;
+		cameraQuery->Foreach([&time, &window, this](
+			ck::CameraData& camera, ck::TransformData& transform, FirstPersonControllerData& controller
+			)
 			{
 				if (input->keys.at(ck::KeyCode::W).pressed)
 					transform.position += transform.rotation * glm::vec3(0, 0, 1) * speed * time->deltaTime;
@@ -51,6 +60,11 @@ public:
 					transform.position += transform.rotation * glm::vec3(0, 1, 0) * speed * time->deltaTime;
 				if (input->keys.at(ck::KeyCode::K).pressed)
 					transform.position += transform.rotation * glm::vec3(0, -1, 0) * speed * time->deltaTime;
+
+				controller.xRot += input->mouseDelta.y * time->deltaTime * mouseSenstivity;
+				controller.yRot += input->mouseDelta.x * time->deltaTime * mouseSenstivity;
+				controller.xRot = std::clamp(controller.xRot, glm::radians(-89.0f), glm::radians(89.0f));
+				transform.rotation = glm::fquat(glm::vec3(controller.xRot, controller.yRot, 0));
 			});
 	}
 };
