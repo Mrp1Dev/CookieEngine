@@ -9,6 +9,7 @@ namespace cookie
 	public:
 		virtual void clear(unsigned int index) = 0;
 	};
+
 	template<class T>
 	class ComponentArray : public BaseComponentArray
 	{
@@ -19,14 +20,9 @@ namespace cookie
 		{
 		}
 
-		void clear(unsigned int index) override
-		{
-			Components.at(index).reset();
-		}
+		void clear(unsigned int index) override;
 
-		std::vector<std::optional<T>>& operator*()
-		{
-			return Components;
-		}
+		std::vector<std::optional<T>>& operator*();
 	};
+	
 }

@@ -170,7 +170,6 @@
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Rendering\ModelRendererData.h" />
-    <ClInclude Include="Rendering\ModelInitSystem.h" />
     <ClInclude Include="Rendering\ModelRenderingSystem.h" />
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h" />
     <ClInclude Include="Rendering\SetViewMatrixSystem.h" />
@@ -182,11 +181,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
+    <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\game.cpp" />
     <ClCompile Include="Cookie.cpp" />
+    <ClCompile Include="ECS\ComponentArray.cpp" />
+    <ClCompile Include="ECS\Query.cpp" />
+    <ClCompile Include="ECS\World.cpp" />
+    <ClCompile Include="Input\InitializeInputSystem.cpp" />
+    <ClCompile Include="Input\SetInputKeysSystem.cpp" />
+    <ClCompile Include="Input\SetMouseInputSystem.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
+    <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Model.cpp" />
+    <ClCompile Include="Rendering\ModelRenderingSystem.cpp" />
+    <ClCompile Include="Rendering\SetPerspectiveMatrixSystem.cpp" />
+    <ClCompile Include="Rendering\SetViewMatrixSystem.cpp" />
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

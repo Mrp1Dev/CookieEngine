@@ -22,21 +22,11 @@ namespace cookie
 		};
 
 		template<class F>
-		void Foreach(F&& function)
-		{
-			for (auto& tuple : query)
-			{
-				function(*std::get<cookie::Ref<QueryTypes>>(tuple)...);
-			}
-		}
+		void Foreach(F&& function);
 
 		template<class F>
-		void EntityForeach(F function)
-		{
-			for (unsigned int i = 0; i < query.size(); i++)
-			{
-				function(entities.at(i), *std::get<cookie::Ref<QueryTypes>>(query.at(i))...);
-			}
-		}
+		void EntityForeach(F function);
 	};
+	
+	
 }

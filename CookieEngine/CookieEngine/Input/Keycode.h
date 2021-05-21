@@ -1,10 +1,12 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <array>
 
 namespace cookie
 {
 	constexpr int KEYS = 44;
+
 	namespace KeyCode
 	{
 		enum KeyCode
@@ -54,8 +56,8 @@ namespace cookie
 			MouseButtonRight,
 			MouseButtonMiddle,
 		};
-
 	}
+
 	constexpr std::array<int, KEYS> GLFW_KEY_CODES = {
 		GLFW_KEY_A,
 		GLFW_KEY_B,
@@ -102,4 +104,5 @@ namespace cookie
 		GLFW_MOUSE_BUTTON_RIGHT,
 		GLFW_MOUSE_BUTTON_MIDDLE
 	};
+
 }
