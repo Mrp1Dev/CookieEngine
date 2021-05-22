@@ -20,9 +20,15 @@ namespace cookie
 		{
 		}
 
-		void clear(unsigned int index) override;
+		void clear(unsigned int index) override
+		{
+			Components.at(index).reset();
+		}
 
-		std::vector<std::optional<T>>& operator*();
+		std::vector<std::optional<T>>& operator*()
+		{
+			return Components;
+		}
 	};
 	
 }

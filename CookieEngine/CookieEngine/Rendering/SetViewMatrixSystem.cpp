@@ -2,7 +2,7 @@
 
 namespace cookie
 {
-	inline void SetViewMatrixSystem::Update(World* world)
+	void SetViewMatrixSystem::Update(World* world)
 	{
 		auto cameraQuery { world->QueryEntities<CameraData, TransformData>() };
 		auto shaderQuery { world->QueryEntities<ShaderData>() };

@@ -2,7 +2,7 @@
 
 namespace cookie
 {
-	inline void Mesh::setupMesh()
+	void Mesh::setupMesh()
 	{
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);

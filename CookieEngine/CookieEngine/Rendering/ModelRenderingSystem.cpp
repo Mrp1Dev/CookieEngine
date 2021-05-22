@@ -2,7 +2,10 @@
 
 namespace cookie
 {
-	inline void ModelRenderingSystem::Update(World* world)
+	const std::string MODEL_UNIFORM = "model";
+	const std::string BASE_COLOR_UNIFORM = "material.baseColor";
+	const std::string HAS_TEXTURE_UNIFORM = "material.hasTexture";
+	void ModelRenderingSystem::Update(World* world)
 	{
 		auto query { world->QueryEntities<ModelRendererData, ShaderData, TransformData>() };
 		query->EntityForeach([this, &world](Entity entity, auto& model, ShaderData& shader, auto& transform)
@@ -17,25 +20,25 @@ namespace cookie
 						matrix = glm::translate(matrix, transform.position);
 						shader.shader->Use();
 						//TODO: USE CONST STRINGS
-						shader.shader->SetMat4("model", matrix);
+						shader.shader->SetMat4(MODEL_UNIFORM, matrix);
 						auto baseColor = world->TryGetComponent<BaseColorData>(entity);
 						if (baseColor.has_value())
 						{
-							shader.shader->SetVec4("material.baseColor", baseColor.value()->color);
+							shader.shader->SetVec4(BASE_COLOR_UNIFORM, baseColor.value()->color);
 						}
 
 						DrawMesh(shader.shader, mesh);
-						shader.shader->SetVec4("material.baseColor", glm::vec4(1, 1, 1, 1));
+						shader.shader->SetVec4(BASE_COLOR_UNIFORM, glm::vec4(1, 1, 1, 1));
 					}
 				}
 			});
 
 	}
-	inline void ModelRenderingSystem::DrawMesh(Shader* shader, Mesh& mesh)
+	void ModelRenderingSystem::DrawMesh(Shader* shader, Mesh& mesh)
 	{
 		int diffuseNumber { -1 };
 		int specularNumber { -1 };
-		shader->SetBool("material.hasTexture", mesh.Textures.size() != 0);
+		shader->SetBool(HAS_TEXTURE_UNIFORM, mesh.Textures.size() != 0);
 		for (unsigned int i = 0; i < mesh.Textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);

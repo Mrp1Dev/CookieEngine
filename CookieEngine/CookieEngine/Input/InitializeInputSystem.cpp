@@ -2,7 +2,7 @@
 
 namespace cookie
 {
-	inline void InitializeInputSystem::Start(World* world)
+	void InitializeInputSystem::Start(World* world)
 	{
 		auto* input = world->AddResource<Input>({});
 		input->keys.reserve(KEYS);

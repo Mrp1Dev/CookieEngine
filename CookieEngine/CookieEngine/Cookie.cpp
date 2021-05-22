@@ -47,7 +47,6 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		updateTime(world.GetResource<ck::Time>(), &lastFrame);
-		//std::cout << "FPS: " << 1.0f / world.GetResource<ck::Time>()->deltaTime << '\n';
 		
 		processInput(window);
 

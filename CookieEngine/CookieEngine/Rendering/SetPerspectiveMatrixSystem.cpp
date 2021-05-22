@@ -2,7 +2,7 @@
 
 namespace cookie
 {
-	inline void SetPerspectiveMatrixSystem::Update(World* world)
+	void SetPerspectiveMatrixSystem::Update(World* world)
 	{
 		auto cameraQuery { world->QueryEntities<CameraData>() };
 		bool doesCamExist { false };

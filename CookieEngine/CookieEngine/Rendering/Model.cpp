@@ -3,7 +3,7 @@
 
 namespace cookie
 {
-	inline void Model::loadModel(std::string path)
+	void Model::loadModel(std::string path)
 	{
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -16,7 +16,7 @@ namespace cookie
 		directory = path.substr(0, path.find_last_of('/'));
 		processNode(scene->mRootNode, scene);
 	}
-	inline void Model::processNode(aiNode* node, const aiScene* scene)
+	void Model::processNode(aiNode* node, const aiScene* scene)
 	{
 		for (int i = 0; i < node->mNumMeshes; i++)
 		{
@@ -29,7 +29,7 @@ namespace cookie
 			processNode(node->mChildren[i], scene);
 		}
 	}
-	inline Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
+	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;

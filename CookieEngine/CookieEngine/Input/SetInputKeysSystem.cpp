@@ -2,7 +2,7 @@
 
 namespace cookie
 {
-	inline void SetInputKeysSystem::Update(World* world)
+	void SetInputKeysSystem::Update(World* world)
 	{
 		auto* input { world->GetResource<Input>() };
 		auto* window { world->GetResource<Window>() };
