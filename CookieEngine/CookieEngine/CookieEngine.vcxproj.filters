@@ -103,6 +103,8 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
+    <ClInclude Include="Constants\ShaderUniforms.h" />
+    <ClInclude Include="Rendering\TextureType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

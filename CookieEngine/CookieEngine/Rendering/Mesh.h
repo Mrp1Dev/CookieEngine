@@ -4,32 +4,33 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include "TextureType.h"
 namespace cookie
 {
 	struct Vertex
 	{
-		glm::vec3 Position;
-		glm::vec3 Normal;
-		glm::vec2 TexCoords;
+		glm::vec3 position;
+		glm::vec3 normal;
+		glm::vec2 texCoords;
 	};
 
 	struct Texture
 	{
-		unsigned int Id;
-		std::string Type;
-		std::string Path;
+		unsigned int id;
+		TextureType type;
+		std::string path;
 	};
 
 	struct Mesh
 	{
-		std::vector<Vertex> Vertices;
-		std::vector<unsigned int> Indices;
-		std::vector<Texture> Textures;
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
 		Mesh(
 			std::vector<Vertex> vertices,
 			std::vector<unsigned int> indices,
 			std::vector<Texture> textures
-		) : Vertices { vertices }, Indices { indices }, Textures { textures }
+		) : vertices { vertices }, indices { indices }, textures { textures }
 		{
 			setupMesh();
 		};

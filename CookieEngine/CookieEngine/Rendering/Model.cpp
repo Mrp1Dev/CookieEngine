@@ -6,7 +6,7 @@ namespace cookie
 	void Model::loadModel(std::string path)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -43,21 +43,21 @@ namespace cookie
 			vector.x = mesh->mVertices[i].x;
 			vector.y = mesh->mVertices[i].y;
 			vector.z = mesh->mVertices[i].z;
-			vertex.Position = vector;
+			vertex.position = vector;
 
 			vector.x = mesh->mNormals[i].x;
 			vector.y = mesh->mNormals[i].y;
 			vector.z = mesh->mNormals[i].z;
-			vertex.Normal = vector;
+			vertex.normal = vector;
 
 			if (mesh->mTextureCoords[0])
 			{
-				vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
-				vertex.TexCoords.y = mesh->mTextureCoords[0][i].y;
+				vertex.texCoords.x = mesh->mTextureCoords[0][i].x;
+				vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
 			}
 			else
 			{
-				vertex.TexCoords = glm::vec2(0.0f);
+				vertex.texCoords = glm::vec2(0.0f);
 			}
 			vertices.push_back(vertex);
 		}
@@ -75,17 +75,17 @@ namespace cookie
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 			std::vector<Texture> diffuseMaps =
-				loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+				loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::Diffuse);
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
 			std::vector<Texture> specularMaps =
-				loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+				loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::Specular);
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
 		return Mesh { vertices, indices, textures };
 	}
-	std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
-		std::string typeName)
+	std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat,
+		aiTextureType type, TextureType typeName)
 	{
 		std::vector<Texture> result;
 		for (int i = 0; i < mat->GetTextureCount(type); i++)
@@ -95,7 +95,7 @@ namespace cookie
 			bool skip { false };
 			for (int i = 0; i < loadedTextures.size(); i++)
 			{
-				if (std::strcmp(loadedTextures[i].Path.data(), str.C_Str()) == 0)
+				if (std::strcmp(loadedTextures[i].path.data(), str.C_Str()) == 0)
 				{
 					skip = true;
 					result.push_back(loadedTextures[i]);
@@ -105,9 +105,9 @@ namespace cookie
 			if (!skip)
 			{
 				Texture texture {};
-				texture.Id = AssetManager::TextureFromFile(str.C_Str(), directory);
-				texture.Type = typeName;
-				texture.Path = str.C_Str();
+				texture.id = AssetManager::TextureFromFile(str.C_Str(), directory);
+				texture.type = typeName;
+				texture.path = str.C_Str();
 				result.push_back(texture);
 				loadedTextures.push_back(texture);
 			}

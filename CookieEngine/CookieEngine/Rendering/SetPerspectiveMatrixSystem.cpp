@@ -1,5 +1,5 @@
 #include "SetPerspectiveMatrixSystem.h"
-
+#include "../Constants/ShaderUniforms.h"
 namespace cookie
 {
 	void SetPerspectiveMatrixSystem::Update(World* world)
@@ -30,8 +30,7 @@ namespace cookie
 			query->Foreach([perspectiveMatrix](ShaderData& shader)
 				{
 					shader.shader->Use();
-					//TODO: USE A CONST STRING FOR SHADER UNIFORM
-					shader.shader->SetMat4("projection", perspectiveMatrix);
+					shader.shader->SetMat4(ShaderUniforms::PROJECTION_MATRIX, perspectiveMatrix);
 				});
 		}
 	}

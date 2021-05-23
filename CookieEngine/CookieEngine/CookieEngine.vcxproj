@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
     <ClInclude Include="Constants\DefaultShaders .h" />
+    <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
     <ClInclude Include="ECS\Ref.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h" />
     <ClInclude Include="Rendering\SetViewMatrixSystem.h" />
     <ClInclude Include="Rendering\ShaderData.h" />
+    <ClInclude Include="Rendering\TextureType.h" />
     <ClInclude Include="Rendering\TransformData.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ResourceTypes\Time.h" />

@@ -9,7 +9,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	GLFWwindow* window = glfwCreateWindow(BASE_WIDTH, BASE_HEIGHT, "Cookie", nullptr, nullptr);
 	if (window == nullptr)
@@ -19,7 +18,6 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSwapInterval(0);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -27,7 +25,10 @@ int main()
 		return -1;
 	}
 	glViewport(0, 0, BASE_WIDTH, BASE_HEIGHT);
+	glFrontFace(GL_CW);//reverses winding
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	ck::World world(
 		ck::SetPerspectiveMatrixSystem {},
@@ -40,14 +41,14 @@ int main()
 
 	addResources(&world, ck::Window { BASE_WIDTH, BASE_HEIGHT, window });
 	InitGame(&world);
-	
+
 	world.StartSystems();
 
 	float lastFrame { static_cast<float>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
 		updateTime(world.GetResource<ck::Time>(), &lastFrame);
-		
+		std::cout << "FPS: " << (int)(1.0f / world.GetResource<ck::Time>()->deltaTime) << '\n';
 		processInput(window);
 
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);

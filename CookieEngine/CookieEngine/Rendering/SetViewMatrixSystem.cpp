@@ -1,5 +1,5 @@
 #include "SetViewMatrixSystem.h"
-
+#include "../Constants/ShaderUniforms.h"
 namespace cookie
 {
 	void SetViewMatrixSystem::Update(World* world)
@@ -12,9 +12,8 @@ namespace cookie
 				{
 					shaderQuery->Foreach([&transform](ShaderData& shader)
 						{
-							//TODO: CONST STRINGS
 							shader.shader->SetMat4(
-								"view",
+								ShaderUniforms::VIEW_MATRIX,
 								glm::lookAt(
 									transform.position,
 									transform.position + transform.rotation * glm::vec3(0, 0, 1),

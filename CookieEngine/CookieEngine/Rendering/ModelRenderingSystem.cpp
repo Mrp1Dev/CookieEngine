@@ -1,10 +1,7 @@
 #include "ModelRenderingSystem.h"
-
+#include "../Constants/ShaderUniforms.h"
 namespace cookie
 {
-	const std::string MODEL_UNIFORM = "model";
-	const std::string BASE_COLOR_UNIFORM = "material.baseColor";
-	const std::string HAS_TEXTURE_UNIFORM = "material.hasTexture";
 	void ModelRenderingSystem::Update(World* world)
 	{
 		auto query { world->QueryEntities<ModelRendererData, ShaderData, TransformData>() };
@@ -19,16 +16,15 @@ namespace cookie
 						matrix = glm::scale(matrix, transform.scale);
 						matrix = glm::translate(matrix, transform.position);
 						shader.shader->Use();
-						//TODO: USE CONST STRINGS
-						shader.shader->SetMat4(MODEL_UNIFORM, matrix);
+						shader.shader->SetMat4(ShaderUniforms::MODEL_MATRIX, matrix);
 						auto baseColor = world->TryGetComponent<BaseColorData>(entity);
 						if (baseColor.has_value())
 						{
-							shader.shader->SetVec4(BASE_COLOR_UNIFORM, baseColor.value()->color);
+							shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, baseColor.value()->color);
 						}
 
 						DrawMesh(shader.shader, mesh);
-						shader.shader->SetVec4(BASE_COLOR_UNIFORM, glm::vec4(1, 1, 1, 1));
+						shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, glm::vec4(1, 1, 1, 1));
 					}
 				}
 			});
@@ -38,26 +34,35 @@ namespace cookie
 	{
 		int diffuseNumber { -1 };
 		int specularNumber { -1 };
-		shader->SetBool(HAS_TEXTURE_UNIFORM, mesh.Textures.size() != 0);
-		for (unsigned int i = 0; i < mesh.Textures.size(); i++)
+		for (unsigned int i = 0; i < mesh.textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
 
 			std::string number;
-			std::string name = mesh.Textures[i].Type;
-			//TODO: CONST HERE
-			if (name == "texture_diffuse")
-				number = std::to_string(diffuseNumber++);
-			else if (name == "texture_specular")
-				number = std::to_string(specularNumber++);
+			TextureType name = mesh.textures[i].type;
+			if (name == TextureType::Diffuse)
+			{
+				shader->SetInt(
+					ShaderUniforms::DIFFUSE_TEXTURE_ARRAY + "[" + std::to_string(diffuseNumber++) + "]",
+					i
+				);
+			}
+			else if (name == TextureType::Specular)
+			{
+				shader->SetInt(
+					ShaderUniforms::SPECULAR_TEXTURE_ARRAY + "[" + std::to_string(specularNumber++) + "]",
+					i
+				);
+			}
 
-			shader->SetInt("material." + name + number, i);
-			glBindTexture(GL_TEXTURE_2D, mesh.Textures[i].Id);
+			glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
 		}
+		shader->SetBool(ShaderUniforms::DIFFUSE_TEXTURE_COUNT, diffuseNumber);
+		shader->SetBool(ShaderUniforms::SPECULAR_TEXTURE_COUNT, specularNumber);
 		glActiveTexture(GL_TEXTURE0);
 
 		glBindVertexArray(mesh.VAO);
-		glDrawElements(GL_TRIANGLES, mesh.Indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 }
