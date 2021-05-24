@@ -23,11 +23,19 @@ void SpawnBagsSystem::Start(ck::World* world)
 	},
 	ck::BaseColorData { glm::vec4(0.8f, 0.7f, 0.6f, 1.0f) }
 	);*/
+	auto model = ck::AssetManager::GetModel("Sponza-Master/sponza.obj", true);
 	world->EnqueueEntitySpawn(
-		ck::AssetManager::GetModel("Sponza-Master/sponza.obj", true),
+		model,
 		ck::AssetManager::GetShader(ck::DefaultShaders::LIT_VERT, ck::DefaultShaders::LIT_FRAG),
 		ck::TransformData {
-			glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 0, 0))
+			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::fquat(glm::vec3(0, 0, 0))
+		}
+	);
+	world->EnqueueEntitySpawn(
+		model,
+		ck::AssetManager::GetShader(ck::DefaultShaders::LIT_VERT, ck::DefaultShaders::LIT_FRAG),
+		ck::TransformData {
+			model.model->boundingBoxMax, glm::vec3(1.0f), glm::fquat(glm::vec3(0, 0, 0))
 		}
 	);
 }

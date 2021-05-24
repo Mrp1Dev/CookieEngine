@@ -18,6 +18,8 @@ namespace cookie
 		std::vector<Mesh> meshes;
 		std::vector<Texture> loadedTextures;
 		std::string directory;
+		glm::vec3 boundingBoxMin {};
+		glm::vec3 boundingBoxMax {};
 	private:
 		void loadModel(std::string path);
 
@@ -27,5 +29,6 @@ namespace cookie
 
 		std::vector<Texture> loadMaterialTextures(aiMaterial* mat,
  aiTextureType type, TextureType typeName);
+		void setupBoundingBoxValues();
 	};
 }

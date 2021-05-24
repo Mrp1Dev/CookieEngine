@@ -12,7 +12,7 @@ void FirstPersonCameraSystem::Update(ck::World* world)
 	auto cameraQuery { world->QueryEntities<ck::CameraData, ck::TransformData, FirstPersonControllerData>() };
 	auto* time { world->GetResource<ck::Time>() };
 	auto* window { world->GetResource<ck::Window>() };
-	constexpr float speed = 180.0f;
+	constexpr float speed = 500.0f;
 	constexpr float rotSpeed = 50.0f;
 	constexpr float mouseSenstivity = 0.002f;
 	cameraQuery->Foreach([&time, &window, this](
@@ -28,7 +28,7 @@ void FirstPersonCameraSystem::Update(ck::World* world)
 			if (glm::length(moveVector) > 0.1f)
 			{
 				moveVector = transform.rotation * moveVector;
-				moveVector.y = 0;
+				//moveVector.y = 0;
 				moveVector = glm::normalize(moveVector);
 				transform.position += moveVector * speed * time->deltaTime;
 			}

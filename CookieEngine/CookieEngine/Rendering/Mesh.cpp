@@ -2,6 +2,13 @@
 
 namespace cookie
 {
+	Mesh::Mesh(std::vector<Vertex> vertices,
+		std::vector<unsigned int> indices,
+		std::vector<Texture> textures) : vertices { vertices }, indices { indices }, textures { textures }
+	{
+		setupMesh();
+		setupBoundingBoxValues();
+	}
 	void Mesh::setupMesh()
 	{
 		glGenVertexArrays(1, &VAO);
@@ -29,5 +36,23 @@ namespace cookie
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 		glBindVertexArray(0);
+	}
+
+	void Mesh::setupBoundingBoxValues()
+	{
+		glm::vec3 min {};
+		glm::vec3 max {};
+		for (auto& vert : vertices)
+		{
+			auto pos = vert.position;
+			if (pos.x < min.x) min.x = pos.x;
+			if (pos.y < min.y) min.y = pos.y;
+			if (pos.z < min.z) min.z = pos.z;
+			if (pos.x > max.x) max.x = pos.x;
+			if (pos.y > max.y) max.y = pos.y;
+			if (pos.z > max.z) max.z = pos.z;
+		}
+		boundingBoxMax = max;
+		boundingBoxMin = min;
 	}
 }

@@ -8,7 +8,8 @@ namespace cookie
     {
         world->EnqueueEntitySpawn(DirectionalLightData {
             glm::fquat(glm::vec3(45, 0, 0)) * glm::vec3(0, -1, 0),
-            glm::vec3(1.0f)
+            glm::vec3(1.0f),
+            glm::vec3(0.25f)
             });
     }
 

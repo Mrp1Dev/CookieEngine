@@ -15,6 +15,7 @@ namespace cookie
 		}
 		directory = path.substr(0, path.find_last_of('/'));
 		processNode(scene->mRootNode, scene);
+		setupBoundingBoxValues();
 	}
 	void Model::processNode(aiNode* node, const aiScene* scene)
 	{
@@ -113,5 +114,24 @@ namespace cookie
 			}
 		}
 		return move(result);
+	}
+
+	void Model::setupBoundingBoxValues()
+	{
+		glm::vec3 min {};
+		glm::vec3 max {};
+		for (auto& mesh : meshes)
+		{
+			auto pos = mesh.boundingBoxMin;
+			if (pos.x < min.x) min.x = pos.x;
+			if (pos.y < min.y) min.y = pos.y;
+			if (pos.z < min.z) min.z = pos.z;
+			pos = mesh.boundingBoxMax;
+			if (pos.x > max.x) max.x = pos.x;
+			if (pos.y > max.y) max.y = pos.y;
+			if (pos.z > max.z) max.z = pos.z;
+		}
+		boundingBoxMin = min;
+		boundingBoxMax = max;
 	}
 }
