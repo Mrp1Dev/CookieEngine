@@ -164,6 +164,64 @@ namespace cookie
 			glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 		}
 
+		void SetBool(const std::string_view& name, bool value) const
+		{
+			glUniform1i(glGetUniformLocation(ID, name.data()), (int)value);
+		}
+		// ------------------------------------------------------------------------
+		void SetInt(const std::string_view& name, int value) const
+		{
+			glUniform1i(glGetUniformLocation(ID, name.data()), value);
+		}
+		// ------------------------------------------------------------------------
+		void SetFloat(const std::string_view& name, float value) const
+		{
+			glUniform1f(glGetUniformLocation(ID, name.data()), value);
+		}
+		// ------------------------------------------------------------------------
+		void SetVec2(const std::string_view& name, const glm::vec2& value) const
+		{
+			glUniform2fv(glGetUniformLocation(ID, name.data()), 1, &value[0]);
+		}
+		void SetVec2(const std::string_view& name, float x, float y) const
+		{
+			glUniform2f(glGetUniformLocation(ID, name.data()), x, y);
+		}
+		// ------------------------------------------------------------------------
+		void SetVec3(const std::string_view& name, const glm::vec3& value) const
+		{
+			glUniform3fv(glGetUniformLocation(ID, name.data()), 1, &value[0]);
+		}
+		void SetVec3(const std::string_view& name, float x, float y, float z) const
+		{
+			glUniform3f(glGetUniformLocation(ID, name.data()), x, y, z);
+		}
+		// ------------------------------------------------------------------------
+		void SetVec4(const std::string_view& name, const glm::vec4& value) const
+		{
+			glUniform4fv(glGetUniformLocation(ID, name.data()), 1, &value[0]);
+		}
+		void SetVec4(const std::string_view& name, float x, float y, float z, float w)
+		{
+			glUniform4f(glGetUniformLocation(ID, name.data()), x, y, z, w);
+		}
+		// ------------------------------------------------------------------------
+		void SetMat2(const std::string_view& name, const glm::mat2& mat) const
+		{
+			glUniformMatrix2fv(glGetUniformLocation(ID, name.data()), 1, GL_FALSE, &mat[0][0]);
+		}
+		// ------------------------------------------------------------------------
+		void SetMat3(const std::string_view& name, const glm::mat3& mat) const
+		{
+			glUniformMatrix3fv(glGetUniformLocation(ID, name.data()), 1, GL_FALSE, &mat[0][0]);
+		}
+		// ------------------------------------------------------------------------
+		void SetMat4(const std::string_view& name, const glm::mat4& mat) const
+		{
+			glUniformMatrix4fv(glGetUniformLocation(ID, name.data()), 1, GL_FALSE, &mat[0][0]);
+		}
+
+
 	private:
 		// utility function for checking shader compilation/linking errors.
 		// ------------------------------------------------------------------------

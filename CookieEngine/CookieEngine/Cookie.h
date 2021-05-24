@@ -12,6 +12,7 @@
 #include "Input/InitializeInputSystem.h"
 #include "Input/SetInputKeysSystem.h"
 #include "Input/SetMouseInputSystem.h"
+#include "Rendering/Lighting/DirectionalLightSystem.h"
 namespace ck = cookie;
 
 void addResources(ck::World* world, ck::Window window);

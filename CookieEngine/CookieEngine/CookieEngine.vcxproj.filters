@@ -92,7 +92,7 @@
     <ClInclude Include="Rendering\CameraData.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Constants\DefaultShaders .h">
+    <ClInclude Include="Constants\DefaultShaders.h">
       <Filter>Constants</Filter>
     </ClInclude>
     <ClInclude Include="Input\Key.h" />
@@ -105,6 +105,10 @@
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="Rendering\TextureType.h" />
+    <ClInclude Include="Rendering\Lighting\DirectionalLightData.h" />
+    <ClInclude Include="Rendering\Lighting\DirectionalLightSystem.h" />
+    <ClInclude Include="RenderingComponents.h" />
+    <ClInclude Include="Constants.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -156,6 +160,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Game\SpawnBagsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

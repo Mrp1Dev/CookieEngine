@@ -152,7 +152,7 @@
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
-    <ClInclude Include="Constants\DefaultShaders .h" />
+    <ClInclude Include="Constants\DefaultShaders.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
     <ClInclude Include="ECS\Query.h" />
@@ -168,10 +168,14 @@
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Rendering\Lighting\DirectionalLightSystem.h" />
+    <ClInclude Include="Rendering\Lighting\DirectionalLightData.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Rendering\ModelRendererData.h" />
     <ClInclude Include="Rendering\ModelRenderingSystem.h" />
+    <ClInclude Include="RenderingComponents.h" />
     <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h" />
     <ClInclude Include="Rendering\SetViewMatrixSystem.h" />
     <ClInclude Include="Rendering\ShaderData.h" />
@@ -193,6 +197,7 @@
     <ClCompile Include="Input\SetMouseInputSystem.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
+    <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Model.cpp" />
     <ClCompile Include="Rendering\ModelRenderingSystem.cpp" />

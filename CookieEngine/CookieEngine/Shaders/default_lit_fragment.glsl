@@ -37,7 +37,6 @@ vec3 calulateDirectionalLight(DirectionalLightType light, vec3 normal, vec3 base
     return diffuse + ambient;
 }
 
-
 void main()
 {    
     vec3 baseDiffuseColor = texture(Material.diffuseTextures[0], TexCoords).xyz;
