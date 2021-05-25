@@ -171,6 +171,8 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Rendering\Lighting\DirectionalLightSystem.h" />
     <ClInclude Include="Rendering\Lighting\DirectionalLightData.h" />
+    <ClInclude Include="Rendering\Lighting\PointLightData.h" />
+    <ClInclude Include="Rendering\Lighting\PointLightSystem.h" />
     <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\Model.h" />
     <ClInclude Include="Rendering\ModelRendererData.h" />
@@ -198,6 +200,7 @@
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp" />
+    <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\Model.cpp" />
     <ClCompile Include="Rendering\ModelRenderingSystem.cpp" />

@@ -109,6 +109,8 @@
     <ClInclude Include="Rendering\Lighting\DirectionalLightSystem.h" />
     <ClInclude Include="RenderingComponents.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Rendering\Lighting\PointLightData.h" />
+    <ClInclude Include="Rendering\Lighting\PointLightSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -163,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

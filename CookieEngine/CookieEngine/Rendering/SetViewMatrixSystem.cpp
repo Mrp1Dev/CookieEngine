@@ -6,11 +6,11 @@ namespace cookie
 	{
 		auto cameraQuery { world->QueryEntities<CameraData, TransformData>() };
 		auto shaderQuery { world->QueryEntities<ShaderData>() };
-		cameraQuery->Foreach([&shaderQuery](CameraData& camera, TransformData& transform)
+		cameraQuery->Foreach([&](CameraData& camera, TransformData& transform)
 			{
 				if (camera.isActive)
 				{
-					shaderQuery->Foreach([&transform](ShaderData& shader)
+					shaderQuery->Foreach([&](ShaderData& shader)
 						{
 							shader.shader->SetMat4(
 								ShaderUniforms::VIEW_MATRIX,
@@ -23,5 +23,6 @@ namespace cookie
 						});
 				}
 			});
+
 	}
 }

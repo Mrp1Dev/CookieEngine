@@ -20,5 +20,24 @@ namespace cookie
 			const std::string_view DIFFUSE_COLOR = "DirectionalLight.diffuseColor";
 			const std::string_view SPECULAR_COLOR = "DirectionalLight.specularColor";
 		}
+		namespace PointLight
+		{
+			constexpr std::string_view Position(int i)
+			{
+				return "PointLights[" + std::to_string(i) + "].position";
+			}
+
+			constexpr std::string_view DiffuseColor(int i)
+			{
+				return "PointLights[" + std::to_string(i) + "].diffuseColor";
+			}
+
+			constexpr std::string_view SpecularColor(int i)
+			{
+				return "PointLights[" + std::to_string(i) + "].specularColor";
+			}
+
+			const std::string_view LIGHT_COUNT = "PointLightCount";
+		}
 	}
 }
