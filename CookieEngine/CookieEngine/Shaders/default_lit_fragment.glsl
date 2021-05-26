@@ -25,6 +25,9 @@ struct PointLightType
     vec3 position;
     vec3 diffuseColor;
     vec3 specularColor;
+    float range;
+    float diffuseStrength;
+    float specularStrength;
 };
 
 out vec4 FragColor;
@@ -44,14 +47,21 @@ vec3 calulateDirectionalLight(DirectionalLightType light, vec3 normal, vec3 base
     float diffuseStrength = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diffuseStrength * baseDiffuseColor * light.diffuseColor;
     vec3 ambient = light.ambientColor * baseDiffuseColor;
+    
     return diffuse + ambient;
 }
 
 vec3 calculatePointLighting(PointLightType light, vec3 normal, vec3 baseDiffuseColor)
 {
     vec3 dir = light.position - FragPos;
+    float dist = length(dir);
     float diffuseStrength = max(dot(dir, normal), 0.0);
-    return diffuseStrength * light.diffuseColor * baseDiffuseColor;
+    float range = light.range <= 0.0 ? 0.01 : light.range;
+    float kc = 1.0;
+    float kl = 1.0 / range;
+    float kq = 1.0 / range * range;
+    float attenuation = 1.0 / (kc + kc * dist + kq * dist * dist);
+    return diffuseStrength * attenuation * light.diffuseColor * baseDiffuseColor * light.diffuseStrength;
 }
 
 void main()

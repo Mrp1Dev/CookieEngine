@@ -37,7 +37,8 @@ int main()
 		ck::InitializeInputSystem {},
 		ck::SetInputKeysSystem {},
 		ck::SetMouseInputSystem {},
-		ck::DirectionalLightSystem {}
+		ck::DirectionalLightSystem {},
+		ck::PointLightSystem {}
 	);
 
 	addResources(&world, ck::Window { BASE_WIDTH, BASE_HEIGHT, window });

@@ -11,10 +11,11 @@ uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ProjectionMatrix;
 uniform mat4 ProjectionViewMatrix;
+uniform mat4 InvModelMatrix;
 void main()
 {
     TexCoords = aTexCoords;
-    Normal = aNormal;
+    Normal = (transpose(InvModelMatrix) * vec4(aNormal, 0.0f)).xyz;
     FragPos =  (ModelMatrix * vec4(aPos, 1.0)).xyz;
     gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.0);
 }

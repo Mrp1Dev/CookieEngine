@@ -6,6 +6,8 @@ namespace cookie
     {
         glm::vec3 color {};
         glm::vec3 specularColor {};
+        float diffuseStrength {};
+        float specularStrength {};
         float range {};
     };
 }

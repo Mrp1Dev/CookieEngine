@@ -17,6 +17,7 @@ namespace cookie
                         matrix = glm::translate(matrix, transform.position);
                         shader.shader->Use();
                         shader.shader->SetMat4(ShaderUniforms::MODEL_MATRIX, matrix);
+                        shader.shader->SetMat4(ShaderUniforms::INV_MODEL_MATRIX, glm::inverse(matrix));
                         auto baseColor = world->TryGetComponent<BaseColorData>(entity);
                         if (baseColor.has_value())
                         {

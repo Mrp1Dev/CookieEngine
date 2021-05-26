@@ -2,6 +2,7 @@
 #include "RenderingComponents.h"
 #include "Constants.h"
 #include <Rendering/Lighting/PointLightData.h>
+#include <array>
 namespace cookie
 {
     void PointLightSystem::Update(World* world)
@@ -12,13 +13,22 @@ namespace cookie
 
         objects->Foreach([&](TransformData& transform, ShaderData& shader)
             {
-                lights->Foreach([&](TransformData& lightTransform , PointLightData& light)
+                lights->Foreach([&](TransformData& lightTransform, PointLightData& light)
                     {
-                        lightCount++;
-                        shader.shader->SetInt(ShaderUniforms::PointLight::LIGHT_COUNT, lightCount);
-                        shader.shader->SetVec3(ShaderUniforms::PointLight::Position(lightCount - 1), lightTransform.position);
-                        shader.shader->SetVec3(ShaderUniforms::PointLight::DiffuseColor(lightCount - 1), light.color);
-                        shader.shader->SetVec3(ShaderUniforms::PointLight::SpecularColor(lightCount - 1), light.specularColor);
+                        if (lightCount + 1 > ShaderUniforms::PointLight::MAX_COUNT)
+                        {
+                            std::cout << "ERROR: MORE LIGHTS THAN THE LIMIT" << '\n';
+                            return;
+                        }
+
+                        shader.shader->SetVec3(ShaderUniforms::PointLight::POSITIONS[lightCount], lightTransform.position);
+                        shader.shader->SetVec3(ShaderUniforms::PointLight::DIFFUSE_COLORS[lightCount], light.color);
+                        shader.shader->SetVec3(ShaderUniforms::PointLight::SPECULAR_COLORS[lightCount], light.specularColor);
+                        shader.shader->SetInt(ShaderUniforms::PointLight::RANGES[lightCount], light.range);
+                        shader.shader->SetFloat(ShaderUniforms::PointLight::DIFFUSE_STRENGTHS[lightCount], light.diffuseStrength);
+                        shader.shader->SetFloat(ShaderUniforms::PointLight::SPECULAR_STRENGTHS[lightCount], light.specularStrength);
+                        shader.shader->SetInt(ShaderUniforms::PointLight::LIGHT_COUNT, ++lightCount);
+
                     });
             });
     }
