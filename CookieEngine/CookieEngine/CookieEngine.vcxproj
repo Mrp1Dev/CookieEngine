@@ -122,6 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableModules>true</EnableModules>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +140,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableModules>true</EnableModules>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,6 +168,7 @@
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
+    <ClInclude Include="Math\Vector\Vector3.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
     <ClInclude Include="Constants.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ResourceTypes\Time.h" />
     <ClInclude Include="ResourceTypes\Window.h" />
+    <ClInclude Include="Usings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />

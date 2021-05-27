@@ -46,7 +46,7 @@ int main()
 
 	world.StartSystems();
 
-	float lastFrame { static_cast<float>(glfwGetTime()) };
+	float lastFrame { scast<float>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
 		updateTime(world.GetResource<ck::Time>(), &lastFrame);
@@ -78,9 +78,9 @@ void addResources(ck::World* world, ck::Window window)
 
 void updateTime(ck::Time* time, float* lastFrame)
 {
-	time->time = glfwGetTime();
-	time->deltaTime = glfwGetTime() - *lastFrame;
-	*lastFrame = glfwGetTime();
+	time->time = scast<float>(glfwGetTime());
+	time->deltaTime = scast<float>(glfwGetTime()) - *lastFrame;
+	*lastFrame = scast<float>(glfwGetTime());
 }
 
 

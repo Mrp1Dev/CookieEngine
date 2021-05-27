@@ -1,5 +1,5 @@
 #include "World.h"
-
+#include <usings.h>
 namespace cookie
 {
 	void World::StartSystems()
@@ -8,8 +8,8 @@ namespace cookie
 		{
 			system->Start(this);
 		}
-		unsigned int commandsLength = commands.size();
-		for (int i = 0; i < commandsLength; i++)
+		auto commandsLength = scast<unsigned int>(commands.size());
+		for (unsigned int i = 0; i < commandsLength; i++)
 		{
 			commands.front()();
 			commands.pop_front();
@@ -18,8 +18,8 @@ namespace cookie
 
 	void World::UpdateSystems()
 	{
-		unsigned int commandsLength = commands.size();
-		for (int i = 0; i < commandsLength; i++)
+		auto commandsLength = scast<unsigned int>(commands.size());
+		for (unsigned int i = 0; i < commandsLength; i++)
 		{
 			commands.front()();
 			commands.pop_front();

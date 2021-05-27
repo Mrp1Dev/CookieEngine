@@ -24,7 +24,7 @@ namespace cookie
                         shader.shader->SetVec3(ShaderUniforms::PointLight::POSITIONS[lightCount], lightTransform.position);
                         shader.shader->SetVec3(ShaderUniforms::PointLight::DIFFUSE_COLORS[lightCount], light.color);
                         shader.shader->SetVec3(ShaderUniforms::PointLight::SPECULAR_COLORS[lightCount], light.specularColor);
-                        shader.shader->SetInt(ShaderUniforms::PointLight::RANGES[lightCount], light.range);
+                        shader.shader->SetFloat(ShaderUniforms::PointLight::RANGES[lightCount], light.range);
                         shader.shader->SetFloat(ShaderUniforms::PointLight::DIFFUSE_STRENGTHS[lightCount], light.diffuseStrength);
                         shader.shader->SetFloat(ShaderUniforms::PointLight::SPECULAR_STRENGTHS[lightCount], light.specularStrength);
                         shader.shader->SetInt(ShaderUniforms::PointLight::LIGHT_COUNT, ++lightCount);

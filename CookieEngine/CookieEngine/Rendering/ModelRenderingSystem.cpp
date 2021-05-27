@@ -1,5 +1,6 @@
 #include "ModelRenderingSystem.h"
 #include "../Constants/ShaderUniforms.h"
+#include <usings.h>
 namespace cookie
 {
     void ModelRenderingSystem::Update(World* world)
@@ -64,7 +65,7 @@ namespace cookie
         glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(mesh.VAO);
-        glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, scast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 }

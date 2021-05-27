@@ -11,7 +11,7 @@
 #include "Entity.h"
 #include <any>
 #include <typeindex>
-
+#include <Usings.h>
 namespace cookie
 {
 	class World
@@ -91,9 +91,9 @@ namespace cookie
 			auto cacheFind = cachedQueries.find(typeId);
 			if (cacheFind != cachedQueries.end() && !queriesDirty)
 			{
-				return static_cast<Query<QueryTypes...>*>(cacheFind->second.get());
+				return scast<Query<QueryTypes...>*>(cacheFind->second.get());
 			}
-			return static_cast<Query<QueryTypes...>*>(cachedQueries.insert_or_assign(
+			return scast<Query<QueryTypes...>*>(cachedQueries.insert_or_assign(
 				typeId,
 				std::make_unique<Query<QueryTypes...>>(
 					queryEntitiesWithPointers(getVectorPointer<QueryTypes>()...)
@@ -164,7 +164,7 @@ namespace cookie
 		void assignComponent(ComponentType& component, int entityIndex)
 		{
 			auto componentVector =
-				static_cast<ComponentArray<ComponentType>*>(
+				scast<ComponentArray<ComponentType>*>(
 					ComponentsMap.find(typeid(ComponentType).hash_code())->second.get()
 					);
 			if (entityIndex >= componentVector->Components.size())
@@ -218,7 +218,7 @@ namespace cookie
 			auto pairfromMap = ComponentsMap.find(typeid(VectorType).hash_code());
 			if (pairfromMap != ComponentsMap.end())
 			{
-				return &static_cast<ComponentArray<VectorType>*>(
+				return &scast<ComponentArray<VectorType>*>(
 					pairfromMap->second.get())->Components;
 			}
 			return nullptr;

@@ -1,5 +1,5 @@
 #include "SetMouseInputSystem.h"
-
+#include <usings.h>
 namespace cookie
 {
 	void SetMouseInputSystem::Update(World* world)
@@ -12,8 +12,8 @@ namespace cookie
 
 		glm::dvec2 doubleMousePos {};
 		glfwGetCursorPos(window->glfwWindow, &doubleMousePos.x, &doubleMousePos.y);
-		input->mousePosition.x = static_cast<float>(doubleMousePos.x);
-		input->mousePosition.y = static_cast<float>(doubleMousePos.y);
+		input->mousePosition.x = scast<float>(doubleMousePos.x);
+		input->mousePosition.y = scast<float>(doubleMousePos.y);
 		input->mouseDelta = input->mousePosition - input->previousFramePos;
 		input->previousFramePos = input->mousePosition;
 	}

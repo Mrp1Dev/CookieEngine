@@ -111,6 +111,8 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Rendering\Lighting\PointLightData.h" />
     <ClInclude Include="Rendering\Lighting\PointLightSystem.h" />
+    <ClInclude Include="Usings.h" />
+    <ClInclude Include="Math\Vector\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
