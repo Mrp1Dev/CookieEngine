@@ -12,9 +12,9 @@ void FirstPersonCameraSystem::Update(ck::World* world)
 	auto cameraQuery { world->QueryEntities<ck::CameraData, ck::TransformData, FirstPersonControllerData>() };
 	auto* time { world->GetResource<ck::Time>() };
 	auto* window { world->GetResource<ck::Window>() };
-	constexpr float speed = 500.0f;
-	constexpr float rotSpeed = 50.0f;
-	constexpr float mouseSenstivity = 0.002f;
+	constexpr f32 speed = 500.0f;
+	constexpr f32 rotSpeed = 50.0f;
+	constexpr f32 mouseSenstivity = 0.002f;
 	cameraQuery->Foreach([&time, &window, this](
 		ck::CameraData& camera, ck::TransformData& transform, FirstPersonControllerData& controller
 		)

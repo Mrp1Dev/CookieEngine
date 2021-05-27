@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "TextureType.h"
+#include <U>
 namespace cookie
 {
     struct Vertex
@@ -16,7 +17,7 @@ namespace cookie
 
     struct Texture
     {
-        unsigned int id;
+        u32 id;
         TextureType type;
         std::string path;
     };
@@ -24,13 +25,13 @@ namespace cookie
     struct Mesh
     {
         std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
+        std::vector<u32> indices;
         std::vector<Texture> textures;
         glm::vec3 boundingBoxMin {};
         glm::vec3 boundingBoxMax {};
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures
+        Mesh(std::vector<Vertex> vertices, std::vector<u32> indices, std::vector<Texture> textures
         );
-        unsigned int VBO, VAO, EBO;
+        u32 VBO, VAO, EBO;
 
     private:
 

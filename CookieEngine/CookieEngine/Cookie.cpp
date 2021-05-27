@@ -1,10 +1,10 @@
 #include "Cookie.h"
 
 
-int main()
+i32 main()
 {
-	constexpr int BASE_WIDTH = 1280;
-	constexpr int BASE_HEIGHT = 720;
+	constexpr i32 BASE_WIDTH = 1280;
+	constexpr i32 BASE_HEIGHT = 720;
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -46,11 +46,11 @@ int main()
 
 	world.StartSystems();
 
-	float lastFrame { scast<float>(glfwGetTime()) };
+	f32 lastFrame { scast<f32>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
 		updateTime(world.GetResource<ck::Time>(), &lastFrame);
-		std::cout << "FPS: " << (int)(1.0f / world.GetResource<ck::Time>()->deltaTime) << '\n';
+		std::cout << "FPS: " << (i32)(1.0f / world.GetResource<ck::Time>()->deltaTime) << '\n';
 		processInput(window);
 
 		glClearColor(0.1f, 0.2f, 0.2f, 1.0);
@@ -76,11 +76,11 @@ void addResources(ck::World* world, ck::Window window)
 	world->AddResource(window);
 }
 
-void updateTime(ck::Time* time, float* lastFrame)
+void updateTime(ck::Time* time, f32* lastFrame)
 {
-	time->time = scast<float>(glfwGetTime());
-	time->deltaTime = scast<float>(glfwGetTime()) - *lastFrame;
-	*lastFrame = scast<float>(glfwGetTime());
+	time->time = scast<f32>(glfwGetTime());
+	time->deltaTime = scast<f32>(glfwGetTime()) - *lastFrame;
+	*lastFrame = scast<f32>(glfwGetTime());
 }
 
 

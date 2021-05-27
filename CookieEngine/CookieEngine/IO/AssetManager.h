@@ -20,7 +20,7 @@ namespace cookie
 		static std::unordered_map<std::string, Model> models;
 		static std::unordered_map<std::pair<std::string, std::string>, Shader, PairHash> shaders;
 
-		static unsigned int TextureFromFile(const char* path, const std::string& directory, bool flip = false);
+		static u32 TextureFromFile(const char* path, const std::string& directory, bool flip = false);
 		
 		static ModelRendererData GetModel(const std::string path, bool active = true);
 

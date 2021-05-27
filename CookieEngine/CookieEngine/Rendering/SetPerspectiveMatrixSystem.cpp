@@ -21,7 +21,7 @@ namespace cookie
 			auto perspectiveMatrix =
 				glm::perspective(
 					glm::radians(cam->fov),
-					(float)window->width / (float)window->height,
+					(f32)window->width / (f32)window->height,
 					cam->nearClippingPlane,
 					cam->farClippingPlane
 				);

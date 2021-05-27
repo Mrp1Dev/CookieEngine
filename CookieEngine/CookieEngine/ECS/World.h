@@ -22,14 +22,14 @@ namespace cookie
 		};
 		std::vector<std::unique_ptr<System>> systems;
 		std::deque<std::function<void()>> commands;
-		std::deque<unsigned int> despawnedEntities;
+		std::deque<u32> despawnedEntities;
 		std::unordered_map<size_t, std::unique_ptr<QueryBase>> cachedQueries;
 		std::vector<Entity> currentEntities;
 		std::unordered_map<size_t, std::any> resources;
 
 		bool queriesDirty { true };
 	public:
-		unsigned int EntityCount { 0 };
+		u32 EntityCount { 0 };
 		std::unordered_map<size_t, std::unique_ptr<BaseComponentArray>> ComponentsMap;
 		bool GameRunning { true };
 
@@ -143,7 +143,7 @@ namespace cookie
 			queriesDirty = true;
 		}
 
-		void despawnEntity(unsigned int index);
+		void despawnEntity(u32 index);
 
 		template<class ComponentType>
 		void addComponentVector()
@@ -161,7 +161,7 @@ namespace cookie
 		}
 
 		template<class ComponentType>
-		void assignComponent(ComponentType& component, int entityIndex)
+		void assignComponent(ComponentType& component, i32 entityIndex)
 		{
 			auto componentVector =
 				scast<ComponentArray<ComponentType>*>(
@@ -183,7 +183,7 @@ namespace cookie
 			if (!isValidQuery) return Query(result, entities);
 			result.reserve(EntityCount);
 			entities.reserve(EntityCount);
-			for (unsigned int i = 0; i < EntityCount; i++)
+			for (u32 i = 0; i < EntityCount; i++)
 			{
 				auto query { queryEntity(i, vectorPointers...) };
 				if (query.has_value())
@@ -196,7 +196,7 @@ namespace cookie
 		}
 
 		template<class... QueryTypes>
-		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(unsigned int index, std::vector<std::optional<QueryTypes>>*... componentVectors) const
+		std::optional<std::tuple<Ref<QueryTypes>...>> queryEntity(u32 index, std::vector<std::optional<QueryTypes>>*... componentVectors) const
 		{
 
 			bool isCompleteQuery = (((componentVectors != nullptr) && ...) && ((componentVectors->size() > index) && ...));

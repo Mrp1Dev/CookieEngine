@@ -35,9 +35,9 @@ namespace cookie
     }
     void ModelRenderingSystem::DrawMesh(Shader* shader, Mesh& mesh)
     {
-        int diffuseNumber { -1 };
-        int specularNumber { -1 };
-        for (unsigned int i = 0; i < mesh.textures.size(); i++)
+        i32 diffuseNumber { -1 };
+        i32 specularNumber { -1 };
+        for (u32 i = 0; i < mesh.textures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i);
 

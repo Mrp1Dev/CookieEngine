@@ -18,7 +18,7 @@
 namespace ck = cookie;
 
 void addResources(ck::World* world, ck::Window window);
-void updateTime(ck::Time* time, float* lastFrame);
+void updateTime(ck::Time* time, f32* lastFrame);
 void processInput(GLFWwindow* window);
 void InitGame(ck::World* ecsWorld);
 

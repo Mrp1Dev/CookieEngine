@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 #include <optional>
-
+#include <Usings.h>
 namespace cookie
 {
 	class BaseComponentArray
 	{
 	public:
-		virtual void clear(unsigned int index) = 0;
+		virtual void clear(u32 index) = 0;
 	};
 
 	template<class T>
@@ -20,7 +20,7 @@ namespace cookie
 		{
 		}
 
-		void clear(unsigned int index) override
+		void clear(u32 index) override
 		{
 			Components.at(index).reset();
 		}

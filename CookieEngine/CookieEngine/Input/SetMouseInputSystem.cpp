@@ -12,8 +12,8 @@ namespace cookie
 
 		glm::dvec2 doubleMousePos {};
 		glfwGetCursorPos(window->glfwWindow, &doubleMousePos.x, &doubleMousePos.y);
-		input->mousePosition.x = scast<float>(doubleMousePos.x);
-		input->mousePosition.y = scast<float>(doubleMousePos.y);
+		input->mousePosition.x = scast<f32>(doubleMousePos.x);
+		input->mousePosition.y = scast<f32>(doubleMousePos.y);
 		input->mouseDelta = input->mousePosition - input->previousFramePos;
 		input->previousFramePos = input->mousePosition;
 	}

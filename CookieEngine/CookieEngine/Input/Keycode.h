@@ -5,7 +5,7 @@
 
 namespace cookie
 {
-	constexpr int KEYS = 44;
+	constexpr i32 KEYS = 44;
 
 	namespace KeyCode
 	{
@@ -58,7 +58,7 @@ namespace cookie
 		};
 	}
 
-	constexpr std::array<int, KEYS> GLFW_KEY_CODES = {
+	constexpr std::array<i32, KEYS> GLFW_KEY_CODES = {
 		GLFW_KEY_A,
 		GLFW_KEY_B,
 		GLFW_KEY_C,

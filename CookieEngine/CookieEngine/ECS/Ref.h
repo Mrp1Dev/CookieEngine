@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 #include <vector>
-
+#include <Usings.h>
 namespace cookie
 {
 	template<class T>
@@ -9,8 +9,8 @@ namespace cookie
 	{
 	public:
 		std::vector<std::optional<T>>* vector;
-		unsigned int index;
-		Ref(std::vector<std::optional<T>>* vector, unsigned int index)
+		u32 index;
+		Ref(std::vector<std::optional<T>>* vector, u32 index)
 			: vector { vector }, index { index }
 		{
 

@@ -19,13 +19,13 @@ namespace cookie
 	}
 	void Model::processNode(aiNode* node, const aiScene* scene)
 	{
-		for (unsigned int i = 0; i < node->mNumMeshes; i++)
+		for (u32 i = 0; i < node->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			meshes.push_back(processMesh(mesh, scene));
 		}
 
-		for (unsigned int i = 0; i < node->mNumChildren; i++)
+		for (u32 i = 0; i < node->mNumChildren; i++)
 		{
 			processNode(node->mChildren[i], scene);
 		}
@@ -33,10 +33,10 @@ namespace cookie
 	Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<u32> indices;
 		std::vector<Texture> textures;
 
-		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		for (u32 i = 0; i < mesh->mNumVertices; i++)
 		{
 			Vertex vertex {};
 			glm::vec3 vector {};
@@ -63,10 +63,10 @@ namespace cookie
 			vertices.push_back(vertex);
 		}
 
-		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+		for (u32 i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
-			for (unsigned int j = 0; j < face.mNumIndices; j++)
+			for (u32 j = 0; j < face.mNumIndices; j++)
 			{
 				indices.push_back(face.mIndices[j]);
 			}
@@ -89,12 +89,12 @@ namespace cookie
 		aiTextureType type, TextureType typeName)
 	{
 		std::vector<Texture> result;
-		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+		for (u32 i = 0; i < mat->GetTextureCount(type); i++)
 		{
 			aiString str {};
 			mat->GetTexture(type, i, &str);
 			bool skip { false };
-			for (int i = 0; i < loadedTextures.size(); i++)
+			for (i32 i = 0; i < loadedTextures.size(); i++)
 			{
 				if (std::strcmp(loadedTextures[i].path.data(), str.C_Str()) == 0)
 				{

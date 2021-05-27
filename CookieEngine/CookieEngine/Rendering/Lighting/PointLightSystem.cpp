@@ -9,7 +9,7 @@ namespace cookie
     {
         auto lights { world->QueryEntities<TransformData, PointLightData>() };
         auto objects { world->QueryEntities<TransformData, ShaderData>() };
-        int lightCount {};
+        i32 lightCount {};
 
         objects->Foreach([&](TransformData& transform, ShaderData& shader)
             {

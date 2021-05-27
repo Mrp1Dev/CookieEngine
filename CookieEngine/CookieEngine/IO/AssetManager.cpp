@@ -42,16 +42,16 @@ namespace cookie
 			).first->second, active
 		};
 	}
-	unsigned int AssetManager::TextureFromFile(const char* path, const std::string& directory, bool flip)
+	u32 AssetManager::TextureFromFile(const char* path, const std::string& directory, bool flip)
 	{
 		stbi_set_flip_vertically_on_load(flip);
 		std::string filename = std::string(path);
 		filename = directory + '/' + filename;
 
-		unsigned int textureID;
+		u32 textureID;
 		glGenTextures(1, &textureID);
 
-		int width, height, nrComponents;
+		i32 width, height, nrComponents;
 		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
 		if (data)
 		{

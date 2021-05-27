@@ -5,7 +5,7 @@ namespace cookie
 	class Time
 	{
 	public:
-		float deltaTime { 0.0f };
-		float time { 0.0f };
+		f32 deltaTime { 0.0f };
+		f32 time { 0.0f };
 	};
 }

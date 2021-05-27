@@ -1,13 +1,13 @@
 #pragma once
-
+#include <Usings.h>
 namespace cookie
 {
 	struct Entity
 	{
-		unsigned int index;
-		unsigned int gen;
+		u32 index;
+		u32 gen;
 	public:
-		Entity(unsigned int index, unsigned int generation) : index { index }, gen { generation }{}
+		Entity(u32 index, u32 generation) : index { index }, gen { generation }{}
 
 		bool operator==(const Entity& other) const
 		{

@@ -24,7 +24,7 @@ namespace cookie
 		}
 		namespace PointLight
 		{
-			constexpr int MAX_COUNT = 8;
+			constexpr i32 MAX_COUNT = 8;
 			const std::array<std::string_view, MAX_COUNT> POSITIONS {
 				"PointLights[0].position",
 				"PointLights[1].position",

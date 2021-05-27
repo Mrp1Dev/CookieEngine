@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include <vector>
 #include <functional>
-
+#include <Usings.h>
 namespace cookie
 {
 	class QueryBase
@@ -33,7 +33,7 @@ namespace cookie
 		template<class F>
 		void EntityForeach(F function)
 		{
-			for (unsigned int i = 0; i < query.size(); i++)
+			for (u32 i = 0; i < query.size(); i++)
 			{
 				function(entities.at(i), *std::get<cookie::Ref<QueryTypes>>(query.at(i))...);
 			}

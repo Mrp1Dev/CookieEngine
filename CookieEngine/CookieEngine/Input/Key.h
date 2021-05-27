@@ -8,8 +8,8 @@ namespace cookie
 		bool justPressed {};
 		bool pressed {};
 		bool justUnpressed {};
-		int keyCode {};
-		Key(int key) : keyCode { key }
+		i32 keyCode {};
+		Key(i32 key) : keyCode { key }
 		{
 		};
 	};

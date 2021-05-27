@@ -6,7 +6,7 @@ namespace cookie
     {
         class Vector3
         {
-            Vector3(float x, float y, float z) : vec { x, y, z }
+            Vector3(f32 x, f32 y, f32 z) : vec { x, y, z }
             {
             };
         private:

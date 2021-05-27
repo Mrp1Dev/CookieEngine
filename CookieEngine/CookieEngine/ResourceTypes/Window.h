@@ -7,8 +7,8 @@ namespace cookie
 	class Window
 	{
 	public:
-		int width {};
-		int height {};
+		i32 width {};
+		i32 height {};
 		GLFWwindow* glfwWindow { nullptr };
 	};
 }

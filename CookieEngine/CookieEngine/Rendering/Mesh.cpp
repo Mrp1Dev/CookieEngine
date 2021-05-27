@@ -3,7 +3,7 @@
 namespace cookie
 {
 	Mesh::Mesh(std::vector<Vertex> vertices,
-		std::vector<unsigned int> indices,
+		std::vector<u32> indices,
 		std::vector<Texture> textures) : vertices { vertices }, indices { indices }, textures { textures }
 	{
 		setupMesh();
@@ -22,7 +22,7 @@ namespace cookie
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(
-			GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
+			GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(u32),
 			&indices[0], GL_STATIC_DRAW
 		);
 

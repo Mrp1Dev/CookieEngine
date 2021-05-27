@@ -8,8 +8,8 @@ namespace cookie
 		{
 			system->Start(this);
 		}
-		auto commandsLength = scast<unsigned int>(commands.size());
-		for (unsigned int i = 0; i < commandsLength; i++)
+		auto commandsLength = scast<u32>(commands.size());
+		for (u32 i = 0; i < commandsLength; i++)
 		{
 			commands.front()();
 			commands.pop_front();
@@ -18,8 +18,8 @@ namespace cookie
 
 	void World::UpdateSystems()
 	{
-		auto commandsLength = scast<unsigned int>(commands.size());
-		for (unsigned int i = 0; i < commandsLength; i++)
+		auto commandsLength = scast<u32>(commands.size());
+		for (u32 i = 0; i < commandsLength; i++)
 		{
 			commands.front()();
 			commands.pop_front();
@@ -49,7 +49,7 @@ namespace cookie
 		return this;
 	}
 
-	void World::despawnEntity(unsigned int index)
+	void World::despawnEntity(u32 index)
 	{
 		despawnedEntities.push_back(index);
 		currentEntities.at(index).gen++;

@@ -2,6 +2,6 @@
 
 struct FirstPersonControllerData
 {
-	float xRot {};
-	float yRot {};
+	f32 xRot {};
+	f32 yRot {};
 };
