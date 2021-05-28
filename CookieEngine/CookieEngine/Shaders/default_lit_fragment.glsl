@@ -8,8 +8,8 @@ struct MaterialType
     sampler2D diffuseTextures[MAX_DIFFUSE_TEXTURE_COUNT];
     sampler2D specularTextures[MAX_SPECULAR_TEXTURE_COUNT];
     vec4 baseColor;
-    i32 diffuseTextureCount;
-    i32 specularTextureCount;
+    int diffuseTextureCount;
+    int specularTextureCount;
 };
 
 struct DirectionalLightType
@@ -25,9 +25,9 @@ struct PointLightType
     vec3 position;
     vec3 diffuseColor;
     vec3 specularColor;
-    f32 range;
-    f32 diffuseStrength;
-    f32 specularStrength;
+    float range;
+    float diffuseStrength;
+    float specularStrength;
 };
 
 out vec4 FragColor;
@@ -39,12 +39,12 @@ in vec3 FragPos;
 uniform MaterialType Material;
 uniform DirectionalLightType DirectionalLight;
 uniform PointLightType PointLights[MAX_POINT_LIGHT_COUNT];
-uniform i32 PointLightCount;
+uniform int PointLightCount;
 
 vec3 calulateDirectionalLight(DirectionalLightType light, vec3 normal, vec3 baseDiffuseColor)
 {
     vec3 lightDir = -light.direction;
-    f32 diffuseStrength = max(dot(lightDir, normal), 0.0);
+    float diffuseStrength = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diffuseStrength * baseDiffuseColor * light.diffuseColor;
     vec3 ambient = light.ambientColor * baseDiffuseColor;
     
@@ -54,13 +54,13 @@ vec3 calulateDirectionalLight(DirectionalLightType light, vec3 normal, vec3 base
 vec3 calculatePointLighting(PointLightType light, vec3 normal, vec3 baseDiffuseColor)
 {
     vec3 dir = light.position - FragPos;
-    f32 dist = length(dir);
-    f32 diffuseStrength = max(dot(dir, normal), 0.0);
-    f32 range = light.range <= 0.0 ? 0.01 : light.range;
-    f32 kc = 1.0;
-    f32 kl = 1.0 / range;
-    f32 kq = 1.0 / range * range;
-    f32 attenuation = 1.0 / (kc + kc * dist + kq * dist * dist);
+    float dist = length(dir);
+    float diffuseStrength = max(dot(dir, normal), 0.0);
+    float range = light.range <= 0.0 ? 0.01 : light.range;
+    float kc = 1.0;
+    float kl = 1.0 / range;
+    float kq = 1.0 / range * range;
+    float attenuation = 1.0 / (kc + kc * dist + kq * dist * dist);
     return diffuseStrength * attenuation * light.diffuseColor * baseDiffuseColor * light.diffuseStrength;
 }
 
@@ -70,7 +70,7 @@ void main()
     vec3 baseDiffuseColor = texture(Material.diffuseTextures[0], TexCoords).xyz;
     vec3 normal = normalize(Normal);
     res += calulateDirectionalLight(DirectionalLight, normal, baseDiffuseColor);
-    for(i32 i = 0; i < PointLightCount; i++)
+    for(int i = 0; i < PointLightCount; i++)
         res += calculatePointLighting(PointLights[i], normal, baseDiffuseColor);
     FragColor = vec4(res, 1.0);
 }

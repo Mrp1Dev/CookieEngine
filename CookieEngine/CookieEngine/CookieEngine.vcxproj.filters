@@ -113,6 +113,7 @@
     <ClInclude Include="Rendering\Lighting\PointLightSystem.h" />
     <ClInclude Include="Usings.h" />
     <ClInclude Include="Math\Vector\Vector3.h" />
+    <ClInclude Include="Math\Mathf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -130,7 +131,7 @@
     <ClCompile Include="..\..\Game\game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Cookie.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\AssetManager.cpp">

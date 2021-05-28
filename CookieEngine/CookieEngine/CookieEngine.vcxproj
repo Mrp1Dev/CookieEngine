@@ -168,6 +168,7 @@
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
+    <ClInclude Include="Math\Mathf.h" />
     <ClInclude Include="Math\Vector\Vector3.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
@@ -196,7 +197,7 @@
     <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\game.cpp" />
     <ClCompile Include="..\..\Game\SpawnBagsSystem.cpp" />
-    <ClCompile Include="Cookie.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ECS\World.cpp" />
     <ClCompile Include="Input\InitializeInputSystem.cpp" />
     <ClCompile Include="Input\SetInputKeysSystem.cpp" />
