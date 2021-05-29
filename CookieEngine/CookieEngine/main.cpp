@@ -1,5 +1,5 @@
 #include "Cookie.h"
-
+#include <Math/Mathf.h>
 
 i32 main()
 {
@@ -43,9 +43,8 @@ i32 main()
 
 	addResources(&world, ck::Window { BASE_WIDTH, BASE_HEIGHT, window });
 	InitGame(&world);
-
+	std::cout << ck::MathT::Atan2(25.0f, 52.0f);
 	world.StartSystems();
-
 	f32 lastFrame { scast<f32>(glfwGetTime()) };
 	while (!glfwWindowShouldClose(window))
 	{
