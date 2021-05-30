@@ -15,8 +15,10 @@ namespace cookie
         template<typename T>
         constexpr auto Infinity = std::numeric_limits<T>::infinity();
         constexpr auto Infinityf = Infinity<f32>;
-        constexpr f64 PI = 3.141592653589793238463;
-        constexpr f32 PIf = 3.141592653589793238463f;
+        constexpr f64 PI64 = 3.141592653589793238463;
+        constexpr f64 Tau64 = PI64 * 2.0;
+        constexpr f32 PI = 3.141592653589793238463f;
+        constexpr f32 Tau = PI * 2.0f;
         constexpr auto Deg2Radf = PI * 2.0f / 360.0f;
         constexpr auto Rad2Degf = 1.0f / Deg2Radf;
         constexpr auto Deg2Rad = PI * 2.0 / 360.0;
