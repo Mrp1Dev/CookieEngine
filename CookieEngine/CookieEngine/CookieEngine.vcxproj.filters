@@ -112,8 +112,11 @@
     <ClInclude Include="Rendering\Lighting\PointLightData.h" />
     <ClInclude Include="Rendering\Lighting\PointLightSystem.h" />
     <ClInclude Include="Usings.h" />
-    <ClInclude Include="Math\Vector\Vector3.h" />
+    <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Mathf.h" />
+    <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

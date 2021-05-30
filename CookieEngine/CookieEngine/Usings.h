@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <cmath>
+#include <math.h>
 #include <utility>
 
 template<class T, class F>

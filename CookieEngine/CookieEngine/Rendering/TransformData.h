@@ -1,13 +1,11 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <Math/Math.h>
 namespace cookie
 {
-	struct TransformData
-	{
-		glm::vec3 position {};
-		glm::vec3 scale { glm::vec3(1, 1, 1) };
-		glm::fquat rotation { glm::fquat() };
-	};
+    struct TransformData
+    {
+        math::Vector3 position { math::Vector3::Forward() };
+        math::Vector3 scale { math::Vector3::One() };
+        math::Quaternion rotation { math::Quaternion::Identity() };
+    };
 }

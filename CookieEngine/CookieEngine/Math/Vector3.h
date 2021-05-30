@@ -11,8 +11,9 @@ namespace cookie
         class Vector3T
         {
             using vec3 = glm::tvec3<T>;
+        public:
             template<typename InputType>
-            Vector3T(InputType x, InputType y, InputType z) noexcept :
+            Vector3T(const InputType x, const InputType y, const InputType z) noexcept :
                 x { scast<T>(x) },
                 y { scast<T>(y) },
                 z { scast<T>(z) }
@@ -24,7 +25,7 @@ namespace cookie
                 y { v.y },
                 z { v.z }
             {
-            }
+            };
 
             static Vector3T<T> Splat(T f) noexcept
             {
@@ -85,36 +86,6 @@ namespace cookie
                 return Mathf::Acos(dot);
             }
 
-            operator vec3() const noexcept
-            {
-                return vec3 { x, y, z };
-            }
-
-            Vector3T<T> operator+(const Vector3T<T>& rhs) const noexcept
-            {
-                return Vector3T<T>(x + rhs.x, y + rhs.y, z + rhs.z);
-            }
-
-            Vector3T<T> operator-(const Vector3T<T>& rhs) const noexcept
-            {
-                return Vector3T<T>(x - rhs.x, y - rhs.y, z - rhs.z);
-            }
-
-            Vector3T<T> operator-() const noexcept
-            {
-                return Vector3T<T>(-x, -y, -z);
-            }
-
-            Vector3T<T> operator*(T scalar) const noexcept
-            {
-                return Vector3T<T>(x * scalar, y * scalar, z * scalar);
-            }
-
-            Vector3T<T> operator/(T f) const noexcept
-            {
-                return Vector3T<T>(x / f, y / f, z / f);
-            }
-
             T Magnitude() const noexcept
             {
                 return glm::length(scast<vec3>(*this));
@@ -135,9 +106,53 @@ namespace cookie
                 *this = Normalized();
             }
 
+            operator vec3() const noexcept
+            {
+                return vec3 { x, y, z };
+            }
+
+            Vector3T<T> operator+(const Vector3T<T>& rhs) const noexcept
+            {
+                return Vector3T<T>(x + rhs.x, y + rhs.y, z + rhs.z);
+            }
+
+            Vector3T<T> operator-(const Vector3T<T>& rhs) const noexcept
+            {
+                return Vector3T<T>(x - rhs.x, y - rhs.y, z - rhs.z);
+            }
+
+            Vector3T<T> operator-() const noexcept
+            {
+                return Vector3T<T>(-x, -y, -z);
+            }
+
+            Vector3T<T> operator*(const T scalar) const noexcept
+            {
+                return Vector3T<T>(x * scalar, y * scalar, z * scalar);
+            }
+
+            Vector3T<T> operator/(const T f) const noexcept
+            {
+                return Vector3T<T>(x / f, y / f, z / f);
+            }
+
+            bool operator==(const Vector3T<T>& rhs) const noexcept
+            {
+                return Mathf::Approximately(x, rhs.x)
+                    && Mathf::Approximately(y, rhs.y)
+                    && Mathf::Approximately(z, rhs.z);
+            }
+
+            Vector3T<T> operator+=(const Vector3T<T>& rhs) noexcept
+            {
+                return *this = *this + rhs;
+            }
+
             T x {};
             T y {};
             T z {};
+
+            const static Vector3T<T> forward;
         };
 
         using Vector3 = Vector3T<f32>;

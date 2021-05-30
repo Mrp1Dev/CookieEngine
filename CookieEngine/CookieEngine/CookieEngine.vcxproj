@@ -170,8 +170,11 @@
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
+    <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Math\Mathf.h" />
-    <ClInclude Include="Math\Vector\Vector3.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
     <ClInclude Include="Constants.h" />
