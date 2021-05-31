@@ -1,24 +1,26 @@
 #include "ModelRenderingSystem.h"
 #include "../Constants/ShaderUniforms.h"
 #include <usings.h>
+#include <glm/gtc/matrix_transform.hpp>
 namespace cookie
 {
+    using namespace math;
     void ModelRenderingSystem::Update(World* world)
     {
         auto query { world->QueryEntities<ModelRendererData, ShaderData, TransformData>() };
-        query->EntityForeach([this, &world](Entity entity, auto& model, ShaderData& shader, auto& transform)
+        query->EntityForeach([this, &world](Entity entity, auto& model, ShaderData& shader, TransformData& transform)
             {
                 if (model.enabled)
                 {
                     for (auto& mesh : model.model->meshes)
                     {
-                        glm::mat4 matrix(1.0f);
-                        matrix = matrix * glm::mat4_cast(transform.rotation);
-                        matrix = glm::scale(matrix, transform.scale);
-                        matrix = glm::translate(matrix, transform.position);
+                        Mat4 matrix(1.0f);
+                        matrix = matrix * transform.rotation.ToMatrix();
+                        matrix = Matrixf::Scale(matrix, transform.scale);
+                        matrix = Matrixf::Translate(matrix, transform.position);
                         shader.shader->Use();
                         shader.shader->SetMat4(ShaderUniforms::MODEL_MATRIX, matrix);
-                        shader.shader->SetMat4(ShaderUniforms::INV_MODEL_MATRIX, glm::inverse(matrix));
+                        shader.shader->SetMat4(ShaderUniforms::INV_MODEL_MATRIX, Matrixf::Inverse(matrix));
                         auto baseColor = world->TryGetComponent<BaseColorData>(entity);
                         if (baseColor.has_value())
                         {
@@ -26,12 +28,10 @@ namespace cookie
                         }
 
                         DrawMesh(shader.shader, mesh);
-                        shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, glm::vec4(1, 1, 1, 1));
+                        shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, 1, 1, 1, 1);
                     }
                 }
             });
-
-
     }
     void ModelRenderingSystem::DrawMesh(Shader* shader, Mesh& mesh)
     {

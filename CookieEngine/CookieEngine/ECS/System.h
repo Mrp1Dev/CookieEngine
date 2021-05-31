@@ -14,6 +14,10 @@ namespace cookie
 		{
 		};
 
+		virtual void FixedUpdate(World* world)
+		{
+		};
+
 		virtual void Destroy(World* world)
 		{
 		};

@@ -1,7 +1,10 @@
 #include "SetViewMatrixSystem.h"
 #include "../Constants/ShaderUniforms.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <ckMath.h>
 namespace cookie
 {
+	using namespace math;
 	void SetViewMatrixSystem::Update(World* world)
 	{
 		auto cameraQuery { world->QueryEntities<CameraData, TransformData>() };
@@ -14,10 +17,10 @@ namespace cookie
 						{
 							shader.shader->SetMat4(
 								ShaderUniforms::VIEW_MATRIX,
-								glm::lookAt(
+								Matrixf::LookAt(
 									transform.position,
-									transform.position + transform.rotation * glm::vec3(0, 0, 1),
-									transform.rotation * glm::vec3(0, 1, 0)
+									transform.position + (transform.rotation * Vector3::Forward()),
+									transform.rotation * Vector3::Up()
 								)
 							);
 						});

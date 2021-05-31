@@ -2,10 +2,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <array>
-
+#include <Usings.h>
 namespace cookie
 {
-	constexpr i32 KEYS = 44;
+	constexpr i32 KEYS = 45;
 
 	namespace KeyCode
 	{
@@ -55,6 +55,7 @@ namespace cookie
 			MouseButtonLeft,
 			MouseButtonRight,
 			MouseButtonMiddle,
+			LeftAlt
 		};
 	}
 
@@ -102,7 +103,8 @@ namespace cookie
 		GLFW_KEY_ENTER,
 		GLFW_MOUSE_BUTTON_LEFT,
 		GLFW_MOUSE_BUTTON_RIGHT,
-		GLFW_MOUSE_BUTTON_MIDDLE
+		GLFW_MOUSE_BUTTON_MIDDLE,
+		GLFW_KEY_LEFT_ALT,
 	};
 
 }

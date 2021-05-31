@@ -52,7 +52,7 @@ namespace cookie
 
             operator quat() const noexcept
             {
-                return quat { x, y, z, w };
+                return quat { w, x, y, z};
             }
 
             QuaternionT<T> operator*(const QuaternionT<T>& rhs) const noexcept
@@ -78,6 +78,11 @@ namespace cookie
             Vector3 EulerAngles() const noexcept
             {
                 return glm::eulerAngles(scast<quat>(*this));
+            }
+
+            Mat4 ToMatrix()
+            {
+                return glm::mat4_cast(scast<quat>(*this));
             }
 
             T x {};

@@ -4,35 +4,38 @@ namespace cookie
 {
 	void World::StartSystems()
 	{
+		CallCommands();
 		for (auto& system : this->systems)
 		{
 			system->Start(this);
 		}
-		auto commandsLength = scast<u32>(commands.size());
-		for (u32 i = 0; i < commandsLength; i++)
-		{
-			commands.front()();
-			commands.pop_front();
-		}
+		CallCommands();
 	}
 
 	void World::UpdateSystems()
 	{
-		auto commandsLength = scast<u32>(commands.size());
-		for (u32 i = 0; i < commandsLength; i++)
-		{
-			commands.front()();
-			commands.pop_front();
-		}
+		CallCommands();
 		for (auto& system : this->systems)
 		{
 			system->Update(this);
 		}
+		CallCommands();
 		queriesDirty = false;
+	}
+
+	void World::FixedUpdateSystems()
+	{
+		CallCommands();
+		for (auto& system : this->systems)
+		{
+			system->FixedUpdate(this);
+		}
+		CallCommands();
 	}
 
 	void World::DestroySystems()
 	{
+		CallCommands();
 		for (auto& system : this->systems)
 		{
 			system->Destroy(this);
@@ -47,6 +50,16 @@ namespace cookie
 			commands.push_back(f);
 		}
 		return this;
+	}
+
+	void World::CallCommands()
+	{
+		auto commandsLength = scast<u32>(commands.size());
+		for (u32 i = 0; i < commandsLength; i++)
+		{
+			commands.front()();
+			commands.pop_front();
+		}
 	}
 
 	void World::despawnEntity(u32 index)

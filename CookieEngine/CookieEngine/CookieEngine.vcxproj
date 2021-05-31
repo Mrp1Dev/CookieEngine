@@ -80,13 +80,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>CppCoreCheckConstRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>CppCoreCheckConstRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -170,7 +170,7 @@
     <ClInclude Include="Input\SetInputKeysSystem.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
-    <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="ckMath.h" />
     <ClInclude Include="Math\Mathf.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Quaternion.h" />
@@ -192,6 +192,7 @@
     <ClInclude Include="Rendering\ShaderData.h" />
     <ClInclude Include="Rendering\TextureType.h" />
     <ClInclude Include="Rendering\TransformData.h" />
+    <ClInclude Include="Rendering\WindowSystem.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ResourceTypes\Time.h" />
     <ClInclude Include="ResourceTypes\Window.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Input\SetMouseInputSystem.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
+    <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp" />
     <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp" />
     <ClCompile Include="Rendering\Mesh.cpp" />
@@ -216,6 +218,7 @@
     <ClCompile Include="Rendering\ModelRenderingSystem.cpp" />
     <ClCompile Include="Rendering\SetPerspectiveMatrixSystem.cpp" />
     <ClCompile Include="Rendering\SetViewMatrixSystem.cpp" />
+    <ClCompile Include="Rendering\WindowSystem.cpp" />
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

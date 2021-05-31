@@ -43,6 +43,8 @@ namespace cookie
 
 		void UpdateSystems();
 
+		void FixedUpdateSystems();
+
 		void DestroySystems();
 
 		template<class T>
@@ -124,6 +126,8 @@ namespace cookie
 		}
 
 	private:
+
+		void CallCommands();
 
 		template<class... Components>
 		void spawnEntity(Components... components)

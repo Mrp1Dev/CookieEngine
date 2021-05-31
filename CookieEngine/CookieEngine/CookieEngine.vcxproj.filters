@@ -116,7 +116,8 @@
     <ClInclude Include="Math\Mathf.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="Rendering\WindowSystem.h" />
+    <ClInclude Include="ckMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -174,6 +175,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\WindowSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

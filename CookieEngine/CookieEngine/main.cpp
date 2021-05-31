@@ -1,86 +1,123 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "Cookie.h"
 #include <Math/Mathf.h>
-
-i32 main()
-{
-	constexpr i32 BASE_WIDTH = 1280;
-	constexpr i32 BASE_HEIGHT = 720;
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	GLFWwindow* window = glfwCreateWindow(BASE_WIDTH, BASE_HEIGHT, "Cookie", nullptr, nullptr);
-	if (window == nullptr)
-	{
-		std::cout << "Failed to create GLFW Window.\n";
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(0);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD\n";
-		return -1;
-	}
-	glViewport(0, 0, BASE_WIDTH, BASE_HEIGHT);
-	glFrontFace(GL_CW);//reverses winding
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
-	ck::World world(
-		ck::SetPerspectiveMatrixSystem {},
-		ck::SetViewMatrixSystem {},
-		ck::ModelRenderingSystem {},
-		ck::InitializeInputSystem {},
-		ck::SetInputKeysSystem {},
-		ck::SetMouseInputSystem {},
-		ck::DirectionalLightSystem {},
-		ck::PointLightSystem {}
-	);
-
-	addResources(&world, ck::Window { BASE_WIDTH, BASE_HEIGHT, window });
-	InitGame(&world);
-	std::cout << ck::Mathf::Atan2(25.0f, 52.0f);
-	world.StartSystems();
-	f32 lastFrame { scast<f32>(glfwGetTime()) };
-	while (!glfwWindowShouldClose(window))
-	{
-		updateTime(world.GetResource<ck::Time>(), &lastFrame);
-		std::cout << "FPS: " << (i32)(1.0f / world.GetResource<ck::Time>()->deltaTime) << '\n';
-		processInput(window);
-
-		glClearColor(0.1f, 0.2f, 0.2f, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		world.UpdateSystems();
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
-}
+#include "Rendering/SetPerspectiveMatrixSystem.h"
+#include "Rendering/SetViewMatrixSystem.h"
+#include "Resources.h"
+#include "Input/InitializeInputSystem.h"
+#include "Input/SetInputKeysSystem.h"
+#include "Input/SetMouseInputSystem.h"
+#include "Rendering/Lighting/DirectionalLightSystem.h"
+#include "Rendering/Lighting/PointLightSystem.h"
+#include "Rendering/WindowSystem.h"
+#include "Rendering/ModelRenderingSystem.h"
+using namespace ck;
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
 
-void addResources(ck::World* world, ck::Window window)
+void addResources(World* world, Window window)
 {
-	world->AddResource(ck::Time {});
-	world->AddResource(window);
+    world->AddResource(Time {});
+    world->AddResource(window);
 }
 
-void updateTime(ck::Time* time, f32* lastFrame)
+void updateTime(Time* time, f32* lastFrame)
 {
-	time->time = scast<f32>(glfwGetTime());
-	time->deltaTime = scast<f32>(glfwGetTime()) - *lastFrame;
-	*lastFrame = scast<f32>(glfwGetTime());
+    time->time = scast<f32>(glfwGetTime());
+    time->deltaTime = scast<f32>(glfwGetTime()) - *lastFrame;
+    *lastFrame = scast<f32>(glfwGetTime());
 }
+
+GLFWwindow* InitWindow(i32 w, i32 h)
+{
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    GLFWwindow* window = glfwCreateWindow(w, h, "Cookie", nullptr, nullptr);
+    if (window == nullptr)
+    {
+        std::cout << "Failed to create GLFW Window.\n";
+        glfwTerminate();
+        return nullptr;
+    }
+}
+
+i32 InitOpengl(GLFWwindow* window)
+{
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD\n";
+        return -1;
+    }
+
+    glFrontFace(GL_CW);//reverses winding
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+}
+
+i32 main()
+{
+    constexpr i32 BASE_WIDTH = 1280;
+    constexpr i32 BASE_HEIGHT = 720;
+    constexpr f32 DEFAULT_FIXED_DT = 1.0f / 50.0f;
+    auto* window = InitWindow(BASE_WIDTH, BASE_HEIGHT);
+    if (window == nullptr) return -1;
+    if (InitOpengl(window) == -1) return -1;
+    World world(
+        SetPerspectiveMatrixSystem {},
+        SetViewMatrixSystem {},
+        ModelRenderingSystem {},
+        InitializeInputSystem {},
+        SetInputKeysSystem {},
+        SetMouseInputSystem {},
+        DirectionalLightSystem {},
+        PointLightSystem {},
+        WindowSystem {}
+    );
+
+    addResources(&world, Window { BASE_WIDTH, BASE_HEIGHT, window });
+    InitGame(&world);
+    world.StartSystems();
+
+    f32 lastFrame { scast<f32>(glfwGetTime()) };
+    f32 accumulator { 0.0f };
+    auto* timeResource = world.GetResource<Time>();
+    timeResource->fixedDeltaTime = DEFAULT_FIXED_DT;
+    while (!glfwWindowShouldClose(window))
+    {
+        updateTime(timeResource, &lastFrame);
+        std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
+        accumulator += timeResource->deltaTime;
+        processInput(window);
+
+        glClearColor(0.1f, 0.2f, 0.2f, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        while (accumulator >= timeResource->fixedDeltaTime)
+        {
+            world.FixedUpdateSystems();
+            accumulator -= timeResource->fixedDeltaTime;
+        }
+        world.UpdateSystems();
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+}
+
 
 
 
