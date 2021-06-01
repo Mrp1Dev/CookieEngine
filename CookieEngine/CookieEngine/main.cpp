@@ -2,8 +2,6 @@
 #include <GLFW/glfw3.h>
 #include "Cookie.h"
 #include <Math/Mathf.h>
-#include "Rendering/SetPerspectiveMatrixSystem.h"
-#include "Rendering/SetViewMatrixSystem.h"
 #include "Resources.h"
 #include "Input/InitializeInputSystem.h"
 #include "Input/SetInputKeysSystem.h"
@@ -12,8 +10,10 @@
 #include "Rendering/Lighting/PointLightSystem.h"
 #include "Rendering/WindowSystem.h"
 #include "Rendering/ModelRenderingSystem.h"
+#include "Rendering/SetProjectionViewMatrices.h"
+#include "Physics/VelocitySystem.h"
 using namespace ck;
-
+using namespace ck::physics;
 void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -47,6 +47,7 @@ GLFWwindow* InitWindow(i32 w, i32 h)
         glfwTerminate();
         return nullptr;
     }
+    return window;
 }
 
 i32 InitOpengl(GLFWwindow* window)
@@ -63,26 +64,29 @@ i32 InitOpengl(GLFWwindow* window)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-
+    return 1;
 }
 
 i32 main()
 {
-    constexpr i32 BASE_WIDTH = 1280;
-    constexpr i32 BASE_HEIGHT = 720;
+    constexpr i32 BASE_WIDTH = 1920;
+    constexpr i32 BASE_HEIGHT = 1080;
     constexpr f32 DEFAULT_FIXED_DT = 1.0f / 50.0f;
     auto* window = InitWindow(BASE_WIDTH, BASE_HEIGHT);
     if (window == nullptr) return -1;
     if (InitOpengl(window) == -1) return -1;
     World world(
-        SetPerspectiveMatrixSystem {},
-        SetViewMatrixSystem {},
-        ModelRenderingSystem {},
         InitializeInputSystem {},
         SetInputKeysSystem {},
         SetMouseInputSystem {},
+
+        VelocitySystem {},
+
         DirectionalLightSystem {},
+        SetProjectionViewMatrices {},
+        ModelRenderingSystem {},
         PointLightSystem {},
+
         WindowSystem {}
     );
 
@@ -103,14 +107,13 @@ i32 main()
 
         glClearColor(0.1f, 0.2f, 0.2f, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         while (accumulator >= timeResource->fixedDeltaTime)
         {
             world.FixedUpdateSystems();
             accumulator -= timeResource->fixedDeltaTime;
         }
         world.UpdateSystems();
-
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

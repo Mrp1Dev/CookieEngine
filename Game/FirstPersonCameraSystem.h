@@ -9,8 +9,7 @@
 
 class FirstPersonCameraSystem : public ck::System
 {
-	ck::Input* input {};
 public:
-	virtual void Start(ck::World* world) override;
-	virtual void Update(ck::World* world) override;
+	void Update(ck::World* world) override;
+	void FixedUpdate(ck::World* world) override;
 };

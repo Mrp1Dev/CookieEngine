@@ -1,25 +1,37 @@
 #include "FirstPersonCameraSystem.h"
 #include <algorithm>
 #include <Math/Vector3.h>
+#include <PhysicsComponents.h>
 using namespace ck;
 using namespace ck::math;
-void FirstPersonCameraSystem::Start(World* world)
-{
-    input = world->GetResource<Input>();
-}
+using namespace ck::physics;
 
 void FirstPersonCameraSystem::Update(World* world)
 {
-    auto cameraQuery { world->QueryEntities<CameraData, TransformData, FirstPersonControllerData>() };
+    constexpr f32 rotSpeed = 50.0f;
+    auto query { world->QueryEntities <TransformData, FirstPersonControllerData,  CameraData>() };
+    auto* input { world->GetResource<Input>() };
+    constexpr f32 mouseSenstivity = 0.001f;
+    query->Foreach([&](TransformData& transform, ...)
+        {
+            auto xRot = Mathf::Clamp(input->mouseDelta.y * mouseSenstivity, -Vector3::Angle(Vector3::Up(), transform.rotation * Vector3::Forward()),Vector3::Angle(Vector3::Down(), transform.rotation * Vector3::Forward()));
+            auto yRot = input->mouseDelta.x * mouseSenstivity;
+            transform.rotation = Quaternion::Euler(0, yRot, 0) * transform.rotation;
+            transform.rotation = transform.rotation * Quaternion::Euler(xRot, 0, 0);
+        });
+}
+
+void FirstPersonCameraSystem::FixedUpdate(World* world)
+{
+    auto cameraQuery { world->QueryEntities<CameraData, VelocityData, TransformData, FirstPersonControllerData>() };
     auto* time { world->GetResource<Time>() };
     auto* window { world->GetResource<Window>() };
+    auto* input { world->GetResource<Input>() };
     constexpr f32 speed = 500.0f;
-    constexpr f32 rotSpeed = 50.0f;
-    constexpr f32 mouseSenstivity = 0.002f;
 
     input->lockCursor = !input->keys[KeyCode::LeftAlt].pressed;
-    cameraQuery->Foreach([&time, &window, this](
-        CameraData& camera, TransformData& transform, FirstPersonControllerData& controller
+    cameraQuery->Foreach([&](
+        CameraData& camera, VelocityData& velocity, TransformData& transform, ...
         )
         {
             Vector3 moveVector { Vector3::Zero() };
@@ -31,14 +43,9 @@ void FirstPersonCameraSystem::Update(World* world)
             if (moveVector.SqrMagnitude() > 0.1f)
             {
                 moveVector = transform.rotation * moveVector;
-                //moveVector.y = 0;
-                moveVector.Normalize();
-                transform.position += moveVector * speed * time->deltaTime;
+                moveVector.y = 0;
+                velocity.vel = moveVector.Normalized() * speed;
             }
-
-            controller.xRot += input->mouseDelta.y * mouseSenstivity;
-            controller.yRot += input->mouseDelta.x * mouseSenstivity;
-            controller.xRot = std::clamp(controller.xRot, Mathf::Deg2Radf * -89.0f, Mathf::Deg2Radf * 89.0f);
-            transform.rotation = Quaternion::Euler(controller.xRot, controller.yRot, 0.0f);
+            else velocity.vel = Vector3::Zero();
         });
 }

@@ -62,9 +62,6 @@
     <ClInclude Include="ECS\World.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\SetPerspectiveMatrixSystem.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\TransformData.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\BaseColorData.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\SetViewMatrixSystem.h">
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h">
@@ -118,6 +112,10 @@
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Rendering\WindowSystem.h" />
     <ClInclude Include="ckMath.h" />
+    <ClInclude Include="Rendering\SetProjectionViewMatrices.h" />
+    <ClInclude Include="Physics\VelocityData.h" />
+    <ClInclude Include="Physics\VelocitySystem.h" />
+    <ClInclude Include="PhysicsComponents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -159,12 +157,6 @@
     <ClCompile Include="Rendering\ModelRenderingSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\SetPerspectiveMatrixSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rendering\SetViewMatrixSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -181,6 +173,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\WindowSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\SetProjectionViewMatrices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\VelocitySystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
