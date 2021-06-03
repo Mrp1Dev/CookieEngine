@@ -38,6 +38,11 @@ namespace cookie
 				function(entities.at(i), *std::get<cookie::Ref<QueryTypes>>(query.at(i))...);
 			}
 		}
+
+		u32 Length()
+		{
+			return query.size();
+		}
 	};
 	
 	

@@ -176,6 +176,8 @@
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="PhysicsComponents.h" />
+    <ClInclude Include="Physics\BoxColliderData.h" />
+    <ClInclude Include="Physics\BoxCollisionSystem.h" />
     <ClInclude Include="Physics\VelocityData.h" />
     <ClInclude Include="Physics\VelocitySystem.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
@@ -213,6 +215,7 @@
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
     <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Physics\BoxCollisionSystem.cpp" />
     <ClCompile Include="Physics\VelocitySystem.cpp" />
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp" />
     <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp" />

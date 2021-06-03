@@ -14,7 +14,8 @@ void FirstPersonCameraSystem::Update(World* world)
     constexpr f32 mouseSenstivity = 0.001f;
     query->Foreach([&](TransformData& transform, ...)
         {
-            auto xRot = Mathf::Clamp(input->mouseDelta.y * mouseSenstivity, -Vector3::Angle(Vector3::Up(), transform.rotation * Vector3::Forward()),Vector3::Angle(Vector3::Down(), transform.rotation * Vector3::Forward()));
+            auto localForward = transform.rotation * Vector3::Forward();
+            auto xRot = Mathf::Clamp(input->mouseDelta.y * mouseSenstivity, -Vector3::Angle(Vector3::Up(), localForward),Vector3::Angle(Vector3::Down(), localForward));
             auto yRot = input->mouseDelta.x * mouseSenstivity;
             transform.rotation = Quaternion::Euler(0, yRot, 0) * transform.rotation;
             transform.rotation = transform.rotation * Quaternion::Euler(xRot, 0, 0);
