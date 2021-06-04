@@ -27,13 +27,13 @@ namespace cookie
         template<typename T>
         constexpr  T Max(T a, T b) noexcept
         {
-            return a > b ? a : b;
+            return std::max(a, b);
         }
 
         template<typename T>
         constexpr  T Min(T a, T b) noexcept
         {
-            return a < b ? a : b;
+            return std::min(a, b);
         }
 
         template<typename T>

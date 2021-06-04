@@ -31,7 +31,7 @@ namespace cookie
 		}
 
 		template<class F>
-		void EntityForeach(F function)
+		void EntityForeach(F&& function)
 		{
 			for (u32 i = 0; i < query.size(); i++)
 			{

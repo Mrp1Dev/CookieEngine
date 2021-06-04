@@ -12,6 +12,7 @@
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetProjectionViewMatrices.h"
 #include "Physics/VelocitySystem.h"
+#include "Physics/BoxCollisionSystem.h"
 using namespace ck;
 using namespace ck::physics;
 void processInput(GLFWwindow* window)
@@ -62,15 +63,15 @@ i32 InitOpengl(GLFWwindow* window)
 
     glFrontFace(GL_CW);//reverses winding
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
     return 1;
 }
 
 i32 main()
 {
-    constexpr i32 BASE_WIDTH = 1920;
-    constexpr i32 BASE_HEIGHT = 1080;
+    constexpr i32 BASE_WIDTH = 1280;
+    constexpr i32 BASE_HEIGHT = 720;
     constexpr f32 DEFAULT_FIXED_DT = 1.0f / 50.0f;
     auto* window = InitWindow(BASE_WIDTH, BASE_HEIGHT);
     if (window == nullptr) return -1;
@@ -81,6 +82,7 @@ i32 main()
         SetMouseInputSystem {},
 
         VelocitySystem {},
+        BoxCollisionSystem {},
 
         DirectionalLightSystem {},
         SetProjectionViewMatrices {},

@@ -27,6 +27,8 @@ namespace cookie
             {
             };
 
+            Vector3T() noexcept : x { scast<T>(0.0) }, y { scast<T>(0.0) }, z { scast<T>(0.0) }{};
+
             static Vector3T<T> Splat(T f) noexcept
             {
                 return Vector3T<T>(f, f, f);
@@ -72,9 +74,14 @@ namespace cookie
                 return Vector3T<T>::Splat(0);
             }
 
-            static T Dot(const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+            static T Dot(const Vector3T<T>& lhs, const Vector3T<T>& rhs) noexcept
             {
                 return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+            }
+
+            static Vector3T<T> Cross(const Vector3T<T>& lhs, const Vector3T<T>& rhs) noexcept
+            {
+                return glm::cross(scast<vec3>(lhs), scast<vec3>(rhs));
             }
 
             static T Angle(const Vector3T<T>& lhs, const Vector3T<T>& rhs) noexcept
