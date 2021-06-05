@@ -23,7 +23,7 @@ namespace cookie
                 math::Vector3 Eb;
             };
             f32 DAbs(const math::Vector3& a, const math::Vector3& b) const;
-            bool SATOnAxis(const SATData& data, const math::Vector3& L) const;
+            bool SATOnAxis(const std::array<Vector3, 8>& verticesA, const std::array<Vector3, 8>& verticesB, const Vector3& L) const;
             bool SAT(BoxColliderData& colliderA, TransformData& transformA, BoxColliderData& colliderB, TransformData& transformB) const;
         public:
             void FixedUpdate(World* world) override;

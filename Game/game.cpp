@@ -17,7 +17,7 @@ void InitGame(World* ecsWorld)
 		},
 		FirstPersonControllerData {},
 		VelocityData {},
-		BoxColliderData {}
+		BoxColliderData {Vector3::Splat(0.1f)}
 		);
 	ecsWorld->AddSystem(SpawnBagsSystem {}, false);
 	ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);

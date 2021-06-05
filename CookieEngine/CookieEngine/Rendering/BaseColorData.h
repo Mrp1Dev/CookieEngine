@@ -1,10 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
-
+#include <ckMath.h>
 namespace cookie
 {
 	struct BaseColorData
 	{
-		glm::vec4 color {};
+		math::Vector3 color {};
 	};
 }

@@ -7,7 +7,7 @@ struct MaterialType
 {
     sampler2D diffuseTextures[MAX_DIFFUSE_TEXTURE_COUNT];
     sampler2D specularTextures[MAX_SPECULAR_TEXTURE_COUNT];
-    vec4 baseColor;
+    vec3 baseColor;
     int diffuseTextureCount;
     int specularTextureCount;
 };
@@ -67,7 +67,7 @@ vec3 calculatePointLighting(PointLightType light, vec3 normal, vec3 baseDiffuseC
 void main()
 {    
     vec3 res;
-    vec3 baseDiffuseColor = texture(Material.diffuseTextures[0], TexCoords).xyz;
+    vec3 baseDiffuseColor = Material.diffuseTextureCount > 0 ? texture(Material.diffuseTextures[0], TexCoords).xyz : Material.baseColor;
     vec3 normal = normalize(Normal);
     res += calulateDirectionalLight(DirectionalLight, normal, baseDiffuseColor);
     for(int i = 0; i < PointLightCount; i++)

@@ -24,11 +24,11 @@ namespace cookie
                         auto baseColor = world->TryGetComponent<BaseColorData>(entity);
                         if (baseColor.has_value())
                         {
-                            shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, baseColor.value()->color);
+                            shader.shader->SetVec3(ShaderUniforms::BASE_COLOR, baseColor.value()->color);
                         }
 
                         DrawMesh(shader.shader, mesh);
-                        shader.shader->SetVec4(ShaderUniforms::BASE_COLOR, 1, 1, 1, 1);
+                        shader.shader->SetVec3(ShaderUniforms::BASE_COLOR, 1, 1, 1);
                     }
                 }
             });
@@ -60,8 +60,8 @@ namespace cookie
 
             glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
         }
-        shader->SetBool(ShaderUniforms::DIFFUSE_TEXTURE_COUNT, diffuseNumber);
-        shader->SetBool(ShaderUniforms::SPECULAR_TEXTURE_COUNT, specularNumber);
+        shader->SetInt(ShaderUniforms::DIFFUSE_TEXTURE_COUNT, diffuseNumber + 1);
+        shader->SetInt(ShaderUniforms::SPECULAR_TEXTURE_COUNT, specularNumber + 1);
         glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(mesh.VAO);

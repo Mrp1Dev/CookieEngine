@@ -54,7 +54,7 @@ static PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
 static
-i32 open_gl(void) {
+int open_gl(void) {
 #ifndef IS_UWP
     libGL = LoadLibraryW(L"opengl32.dll");
     if(libGL != NULL) {
@@ -85,7 +85,7 @@ static PFNGLXGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 #endif
 
 static
-i32 open_gl(void) {
+int open_gl(void) {
 #ifdef __APPLE__
     static const char *NAMES[] = {
         "../Frameworks/OpenGL.framework/OpenGL",
@@ -97,7 +97,7 @@ i32 open_gl(void) {
     static const char *NAMES[] = {"libGL.so.1", "libGL.so"};
 #endif
 
-    u32 index = 0;
+    unsigned int index = 0;
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
 
@@ -145,8 +145,8 @@ void* get_proc(const char *namez) {
     return result;
 }
 
-i32 gladLoadGL(void) {
-    i32 status = 0;
+int gladLoadGL(void) {
+    int status = 0;
 
     if(open_gl()) {
         status = gladLoadGLLoader(&get_proc);
@@ -162,21 +162,21 @@ struct gladGLversionStruct GLVersion = { 0, 0 };
 #define _GLAD_IS_SOME_NEW_VERSION 1
 #endif
 
-static i32 max_loaded_major;
-static i32 max_loaded_minor;
+static int max_loaded_major;
+static int max_loaded_minor;
 
 static const char *exts = NULL;
-static i32 num_exts_i = 0;
+static int num_exts_i = 0;
 static char **exts_i = NULL;
 
-static i32 get_exts(void) {
+static int get_exts(void) {
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     if(max_loaded_major < 3) {
 #endif
         exts = (const char *)glGetString(GL_EXTENSIONS);
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     } else {
-        u32 index;
+        unsigned int index;
 
         num_exts_i = 0;
         glGetIntegerv(GL_NUM_EXTENSIONS, &num_exts_i);
@@ -205,7 +205,7 @@ static i32 get_exts(void) {
 
 static void free_exts(void) {
     if (exts_i != NULL) {
-        i32 index;
+        int index;
         for(index = 0; index < num_exts_i; index++) {
             free((char *)exts_i[index]);
         }
@@ -214,7 +214,7 @@ static void free_exts(void) {
     }
 }
 
-static i32 has_ext(const char *ext) {
+static int has_ext(const char *ext) {
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     if(max_loaded_major < 3) {
 #endif
@@ -241,7 +241,7 @@ static i32 has_ext(const char *ext) {
         }
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     } else {
-        i32 index;
+        int index;
         if(exts_i == NULL) return 0;
         for(index = 0; index < num_exts_i; index++) {
             const char *e = exts_i[index];
@@ -255,18 +255,18 @@ static i32 has_ext(const char *ext) {
 
     return 0;
 }
-i32 GLAD_GL_VERSION_1_0 = 0;
-i32 GLAD_GL_VERSION_1_1 = 0;
-i32 GLAD_GL_VERSION_1_2 = 0;
-i32 GLAD_GL_VERSION_1_3 = 0;
-i32 GLAD_GL_VERSION_1_4 = 0;
-i32 GLAD_GL_VERSION_1_5 = 0;
-i32 GLAD_GL_VERSION_2_0 = 0;
-i32 GLAD_GL_VERSION_2_1 = 0;
-i32 GLAD_GL_VERSION_3_0 = 0;
-i32 GLAD_GL_VERSION_3_1 = 0;
-i32 GLAD_GL_VERSION_3_2 = 0;
-i32 GLAD_GL_VERSION_3_3 = 0;
+int GLAD_GL_VERSION_1_0 = 0;
+int GLAD_GL_VERSION_1_1 = 0;
+int GLAD_GL_VERSION_1_2 = 0;
+int GLAD_GL_VERSION_1_3 = 0;
+int GLAD_GL_VERSION_1_4 = 0;
+int GLAD_GL_VERSION_1_5 = 0;
+int GLAD_GL_VERSION_2_0 = 0;
+int GLAD_GL_VERSION_2_1 = 0;
+int GLAD_GL_VERSION_3_0 = 0;
+int GLAD_GL_VERSION_3_1 = 0;
+int GLAD_GL_VERSION_3_2 = 0;
+int GLAD_GL_VERSION_3_3 = 0;
 PFNGLACTIVETEXTUREPROC glad_glActiveTexture = NULL;
 PFNGLATTACHSHADERPROC glad_glAttachShader = NULL;
 PFNGLBEGINCONDITIONALRENDERPROC glad_glBeginConditionalRender = NULL;
@@ -1054,7 +1054,7 @@ static void load_GL_VERSION_3_3(GLADloadproc load) {
 	glad_glSecondaryColorP3ui = (PFNGLSECONDARYCOLORP3UIPROC)load("glSecondaryColorP3ui");
 	glad_glSecondaryColorP3uiv = (PFNGLSECONDARYCOLORP3UIVPROC)load("glSecondaryColorP3uiv");
 }
-static i32 find_extensionsGL(void) {
+static int find_extensionsGL(void) {
 	if (!get_exts()) return 0;
 	(void)&has_ext;
 	free_exts();
@@ -1067,7 +1067,7 @@ static void find_coreGL(void) {
      * https://github.com/elmindreda/greg/blob/master/templates/greg.c.in#L176
      * https://github.com/glfw/glfw/blob/master/src/context.c#L36
      */
-    i32 i, major, minor;
+    int i, major, minor;
 
     const char* version;
     const char* prefixes[] = {
@@ -1115,7 +1115,7 @@ static void find_coreGL(void) {
 	}
 }
 
-i32 gladLoadGLLoader(GLADloadproc load) {
+int gladLoadGLLoader(GLADloadproc load) {
 	GLVersion.major = 0; GLVersion.minor = 0;
 	glGetString = (PFNGLGETSTRINGPROC)load("glGetString");
 	if(glGetString == NULL) return 0;

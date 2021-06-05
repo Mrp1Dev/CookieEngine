@@ -103,7 +103,7 @@ i32 main()
     while (!glfwWindowShouldClose(window))
     {
         updateTime(timeResource, &lastFrame);
-        std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
+        //std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
         accumulator += timeResource->deltaTime;
         processInput(window);
 

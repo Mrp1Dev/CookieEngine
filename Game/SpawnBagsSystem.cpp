@@ -40,10 +40,11 @@ void SpawnBagsSystem::Start(ck::World* world)
         },
         ck::PointLightData { glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 1.0f), 40.0f, 25.0f, 25.0f }
     );*/
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 1; i++)
         world->EnqueueEntitySpawn(AssetManager::GetModel("cube.obj", true),
             TransformData { Vector3{0, 0, 2}, Vector3::One(), Quaternion::Euler(Mathf::Tau / 8.0f, Mathf::Tau / 8.1f, 0) },
-            BoxColliderData {}, AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG)
+            BoxColliderData {}, AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
+            BaseColorData { Vector3{0.8f, 1.0f, 1.0f} }
         );
 
 }
