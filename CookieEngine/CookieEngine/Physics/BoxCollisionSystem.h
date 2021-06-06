@@ -10,7 +10,7 @@ namespace cookie
     {
         class BoxCollisionSystem : public System
         {
-            struct SATData
+            /*struct SATData
             {
                 math::Vector3 T;
                 math::Vector3 Ax;
@@ -21,10 +21,10 @@ namespace cookie
                 math::Vector3 Bz;
                 math::Vector3 Ea;
                 math::Vector3 Eb;
-            };
-            f32 DAbs(const math::Vector3& a, const math::Vector3& b) const;
-            bool SATOnAxis(const std::array<Vector3, 8>& verticesA, const std::array<Vector3, 8>& verticesB, const Vector3& L) const;
-            bool SAT(BoxColliderData& colliderA, TransformData& transformA, BoxColliderData& colliderB, TransformData& transformB) const;
+            };*/
+            //f32 DAbs(const math::Vector3& a, const math::Vector3& b) const;
+            //bool SATOnAxis(const std::array<Vector3, 8>& verticesA, const std::array<Vector3, 8>& verticesB, const Vector3& L) const;
+            math::Vector3 SAT(BoxColliderData& colliderA, TransformData& transformA, BoxColliderData& colliderB, TransformData& transformB) const;
         public:
             void FixedUpdate(World* world) override;
         };

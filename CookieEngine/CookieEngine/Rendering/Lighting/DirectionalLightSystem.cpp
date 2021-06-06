@@ -2,12 +2,14 @@
 #include "RenderingComponents.h"
 #include "DirectionalLightData.h"
 #include <Constants.h>
+#include <ckMath.h>
 namespace cookie
 {
+    using namespace cookie::math;
     void DirectionalLightSystem::Start(World* world)
     {
         world->EnqueueEntitySpawn(DirectionalLightData {
-            glm::fquat(glm::vec3(45, 0, 0)) * glm::vec3(0, -1, 0),
+            math::Vector3(-1, -1, -1),
             glm::vec3(0.8f),
             glm::vec3(0.15f)
             });

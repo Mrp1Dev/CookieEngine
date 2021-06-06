@@ -28,7 +28,7 @@ void FirstPersonCameraSystem::FixedUpdate(World* world)
     auto* time { world->GetResource<Time>() };
     auto* window { world->GetResource<Window>() };
     auto* input { world->GetResource<Input>() };
-    constexpr f32 speed = 1.0f;
+    constexpr f32 speed = 3.0f;
 
     input->lockCursor = !input->keys[KeyCode::LeftAlt].pressed;
     cameraQuery->Foreach([&](
@@ -44,7 +44,7 @@ void FirstPersonCameraSystem::FixedUpdate(World* world)
             if (moveVector.SqrMagnitude() > 0.1f)
             {
                 moveVector = transform.rotation * moveVector;
-                moveVector.y = 0;
+                //moveVector.y = 0;
                 velocity.vel = moveVector.Normalized() * speed;
             }
             else velocity.vel = Vector3::Zero();

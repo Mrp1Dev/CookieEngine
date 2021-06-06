@@ -92,6 +92,14 @@ namespace cookie
                 T dot = Mathf::Clamp(Dot(lhs, rhs) / denominator, -1.0f, 1.0f);
                 return Mathf::Acos(dot);
             }
+            
+            static Vector3T<T> ProjectOnPlane(const Vector3T<T> vec, const Vector3T<T>& normal)
+            {
+                f32 sqrMag = normal.SqrMagnitude();
+                if (sqrMag < Mathf::Epsilonf) return vec;
+                auto dot = Dot(vec, normal);
+                return vec - normal * dot / sqrMag;
+            }
 
             T Magnitude() const noexcept
             {
@@ -153,6 +161,11 @@ namespace cookie
             Vector3T<T> operator+=(const Vector3T<T>& rhs) noexcept
             {
                 return *this = *this + rhs;
+            }
+
+            Vector3T<T> operator-=(const Vector3T<T>& rhs) noexcept
+            {
+                return *this = *this - rhs;
             }
 
             T x {};

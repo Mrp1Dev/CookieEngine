@@ -42,8 +42,8 @@ void SpawnBagsSystem::Start(ck::World* world)
     );*/
     for (size_t i = 0; i < 1; i++)
         world->EnqueueEntitySpawn(AssetManager::GetModel("cube.obj", true),
-            TransformData { Vector3{0, 0, 2}, Vector3::One(), Quaternion::Euler(Mathf::Tau / 8.0f, Mathf::Tau / 8.1f, 0) },
-            BoxColliderData {}, AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
+            TransformData { Vector3(0.0f, 0.0f, 0.0f)},
+            BoxColliderData {Vector3::One() * 0.5F}, AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
             BaseColorData { Vector3{0.8f, 1.0f, 1.0f} }
         );
 
