@@ -9,9 +9,9 @@ namespace cookie
     void DirectionalLightSystem::Start(World* world)
     {
         world->EnqueueEntitySpawn(DirectionalLightData {
-            math::Vector3(-1, -1, -1),
-            glm::vec3(0.8f),
-            glm::vec3(0.15f)
+            Quaternion::Euler(Mathf::PI/4.0f, 0.0f, 0.0f) * math::Vector3::Down(),
+            math::Vector3::Splat(0.8f),
+            math::Vector3::Splat(0.15f)
             });
     }
 

@@ -118,6 +118,7 @@
     <ClInclude Include="PhysicsComponents.h" />
     <ClInclude Include="Physics\BoxColliderData.h" />
     <ClInclude Include="Physics\BoxCollisionSystem.h" />
+    <ClInclude Include="Physics\PhysicsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -184,6 +185,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\BoxCollisionSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

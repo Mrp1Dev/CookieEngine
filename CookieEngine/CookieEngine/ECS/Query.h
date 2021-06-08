@@ -41,7 +41,7 @@ namespace cookie
 
 		u32 Length()
 		{
-			return query.size();
+			return scast<u32>(query.size());
 		}
 	};
 	

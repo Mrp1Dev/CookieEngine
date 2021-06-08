@@ -13,6 +13,7 @@
 #include "Rendering/SetProjectionViewMatrices.h"
 #include "Physics/VelocitySystem.h"
 #include "Physics/BoxCollisionSystem.h"
+#include "Physics/PhysicsSystem.h"
 using namespace ck;
 using namespace ck::physics;
 void processInput(GLFWwindow* window)
@@ -81,6 +82,7 @@ i32 main()
         SetInputKeysSystem {},
         SetMouseInputSystem {},
 
+        Physicssystem {},
         VelocitySystem {},
         BoxCollisionSystem {},
 
@@ -103,7 +105,7 @@ i32 main()
     while (!glfwWindowShouldClose(window))
     {
         updateTime(timeResource, &lastFrame);
-        //std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
+        std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
         accumulator += timeResource->deltaTime;
         processInput(window);
 
