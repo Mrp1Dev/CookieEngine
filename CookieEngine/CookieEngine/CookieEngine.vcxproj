@@ -107,8 +107,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\PhysX\PhysX-4.1\physx\bin;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\bin\win.x86_64.vc142.mt\checked;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\snippets\graphics\lib\win64\glut;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\externals\glew\lib\win64;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -178,7 +178,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PhysXExtensions_static_64.lib;PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXVehicle_static_64.lib;PhysXCharacterKinematic_static_64.lib;LowLevelDynamics_static_64.lib;LowLevelAABB_static_64.lib;LowLevel_static_64.lib;PhysXPvdSDK_static_64.lib;SimulationController_static_64.lib;SceneQuery_static_64.lib;PhysXFoundation_64.lib;PhysXTask_static_64.lib;glut32.lib;glew_checked.lib;glfw3.lib;opengl32.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Optimized|x64'">
