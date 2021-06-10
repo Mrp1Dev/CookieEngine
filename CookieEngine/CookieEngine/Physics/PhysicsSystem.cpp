@@ -1,8 +1,10 @@
 #include "PhysicsSystem.h"
+#include <cassert>
 namespace cookie
 {
     namespace physics
     {
+        namespace px = physx;
         void Physicssystem::Start(World* world)
         {
             foundation = PxCreateFoundation(PX_PHYSICS_VERSION, allocatorCallBack, errorCallBack);
@@ -12,21 +14,28 @@ namespace cookie
                 return;
             }
             constexpr bool recordMemoryAllocations { true };
-
-            physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation,
-                physx::PxTolerancesScale(), recordMemoryAllocations);
+            const auto scale = px::PxTolerancesScale();
+            physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, recordMemoryAllocations);
             if (!physics)
             {
                 std::cout << "ERROR::PHYSX: Couldn't create physics.\n";
                 return;
             }
+            dispatcher = px::PxDefaultCpuDispatcherCreate(1);
+            auto desc = px::PxSceneDesc(scale);
+            desc.filterShader = px::PxDefaultSimulationFilterShader;
+            desc.cpuDispatcher = dispatcher;
+            const bool bleh = desc.isValid();
+            scene = physics->createScene(desc);
+            if (!scene)
+            {
+                std::cout << "ERROR::PHYSX: Couldn't create physics scene.\n";
+                return;
+            }
 
-            pvd = physx::PxCreatePvd(*foundation);
-
-            physx::PxTolerancesScale scale {};
-            scale.length = 100;
-            scale.length = 981;
-            cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, physx::PxCookingParams(scale));
+            pvd = px::PxCreatePvd(*foundation);
+            
+            cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, px::PxCookingParams(scale));
             if (!cooking)
             {
                 std::cout << "ERROR::PHYSX: Couldn't create cooking.\n";
@@ -37,12 +46,7 @@ namespace cookie
                 std::cout << "ERROR::PHYSX: Couldn't init extensions.\n";
                 return;
             }
-            scene = physics->createScene(physx::PxSceneDesc(scale));
-            if (!scene)
-            {
-                std::cout << "ERROR::PHYSX: Couldn't create physics scene.\n";
-                return;
-            }
+            
         }
         void Physicssystem::FixedUpdate(World* world)
         {

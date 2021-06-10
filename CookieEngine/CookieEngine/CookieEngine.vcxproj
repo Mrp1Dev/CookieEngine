@@ -31,7 +31,6 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{5b9586a2-2279-4d5d-b494-619d532c738e}</ProjectGuid>
     <RootNamespace>CookieEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -68,7 +67,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -107,8 +106,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\bin\win.x86_64.vc142.mt\checked;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\snippets\graphics\lib\win64\glut;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\externals\glew\lib\win64;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine\Cookie;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\bin\win.x86_64.vc142.mt\debug;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\snippets\graphics\lib\win64\glut;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\externals\glew\lib\win64;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -121,8 +120,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine\Cookie;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\externals\glew\lib\win64;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\bin\win.x86_64.vc142.mt\release;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -174,6 +173,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableModules>true</EnableModules>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -207,13 +207,14 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableModules>true</EnableModules>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PhysXExtensions_static_64.lib;PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXVehicle_static_64.lib;PhysXCharacterKinematic_static_64.lib;LowLevelDynamics_static_64.lib;LowLevelAABB_static_64.lib;LowLevel_static_64.lib;PhysXPvdSDK_static_64.lib;SimulationController_static_64.lib;SceneQuery_static_64.lib;PhysXFoundation_64.lib;PhysXTask_static_64.lib;glfw3.lib;opengl32.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

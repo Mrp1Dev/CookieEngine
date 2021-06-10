@@ -14,6 +14,7 @@ namespace cookie
             physx::PxPhysics* physics;
             physx::PxCooking* cooking;
             physx::PxScene* scene;
+            physx::PxCpuDispatcher* dispatcher;
         public:
             void Start(World* world) override;
             void FixedUpdate(World* world) override;
