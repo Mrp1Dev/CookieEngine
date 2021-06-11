@@ -76,8 +76,8 @@ namespace cookie
 
         Vector3 BoxCollisionSystem::SAT(BoxColliderData& colliderA, TransformData& transformA, BoxColliderData& colliderB, TransformData& transformB) const
         {
-            const Vector3 Ea = transformA.rotation * colliderA.extents;
-            const Vector3 Eb = transformB.rotation * colliderB.extents;
+            const Vector3 Ea = transformA.rotation * colliderA.halfExtents;
+            const Vector3 Eb = transformB.rotation * colliderB.halfExtents;
             const std::array<Vector3, 8> verticesA {
                 transformA.position + Ea, //Top forward right
                 transformA.position + -Ea, //bottom back left

@@ -31,6 +31,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{5b9586a2-2279-4d5d-b494-619d532c738e}</ProjectGuid>
     <RootNamespace>CookieEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -55,7 +56,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Optimized|x64'" Label="Configuration">
@@ -173,7 +174,6 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableModules>true</EnableModules>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -244,6 +244,7 @@
     <ClInclude Include="Physics\BoxColliderData.h" />
     <ClInclude Include="Physics\BoxCollisionSystem.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />
+    <ClInclude Include="Physics\RigidbodyData.h" />
     <ClInclude Include="Physics\VelocityData.h" />
     <ClInclude Include="Physics\VelocitySystem.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />

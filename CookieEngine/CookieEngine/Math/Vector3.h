@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <Usings.h>
 #include <Math/Mathf.h>
+#include <PxPhysicsAPI.h>
 
 namespace cookie
 {
@@ -21,6 +22,13 @@ namespace cookie
             };
 
             Vector3T(const vec3& v) noexcept :
+                x { v.x },
+                y { v.y },
+                z { v.z }
+            {
+            };
+
+            Vector3T(const physx::PxVec3& v) noexcept :
                 x { v.x },
                 y { v.y },
                 z { v.z }
@@ -124,6 +132,11 @@ namespace cookie
             operator vec3() const noexcept
             {
                 return vec3 { x, y, z };
+            }
+
+            operator physx::PxVec3() const noexcept
+            {
+                return physx::PxVec3{x, y, z};
             }
 
             Vector3T<T> operator+(const Vector3T<T>& rhs) const noexcept

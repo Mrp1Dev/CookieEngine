@@ -11,8 +11,6 @@
 #include "Rendering/WindowSystem.h"
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetProjectionViewMatrices.h"
-#include "Physics/VelocitySystem.h"
-#include "Physics/BoxCollisionSystem.h"
 #include "Physics/PhysicsSystem.h"
 using namespace ck;
 using namespace ck::physics;
@@ -83,8 +81,6 @@ i32 main()
         SetMouseInputSystem {},
 
         Physicssystem {},
-        VelocitySystem {},
-        BoxCollisionSystem {},
 
         DirectionalLightSystem {},
         SetProjectionViewMatrices {},
@@ -105,7 +101,7 @@ i32 main()
     while (!glfwWindowShouldClose(window))
     {
         updateTime(timeResource, &lastFrame);
-        std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
+        //std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
         accumulator += timeResource->deltaTime;
         processInput(window);
 

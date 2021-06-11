@@ -16,8 +16,8 @@ void InitGame(World* ecsWorld)
 			Quaternion(Quaternion::Identity())
 		},
 		FirstPersonControllerData {},
-		VelocityData {},
-		BoxColliderData {Vector3::Splat(1.0f)}
+		BoxColliderData {Vector3::Splat(0.5f)},
+		RigidbodyData {}
 		);
 	ecsWorld->AddSystem(SpawnBagsSystem {}, false);
 	ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);

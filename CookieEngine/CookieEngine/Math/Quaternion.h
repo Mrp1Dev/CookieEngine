@@ -4,6 +4,7 @@
 #include <Math/Mathf.h>
 #include <glm/gtc/quaternion.hpp>
 #include <Math/Vector3.h>
+#include <PxPhysicsAPI.h>
 namespace cookie
 {
     namespace math
@@ -30,14 +31,22 @@ namespace cookie
             {
             };
 
+            QuaternionT(const physx::PxQuat& q) noexcept :
+                x { q.x },
+                y { q.y },
+                z { q.z },
+                w { q.w }
+            {
+            };
+
             static QuaternionT<T> Euler(const T x, const T y, const T z) noexcept
             {
-                return QuaternionT<T> { quat{glm::vec3(x, y, z)} };
+                return QuaternionT<T> { quat { glm::vec3(x, y, z) } };
             }
 
             static QuaternionT<T> Euler(const Vector3& v) noexcept
             {
-                return QuaternionT<T> { quat{glm::vec3(v.x, v.y, v.z)} };
+                return QuaternionT<T> { quat { glm::vec3(v.x, v.y, v.z) } };
             }
 
             static QuaternionT<T> Identity() noexcept
@@ -52,7 +61,13 @@ namespace cookie
 
             operator quat() const noexcept
             {
-                return quat { w, x, y, z};
+                return quat { w, x, y, z };
+            }
+
+            operator physx::PxQuat() const noexcept
+            {
+                //Vector3 normalizedXYZ = Vector3(x, y, z).Normalized();
+                return physx::PxQuat(x, y, z, w);
             }
 
             QuaternionT<T> operator*(const QuaternionT<T>& rhs) const noexcept
@@ -60,7 +75,7 @@ namespace cookie
                 return scast<quat>(*this) * scast<quat>(rhs);
             }
 
-            Vector3 operator*(const Vector3& rhs) const noexcept 
+            Vector3 operator*(const Vector3& rhs) const noexcept
             {
                 return scast<quat>(*this) * scast<glm::vec3>(rhs);
             }

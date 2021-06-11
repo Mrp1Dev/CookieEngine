@@ -24,15 +24,15 @@ void FirstPersonCameraSystem::Update(World* world)
 
 void FirstPersonCameraSystem::FixedUpdate(World* world)
 {
-    auto cameraQuery { world->QueryEntities<CameraData, VelocityData, TransformData, FirstPersonControllerData>() };
+    auto cameraQuery { world->QueryEntities<CameraData, RigidbodyData, TransformData, FirstPersonControllerData>() };
     auto* time { world->GetResource<Time>() };
     auto* window { world->GetResource<Window>() };
     auto* input { world->GetResource<Input>() };
-    constexpr f32 speed = 25.0f;
+    constexpr f32 speed = 2.0f;
 
     input->lockCursor = !input->keys[KeyCode::LeftAlt].pressed;
     cameraQuery->Foreach([&](
-        CameraData& camera, VelocityData& velocity, TransformData& transform, ...
+        CameraData& camera, RigidbodyData& rb, TransformData& transform, ...
         )
         {
             Vector3 moveVector { Vector3::Zero() };
@@ -45,8 +45,8 @@ void FirstPersonCameraSystem::FixedUpdate(World* world)
             {
                 moveVector = transform.rotation * moveVector;
                 //moveVector.y = 0;
-                velocity.vel = moveVector.Normalized() * speed;
+                rb.linearVelocity = moveVector.Normalized() * speed;
             }
-            else velocity.vel = Vector3::Zero();
+            else rb.linearVelocity = Vector3::Zero();
         });
 }
