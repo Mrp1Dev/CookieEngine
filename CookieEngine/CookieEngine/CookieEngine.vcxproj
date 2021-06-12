@@ -221,6 +221,7 @@
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
+    <ClInclude Include="..\..\Game\TurnSpeedData.h" />
     <ClInclude Include="Constants\DefaultShaders.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="ECS\ComponentArray.h" />

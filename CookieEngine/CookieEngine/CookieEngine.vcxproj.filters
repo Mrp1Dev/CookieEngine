@@ -120,6 +120,7 @@
     <ClInclude Include="Physics\RigidBodyMode.h" />
     <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
+    <ClInclude Include="..\..\Game\TurnSpeedData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

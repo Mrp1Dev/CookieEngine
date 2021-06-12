@@ -33,6 +33,7 @@ namespace cookie
             desc.filterShader = px::PxDefaultSimulationFilterShader;
             desc.cpuDispatcher = dispatcher;
             desc.broadPhaseType = px::PxBroadPhaseType::eABP;
+            desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
             scene = physics->createScene(desc);
             if (!scene)
             {
@@ -87,7 +88,6 @@ namespace cookie
                             );
                             rb.pxShape = shape;
                         }
-
                         rb.pxRbActor = rbActor;
                         scene->addActor(*rbActor);
                         rb.initialized = true;
@@ -101,7 +101,9 @@ namespace cookie
                     transform.rotation = rot;
 
                     if (rb.mode == RigidBodyMode::Dynamic)
+                    {
                         scast<px::PxRigidDynamic*>(rb.pxRbActor)->setLinearVelocity(rb.linearVelocity);
+                    }
                 });
             scene->simulate(time->fixedDeltaTime);
             scene->fetchResults(true);
