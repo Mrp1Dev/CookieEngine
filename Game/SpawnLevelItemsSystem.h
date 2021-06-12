@@ -5,7 +5,7 @@
 #include <IO/AssetManager.h>
 namespace ck = cookie;
 
-class SpawnBagsSystem : public ck::System
+class SpawnLevelItemsSystem : public ck::System
 {
 public:
 	virtual void Start(ck::World* world) override;

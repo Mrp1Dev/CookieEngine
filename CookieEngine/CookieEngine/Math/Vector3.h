@@ -129,6 +129,11 @@ namespace cookie
                 *this = Normalized();
             }
 
+            Vector3T ScaledBy(const Vector3T& rhs) const noexcept
+            {
+                return Vector3T<T>(x * rhs.x, y * rhs.y, z * rhs.z);
+            }
+
             operator vec3() const noexcept
             {
                 return vec3 { x, y, z };

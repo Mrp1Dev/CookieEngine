@@ -58,27 +58,50 @@ namespace cookie
         void Physicssystem::FixedUpdate(World* world)
         {
             auto* time { world->GetResource<Time>() };
-            auto* query { world->QueryEntities<BoxColliderData, TransformData, RigidbodyData>() };
-            query->Foreach([&](BoxColliderData& collider, TransformData& transform, RigidbodyData& rb)
+            auto* query { world->QueryEntities<TransformData, RigidbodyData>() };
+            query->EntityForeach([&](Entity entity, TransformData& transform, RigidbodyData& rb)
                 {
-                    if (!collider.initialized)
+                    if (!rb.initialized)
                     {
-                        auto rbDynamic = physics->createRigidDynamic(px::PxTransform(transform.position, transform.rotation));
-                        if (!rbDynamic) std::cout << "SSHIT RB DYNAMIC IS NULL\n";
-                        auto geometry = px::PxBoxGeometry(collider.halfExtents);
-                        geometry.isValid();
-                        auto& rbRef = *rbDynamic;
-                        px::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(rbRef, px::PxBoxGeometry(collider.halfExtents), *physics->createMaterial(0.5f, 0.5f, 0.1), px::PxShapeFlag::eSIMULATION_SHAPE);
-                        rb.pxRbDynamic = rbDynamic;
-                        scene->addActor(*rbDynamic);
-                        collider.initialized = true;
+                        px::PxRigidActor* rbActor { nullptr };
+                        const auto pxTrans { px::PxTransform(transform.position, transform.rotation) };
+                        if (rb.mode == RigidBodyMode::Dynamic)
+                        {
+                            rbActor = physics->createRigidDynamic(pxTrans);
+                        }
+                        else
+                        {
+                            rbActor = physics->createRigidStatic(pxTrans);
+                        }
+                        if (!rbActor) std::cout << "SSHIT RB DYNAMIC IS NULL\n";
+
+                        auto collider = world->TryGetComponent<BoxColliderData>(entity);
+                        if (collider.has_value())
+                        {
+                            px::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(
+                                *rbActor,
+                                px::PxBoxGeometry(collider.value()->halfExtents.ScaledBy(transform.scale)),
+                                *physics->createMaterial(rb.physicsMaterial.staticFriction,
+                                    rb.physicsMaterial.dynamicFriction, rb.physicsMaterial.restitution),
+                                px::PxShapeFlag::eSIMULATION_SHAPE
+                            );
+                            rb.pxShape = shape;
+                        }
+
+                        rb.pxRbActor = rbActor;
+                        scene->addActor(*rbActor);
+                        rb.initialized = true;
                     }
-                    auto pos = rb.pxRbDynamic->getGlobalPose().p;
-                    auto rot = rb.pxRbDynamic->getGlobalPose().q;
+
+                    auto pos = rb.pxRbActor->getGlobalPose().p;
+                    rb.pxRbActor->setGlobalPose(px::PxTransform(pos, transform.rotation));
+                    auto rot = rb.pxRbActor->getGlobalPose().q;
                     std::cout << pos.x << ' ' << pos.y << ' ' << pos.z << '\n';
                     transform.position = pos;
                     transform.rotation = rot;
-                    rb.pxRbDynamic->setLinearVelocity(rb.linearVelocity);
+
+                    if (rb.mode == RigidBodyMode::Dynamic)
+                        scast<px::PxRigidDynamic*>(rb.pxRbActor)->setLinearVelocity(rb.linearVelocity);
                 });
             scene->simulate(time->fixedDeltaTime);
             scene->fetchResults(true);

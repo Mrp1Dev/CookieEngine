@@ -9,7 +9,6 @@ namespace cookie
         {
             math::Vector3 halfExtents { math::Vector3::One() * 0.5f };
             math::Vector3 offset { math::Vector3::Zero() };
-            bool initialized { false };
         };
     }
 }

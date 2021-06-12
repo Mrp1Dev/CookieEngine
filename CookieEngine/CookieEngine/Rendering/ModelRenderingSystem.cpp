@@ -15,9 +15,9 @@ namespace cookie
                     for (auto& mesh : model.model->meshes)
                     {
                         Mat4 matrix(1.0f);
+                        matrix = Matrixf::Translate(matrix, transform.position);
                         matrix = matrix * transform.rotation.ToMatrix();
                         matrix = Matrixf::Scale(matrix, transform.scale);
-                        matrix = Matrixf::Translate(matrix, transform.position);
                         shader.shader->Use();
                         shader.shader->SetMat4(ShaderUniforms::MODEL_MATRIX, matrix);
                         shader.shader->SetMat4(ShaderUniforms::INV_MODEL_MATRIX, Matrixf::Inverse(matrix));

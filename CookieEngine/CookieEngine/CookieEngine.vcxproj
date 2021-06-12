@@ -220,7 +220,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
-    <ClInclude Include="..\..\Game\SpawnBagsSystem.h" />
+    <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
     <ClInclude Include="Constants\DefaultShaders.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
@@ -243,8 +243,10 @@
     <ClInclude Include="PhysicsComponents.h" />
     <ClInclude Include="Physics\BoxColliderData.h" />
     <ClInclude Include="Physics\BoxCollisionSystem.h" />
+    <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Physics\RigidbodyData.h" />
+    <ClInclude Include="Physics\RigidBodyMode.h" />
     <ClInclude Include="Physics\VelocityData.h" />
     <ClInclude Include="Physics\VelocitySystem.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
@@ -273,7 +275,7 @@
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
     <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\game.cpp" />
-    <ClCompile Include="..\..\Game\SpawnBagsSystem.cpp" />
+    <ClCompile Include="..\..\Game\SpawnLevelItemsSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ECS\World.cpp" />
     <ClCompile Include="Input\InitializeInputSystem.cpp" />

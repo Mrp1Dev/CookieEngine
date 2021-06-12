@@ -1,5 +1,5 @@
 #include "../CookieEngine/CookieEngine/Cookie.h"
-#include "SpawnBagsSystem.h"
+#include "SpawnLevelItemsSystem.h"
 
 #include "FirstPersonCameraSystem.h"
 #include <Math/Mathf.h>
@@ -9,16 +9,6 @@ using namespace ck::physics;
 using namespace ck::math;
 void InitGame(World* ecsWorld)
 {
-	ecsWorld->EnqueueEntitySpawn(CameraData { 60.0f, true, 0.1f, 10000.0f },
-		TransformData {
-			Vector3(0.0f, 0.0f, 0.0f),
-			Vector3(1.0f, 1.0f, 1.0f),
-			Quaternion(Quaternion::Identity())
-		},
-		FirstPersonControllerData {},
-		BoxColliderData {Vector3::Splat(0.5f)},
-		RigidbodyData {}
-		);
-	ecsWorld->AddSystem(SpawnBagsSystem {}, false);
-	ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);
+    ecsWorld->AddSystem(SpawnLevelItemsSystem {}, false);
+    ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);
 }

@@ -2,6 +2,6 @@
 
 struct FirstPersonControllerData
 {
-	f32 xRot {};
-	f32 yRot {};
+    f32 speed { 25.0f };
+    f32 turnSpeed { 50.0f };
 };

@@ -65,9 +65,6 @@
     <ClInclude Include="Rendering\TransformData.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Game\SpawnBagsSystem.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\BaseColorData.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -120,6 +117,9 @@
     <ClInclude Include="Physics\BoxCollisionSystem.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Physics\RigidbodyData.h" />
+    <ClInclude Include="Physics\RigidBodyMode.h" />
+    <ClInclude Include="Physics\PhysicsMaterial.h" />
+    <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -164,9 +164,6 @@
     <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Game\SpawnBagsSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -189,6 +186,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\SpawnLevelItemsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
