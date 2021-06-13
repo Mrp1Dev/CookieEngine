@@ -12,18 +12,23 @@ void FirstPersonCameraSystem::Update(World* world)
     constexpr f32 mouseDeltaReductionFactor = 1.0f / 10000.0f;
     auto cameraQuery { world->QueryEntities <TransformData, TurnSpeedData, CameraData>() };
     auto controllerQuery { world->QueryEntities<TransformData, TurnSpeedData, FirstPersonControllerData>() };
-    auto* input { world->GetResource<Input>() };
+    auto time { world->GetResource<Time>() };
+    auto input { world->GetResource<Input>() };
     cameraQuery->Foreach([&](TransformData& transform, TurnSpeedData& turnSpeed ,...)
         {
-            controllerQuery->Foreach([&](TransformData& transform, TurnSpeedData& turnSpeed, ...)
-                {
-                    transform.rotation = Quaternion::Euler(0, input->mouseDelta.x * turnSpeed.speed * mouseDeltaReductionFactor, 0) * transform.rotation;
-                });
-
             auto localForward = transform.rotation * Vector3::Forward();
             transform.rotation = Quaternion::Euler(0, input->mouseDelta.x * turnSpeed.speed * mouseDeltaReductionFactor, 0) * transform.rotation;
             auto xRot = Mathf::Clamp(input->mouseDelta.y * turnSpeed.speed * mouseDeltaReductionFactor, -Vector3::Angle(Vector3::Up(), localForward),Vector3::Angle(Vector3::Down(), localForward));
             transform.rotation = transform.rotation * Quaternion::Euler(xRot, 0, 0);
+            /*controllerQuery->Foreach([&](TransformData& controllerTrans, auto& ts, FirstPersonControllerData& controller)
+                {
+                    auto target { Vector3(controllerTrans.position.x, controllerTrans.position.y + controller.headHeight, controllerTrans.position.z) };
+                    transform.position = Vector3::MoveTowards(transform.position, target, time->deltaTime * 4.0f);
+                });*/
+        });
+    controllerQuery->Foreach([&](TransformData& transform, TurnSpeedData& turnSpeed, ...)
+        {
+            transform.rotation = Quaternion::Euler(0, input->mouseDelta.x * turnSpeed.speed * mouseDeltaReductionFactor, 0) * transform.rotation;
         });
     
 }
@@ -35,7 +40,6 @@ void FirstPersonCameraSystem::FixedUpdate(World* world)
     auto* time { world->GetResource<Time>() };
     auto* window { world->GetResource<Window>() };
     auto* input { world->GetResource<Input>() };
-    
 
     input->lockCursor = !input->keys[KeyCode::LeftAlt].pressed;
     controllerQuery->Foreach([&](RigidbodyData& rb, TransformData& transform, FirstPersonControllerData& controller)

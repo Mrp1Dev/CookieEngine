@@ -101,12 +101,27 @@ namespace cookie
                 return Mathf::Acos(dot);
             }
             
-            static Vector3T<T> ProjectOnPlane(const Vector3T<T> vec, const Vector3T<T>& normal)
+            static Vector3T<T> ProjectOnPlane(const Vector3T<T>& vec, const Vector3T<T>& normal) noexcept
             {
                 f32 sqrMag = normal.SqrMagnitude();
                 if (sqrMag < Mathf::Epsilonf) return vec;
                 auto dot = Dot(vec, normal);
                 return vec - normal * dot / sqrMag;
+            }
+
+            static Vector3T<T> ClampMagnitude(const Vector3T<T>& vec, const T& mag)
+            {
+                return vec.Normalized() * Mathf::Min(vec.Magnitude(), mag);
+            }
+
+            static Vector3T<T> MoveTowards(const Vector3T<T>& current, const Vector3T<T>& target, const T& maxDelta) noexcept
+            {
+                auto dir = target - current;
+                if (dir.SqrMagnitude() <= maxDelta * maxDelta)
+                {
+                    return target;
+                }
+                return current + ClampMagnitude(dir, maxDelta);
             }
 
             T Magnitude() const noexcept

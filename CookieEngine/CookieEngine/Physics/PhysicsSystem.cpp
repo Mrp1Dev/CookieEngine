@@ -19,7 +19,9 @@ namespace cookie
                 return;
             }
             constexpr bool recordMemoryAllocations { true };
-            const auto scale = px::PxTolerancesScale();
+            auto scale = px::PxTolerancesScale();
+            scale.length = 1;
+            
             physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, recordMemoryAllocations);
             if (!physics)
             {
@@ -107,7 +109,6 @@ namespace cookie
                 });
             scene->simulate(time->fixedDeltaTime);
             scene->fetchResults(true);
-
         }
         void Physicssystem::Destroy(World* world)
         {

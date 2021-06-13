@@ -71,7 +71,7 @@ i32 main()
 {
     constexpr i32 BASE_WIDTH = 1280;
     constexpr i32 BASE_HEIGHT = 720;
-    constexpr f32 DEFAULT_FIXED_DT = 1.0f / 50.0f;
+    constexpr f32 DEFAULT_FIXED_DT = 1.0f / 144.0f;
     auto* window = InitWindow(BASE_WIDTH, BASE_HEIGHT);
     if (window == nullptr) return -1;
     if (InitOpengl(window) == -1) return -1;
@@ -101,7 +101,7 @@ i32 main()
     while (!glfwWindowShouldClose(window))
     {
         updateTime(timeResource, &lastFrame);
-        //std::cout << "FPS: " << (i32)(1.0f / timeResource->deltaTime) << '\n';
+        std::cout << "Frame Time: " << timeResource->deltaTime << '\n';
         accumulator += timeResource->deltaTime;
         processInput(window);
 

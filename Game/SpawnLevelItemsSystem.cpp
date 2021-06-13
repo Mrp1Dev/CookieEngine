@@ -59,21 +59,26 @@ void SpawnLevelItemsSystem::Start(ck::World* world)
         TransformData { Vector3(0.0f, 0.0f, 0.0f) },
         FirstPersonControllerData { 5.0f, 2.0f },
         TurnSpeedData { 12.0f },
-        BoxColliderData { Vector3(1.0f, 2.0f, 1.0f) / 2.0f },
-        RigidbodyData { RigidBodyMode::Dynamic }
+        BoxColliderData { Vector3(1.0f, 2.0f, 1.0f) },
+        RigidbodyData { RigidBodyMode::Dynamic, PhysicsMaterial{1.0f, 1.0f, 0.0f} }
     );
 
     world->EnqueueEntitySpawn(AssetManager::GetModel("cube.obj", true),
         TransformData { Vector3(0.0f, 0.0f, 0.0f), Vector3(100.0f, 2.0f, 100.0f) },
-        BoxColliderData { Vector3::Splat(0.5f) },
+        BoxColliderData { Vector3::Splat(1.0f) },
         AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
         RigidbodyData { RigidBodyMode::Static },
         BaseColorData { Vector3{0.8f, 1.0f, 1.0f} }
     );
 
+    world->EnqueueEntitySpawn(AssetManager::GetModel("Ak_47/Ak-47.obj", true),
+        TransformData {},
+        AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
+    );
+
     world->EnqueueEntitySpawn(AssetManager::GetModel("cube.obj", true),
-        TransformData { Vector3(0.0f, 0.0f, 10.0f), Vector3(1.0f, 3.0f, 10.0f) },
-        BoxColliderData { Vector3::Splat(0.5f) },
+        TransformData { Vector3(0.0f, 1.5f, 10.0f), Vector3(1.0f, 3.0f, 10.0f) },
+        BoxColliderData { Vector3::Splat(1.0f) },
         AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
         RigidbodyData { RigidBodyMode::Static },
         BaseColorData { Vector3{1.0f, 0.7f, 0.6f} }
