@@ -12,6 +12,7 @@
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetProjectionViewMatrices.h"
 #include "Physics/PhysicsSystem.h"
+#include <Math/ChildCalculationSystem.h>
 using namespace ck;
 using namespace ck::physics;
 void processInput(GLFWwindow* window)
@@ -75,23 +76,26 @@ i32 main()
     auto* window = InitWindow(BASE_WIDTH, BASE_HEIGHT);
     if (window == nullptr) return -1;
     if (InitOpengl(window) == -1) return -1;
-    World world(
-        InitializeInputSystem {},
-        SetInputKeysSystem {},
-        SetMouseInputSystem {},
 
-        Physicssystem {},
-
-        DirectionalLightSystem {},
-        SetProjectionViewMatrices {},
-        ModelRenderingSystem {},
-        PointLightSystem {},
-
-        WindowSystem {}
-    );
+    World world {};
 
     addResources(&world, Window { BASE_WIDTH, BASE_HEIGHT, window });
+    world.AddSystem(InitializeInputSystem {});
+    world.AddSystem(SetInputKeysSystem {});
+    world.AddSystem(SetMouseInputSystem {});
+
     InitGame(&world);
+
+    world.AddSystem(ChildCalculationSystem {});
+    world.AddSystem(PhysicsSystem {});
+
+    world.AddSystem(DirectionalLightSystem {});
+    world.AddSystem(SetProjectionViewMatrices {});
+    world.AddSystem(ModelRenderingSystem {});
+    world.AddSystem(PointLightSystem {});
+
+    world.AddSystem(WindowSystem {});
+
     world.StartSystems();
 
     f32 lastFrame { scast<f32>(glfwGetTime()) };
@@ -113,7 +117,7 @@ i32 main()
             accumulator -= timeResource->fixedDeltaTime;
         }
         world.UpdateSystems();
-        
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

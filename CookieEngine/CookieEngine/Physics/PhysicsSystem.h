@@ -5,7 +5,7 @@ namespace cookie
 {
     namespace physics
     {
-        class Physicssystem final : public System
+        class PhysicsSystem final : public System
         {
             physx::PxDefaultErrorCallback errorCallBack;
             physx::PxDefaultAllocator allocatorCallBack;

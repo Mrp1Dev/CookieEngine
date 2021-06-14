@@ -362,3 +362,10 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Build
+CookieEngine/CookieEngine/glut32.dll
+CookieEngine/CookieEngine/PhysX_64.dll
+CookieEngine/CookieEngine/PhysXCommon_64.dll
+CookieEngine/CookieEngine/PhysXCooking_64.dll
+CookieEngine/CookieEngine/PhysXDevice64.dll
+CookieEngine/CookieEngine/PhysXFoundation_64.dll
+CookieEngine/CookieEngine/PhysXGpu_64.dll

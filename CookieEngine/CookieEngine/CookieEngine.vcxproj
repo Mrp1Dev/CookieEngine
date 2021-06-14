@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug Optimized|Win32">
@@ -168,7 +168,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLM_FORCE_LEFT_HANDED;GLM_FORCE_LEFT_HANDED</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -237,6 +236,8 @@
     <ClInclude Include="Input\SetMouseInputSystem.h" />
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="ckMath.h" />
+    <ClInclude Include="Math\ChildCalculationSystem.h" />
+    <ClInclude Include="Math\ChildData.h" />
     <ClInclude Include="Math\Mathf.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Quaternion.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="Input\SetMouseInputSystem.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
+    <ClCompile Include="Math\ChildCalculationSystem.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Physics\BoxCollisionSystem.cpp" />
     <ClCompile Include="Physics\PhysicsSystem.cpp" />

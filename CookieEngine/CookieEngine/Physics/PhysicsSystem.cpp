@@ -10,7 +10,7 @@ namespace cookie
     {
         namespace px = physx;
         using namespace math;
-        void Physicssystem::Start(World* world)
+        void PhysicsSystem::Start(World* world)
         {
             foundation = PxCreateFoundation(PX_PHYSICS_VERSION, allocatorCallBack, errorCallBack);
             if (!foundation)
@@ -35,7 +35,7 @@ namespace cookie
             desc.filterShader = px::PxDefaultSimulationFilterShader;
             desc.cpuDispatcher = dispatcher;
             desc.broadPhaseType = px::PxBroadPhaseType::eABP;
-            desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
+            //desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
             scene = physics->createScene(desc);
             if (!scene)
             {
@@ -58,7 +58,7 @@ namespace cookie
             }
 
         }
-        void Physicssystem::FixedUpdate(World* world)
+        void PhysicsSystem::FixedUpdate(World* world)
         {
             auto* time { world->GetResource<Time>() };
             auto* query { world->QueryEntities<TransformData, RigidbodyData>() };
@@ -110,7 +110,7 @@ namespace cookie
             scene->simulate(time->fixedDeltaTime);
             scene->fetchResults(true);
         }
-        void Physicssystem::Destroy(World* world)
+        void PhysicsSystem::Destroy(World* world)
         {
             scene->release();
             physics->release();
