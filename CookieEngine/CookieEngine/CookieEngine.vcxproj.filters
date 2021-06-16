@@ -110,11 +110,8 @@
     <ClInclude Include="Rendering\WindowSystem.h" />
     <ClInclude Include="ckMath.h" />
     <ClInclude Include="Rendering\SetProjectionViewMatrices.h" />
-    <ClInclude Include="Physics\VelocityData.h" />
-    <ClInclude Include="Physics\VelocitySystem.h" />
     <ClInclude Include="PhysicsComponents.h" />
     <ClInclude Include="Physics\BoxColliderData.h" />
-    <ClInclude Include="Physics\BoxCollisionSystem.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Physics\RigidbodyData.h" />
     <ClInclude Include="Physics\RigidBodyMode.h" />
@@ -123,6 +120,9 @@
     <ClInclude Include="..\..\Game\TurnSpeedData.h" />
     <ClInclude Include="Math\ChildCalculationSystem.h" />
     <ClInclude Include="Math\ChildData.h" />
+    <ClInclude Include="Physics\PhysicsFuncs.h" />
+    <ClInclude Include="Math\BoundingBox.h" />
+    <ClInclude Include="Math\MinMax.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -182,12 +182,6 @@
     <ClCompile Include="Rendering\SetProjectionViewMatrices.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\VelocitySystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\BoxCollisionSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\PhysicsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -195,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Math\ChildCalculationSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

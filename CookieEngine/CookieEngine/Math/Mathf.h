@@ -223,5 +223,6 @@ namespace cookie
             else
                 return scast<T>(0.0);
         }
+
     }
 }

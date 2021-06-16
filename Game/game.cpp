@@ -10,5 +10,4 @@ using namespace ck::math;
 void InitGame(World* ecsWorld)
 {
     ecsWorld->AddSystem(SpawnLevelItemsSystem {}, false);
-    ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);
 }

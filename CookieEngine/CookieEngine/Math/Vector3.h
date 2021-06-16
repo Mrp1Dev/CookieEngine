@@ -124,6 +124,15 @@ namespace cookie
                 return current + ClampMagnitude(dir, maxDelta);
             }
 
+            static Vector3T<T> Lerp(const Vector3T<T>& start, const Vector3T<T>& end, T t) noexcept
+            {
+                return Vector3T<T>(
+                    Mathf::Lerp(start.x, end.x, t),
+                    Mathf::Lerp(start.y, end.y, t),
+                    Mathf::Lerp(start.z, end.z, t)
+                    );
+            }
+
             T Magnitude() const noexcept
             {
                 return glm::length(scast<vec3>(*this));

@@ -109,7 +109,7 @@ i32 main()
         accumulator += timeResource->deltaTime;
         processInput(window);
 
-        glClearColor(0.1f, 0.2f, 0.2f, 1.0);
+        glClearColor(0.78, 0.96, 1.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         while (accumulator >= timeResource->fixedDeltaTime)
         {
