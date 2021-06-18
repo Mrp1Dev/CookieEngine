@@ -9,6 +9,8 @@ namespace cookie
         {
             T min;
             T max;
+
+            MinMax(const T& min, const T& max) : min { min }, max { max }{}
         };
 
         using MinMaxf = MinMax<f32>;

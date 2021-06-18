@@ -118,8 +118,6 @@
     <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
     <ClInclude Include="..\..\Game\TurnSpeedData.h" />
-    <ClInclude Include="Math\ChildCalculationSystem.h" />
-    <ClInclude Include="Math\ChildData.h" />
     <ClInclude Include="Physics\PhysicsFuncs.h" />
     <ClInclude Include="Math\BoundingBox.h" />
     <ClInclude Include="Math\MinMax.h" />
@@ -186,9 +184,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Game\SpawnLevelItemsSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\ChildCalculationSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PhysicsFuncs.cpp">

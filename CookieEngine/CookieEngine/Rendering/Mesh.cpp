@@ -1,5 +1,5 @@
 #include "Mesh.h"
-
+#include <ckMath.h>
 namespace cookie
 {
 	Mesh::Mesh(std::vector<Vertex> vertices,
@@ -40,8 +40,8 @@ namespace cookie
 
 	void Mesh::setupBoundingBoxValues()
 	{
-		glm::vec3 min {};
-		glm::vec3 max {};
+		glm::vec3 min { math::Vector3::Splat(std::numeric_limits<f32>::max()) };
+		glm::vec3 max { math::Vector3::Splat(-std::numeric_limits<f32>::max()) };
 		for (auto& vert : vertices)
 		{
 			auto pos = vert.position;

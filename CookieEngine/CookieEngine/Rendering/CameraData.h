@@ -1,5 +1,7 @@
 #pragma once
-#include <usings.h>
+#include <Usings.h>
+#include <ECS/Entity.h>
+#include <optional>
 namespace cookie
 {
 	struct CameraData
@@ -9,5 +11,6 @@ namespace cookie
 		bool isActive {};
 		f32 nearClippingPlane {};
 		f32 farClippingPlane {};
+		std::optional<Entity> parent;
 	};
 }

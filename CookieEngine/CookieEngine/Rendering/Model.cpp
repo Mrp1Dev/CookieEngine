@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "../IO/AssetManager.h"
-
+#include <ckMath.h>
 namespace cookie
 {
 	void Model::loadModel(std::string path)
@@ -118,8 +118,8 @@ namespace cookie
 
 	void Model::setupBoundingBoxValues()
 	{
-		glm::vec3 min {};
-		glm::vec3 max {};
+		glm::vec3 min { math::Vector3::Splat(std::numeric_limits<f32>::max())};
+		glm::vec3 max { math::Vector3::Splat(-std::numeric_limits<f32>::max()) };
 		for (auto& mesh : meshes)
 		{
 			auto pos = mesh.boundingBoxMin;

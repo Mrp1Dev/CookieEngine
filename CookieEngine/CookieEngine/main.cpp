@@ -12,7 +12,6 @@
 #include "Rendering/ModelRenderingSystem.h"
 #include "Rendering/SetProjectionViewMatrices.h"
 #include "Physics/PhysicsSystem.h"
-#include <Math/ChildCalculationSystem.h>
 using namespace ck;
 using namespace ck::physics;
 void processInput(GLFWwindow* window)
@@ -86,7 +85,6 @@ i32 main()
 
     InitGame(&world);
 
-    world.AddSystem(ChildCalculationSystem {});
     world.AddSystem(PhysicsSystem {});
 
     world.AddSystem(DirectionalLightSystem {});
@@ -109,7 +107,7 @@ i32 main()
         accumulator += timeResource->deltaTime;
         processInput(window);
 
-        glClearColor(0.78, 0.96, 1.0, 1.0);
+        glClearColor(0.78f, 0.96f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         while (accumulator >= timeResource->fixedDeltaTime)
         {

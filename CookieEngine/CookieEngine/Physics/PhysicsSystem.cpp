@@ -10,6 +10,22 @@ namespace cookie
     {
         namespace px = physx;
         using namespace math;
+
+        px::PxFilterFlags filterShader(
+            px::PxFilterObjectAttributes attributes0,
+            px::PxFilterData filterData0,
+            px::PxFilterObjectAttributes attributes1,
+            px::PxFilterData filterData1,
+            px::PxPairFlags& pairFlags,
+            const void* constantBlock,
+            px::PxU32 constantBlockSize)
+        {
+            pairFlags |= px::PxPairFlag::eSOLVE_CONTACT;
+            pairFlags |= px::PxPairFlag::eDETECT_DISCRETE_CONTACT;
+            pairFlags |= px::PxPairFlag::eDETECT_CCD_CONTACT;
+            return px::PxFilterFlags();
+        }
+
         void PhysicsSystem::Start(World* world)
         {
             foundation = PxCreateFoundation(PX_PHYSICS_VERSION, allocatorCallBack, errorCallBack);
@@ -21,7 +37,7 @@ namespace cookie
             constexpr bool recordMemoryAllocations { true };
             auto scale = px::PxTolerancesScale();
             scale.length = 1;
-            
+
             physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, recordMemoryAllocations);
             if (!physics)
             {
@@ -32,10 +48,11 @@ namespace cookie
             dispatcher = px::PxDefaultCpuDispatcherCreate(1);
 
             auto desc = px::PxSceneDesc(scale);
-            desc.filterShader = px::PxDefaultSimulationFilterShader;
+            desc.filterShader = filterShader;
             desc.cpuDispatcher = dispatcher;
             desc.broadPhaseType = px::PxBroadPhaseType::eABP;
-            //desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
+            desc.flags |= px::PxSceneFlag::eENABLE_CCD;
+            desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
             scene = physics->createScene(desc);
             if (!scene)
             {
@@ -64,30 +81,32 @@ namespace cookie
             auto* query { world->QueryEntities<TransformData, RigidbodyData>() };
             query->EntityForeach([&](Entity entity, TransformData& transform, RigidbodyData& rb)
                 {
+                    auto collider = world->TryGetComponent<BoxColliderData>(entity);
                     if (!rb.initialized)
                     {
                         px::PxRigidActor* rbActor { nullptr };
-                        const auto pxTrans { px::PxTransform(transform.position, transform.rotation) };
+                        auto pos = transform.position;
+                        const auto pxTrans { px::PxTransform(pos, transform.rotation) };
                         if (rb.mode == RigidBodyMode::Dynamic)
                         {
                             rbActor = physics->createRigidDynamic(pxTrans);
+                            scast<px::PxRigidDynamic*>(rbActor)->setRigidBodyFlag(px::PxRigidBodyFlag::eENABLE_CCD, true);
                         }
                         else
-                        {
                             rbActor = physics->createRigidStatic(pxTrans);
-                        }
+
                         if (!rbActor) std::cout << "SSHIT RB DYNAMIC IS NULL\n";
 
-                        auto collider = world->TryGetComponent<BoxColliderData>(entity);
                         if (collider.has_value())
                         {
                             px::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(
                                 *rbActor,
-                                px::PxBoxGeometry(collider.value()->halfExtents.ScaledBy(transform.scale)),
+                                px::PxBoxGeometry(collider.value()->extents.ScaledBy(transform.scale) / 2.0f),
                                 *physics->createMaterial(rb.physicsMaterial.staticFriction,
                                     rb.physicsMaterial.dynamicFriction, rb.physicsMaterial.restitution),
                                 px::PxShapeFlag::eSIMULATION_SHAPE
                             );
+                            shape->setLocalPose(px::PxTransform(collider.value()->offset.ScaledBy(transform.scale), Quaternion::Identity()));
                             rb.pxShape = shape;
                         }
                         rb.pxRbActor = rbActor;
@@ -118,5 +137,7 @@ namespace cookie
             pvd->release();
             foundation->release();
         }
+
+        
     }
 }

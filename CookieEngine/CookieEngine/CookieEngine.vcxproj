@@ -118,12 +118,14 @@
     <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine\Cookie;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\pxshared\include;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\CookieEngine;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Libs;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\externals\glew\lib\win64;F:\Mrp1 Other Dev\CookieEngine\CookieEngine\Include\PhysX-4.1\physx\bin\win.x86_64.vc142.mt\release;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -237,8 +239,6 @@
     <ClInclude Include="IO\AssetManager.h" />
     <ClInclude Include="ckMath.h" />
     <ClInclude Include="Math\BoundingBox.h" />
-    <ClInclude Include="Math\ChildCalculationSystem.h" />
-    <ClInclude Include="Math\ChildData.h" />
     <ClInclude Include="Math\Mathf.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\MinMax.h" />
@@ -285,7 +285,6 @@
     <ClCompile Include="Input\SetMouseInputSystem.cpp" />
     <ClCompile Include="IO\AssetManager.cpp" />
     <ClCompile Include="Cookie.h" />
-    <ClCompile Include="Math\ChildCalculationSystem.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Physics\PhysicsFuncs.cpp" />
     <ClCompile Include="Physics\PhysicsSystem.cpp" />
