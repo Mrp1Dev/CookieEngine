@@ -1,18 +1,12 @@
-#include "../CookieEngine/CookieEngine/Cookie.h"
+#include <Cookie.h>
 #include "SpawnLevelItemsSystem.h"
-
 #include "FirstPersonCameraSystem.h"
 #include <Math/Mathf.h>
 #include <PhysicsComponents.h>
-#include <chrono>
-
-using namespace ck;
-using namespace ck::physics;
-using namespace ck::math;
-using namespace std::chrono;
-void InitGame(World* ecsWorld)
+#include "CarControllerSystem.h"
+void InitGame(ck::World* ecsWorld)
 {
-    ecsWorld->AddSystem(SpawnLevelItemsSystem {}, false);
-    ecsWorld->AddSystem(FirstPersonCameraSystem {}, false);
-
+    ecsWorld->AddSystem(SpawnLevelItemsSystem {});
+    ecsWorld->AddSystem(FirstPersonCameraSystem {});
+    ecsWorld->AddSystem(CarControllerSystem{});
 }

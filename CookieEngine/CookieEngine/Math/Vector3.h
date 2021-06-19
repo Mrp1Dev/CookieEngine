@@ -145,6 +145,8 @@ namespace cookie
 
             Vector3T Normalized() const noexcept
             {
+                auto mag = Magnitude();
+                if (mag < Mathf::Epsilon<T>) return Vector3T::Zero();
                 return *this / Magnitude();
             }
 

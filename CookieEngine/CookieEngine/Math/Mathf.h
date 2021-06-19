@@ -89,7 +89,7 @@ namespace cookie
         }
 
         template<typename T>
-        constexpr  T Approximately(T a, T b) noexcept
+        constexpr bool Approximately(T a, T b) noexcept
         {
             return Abs(b - a) < Max(scast<T>(0.000001) * Max(Abs(a), Abs(b)), Epsilon<T> *scast<T>(8));
         }

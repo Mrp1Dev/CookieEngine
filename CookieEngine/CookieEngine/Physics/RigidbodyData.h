@@ -10,6 +10,7 @@ namespace cookie
         struct RigidbodyData
         {
             RigidBodyMode mode { RigidBodyMode::Static };
+            f32 mass { 1.0f };
             PhysicsMaterial physicsMaterial {};
             math::Vector3 linearVelocity { math::Vector3::Zero() };
             //The following does not need to be initalized in the initalizer list:
