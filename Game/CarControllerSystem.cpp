@@ -13,15 +13,29 @@ void CarControllerSystem::FixedUpdate(World* world)
 {
 	auto input { world->GetResource<Input>() };
 	auto time { world->GetResource<Time>() };
-	auto carQuery { world->QueryEntities<TransformData, RigidbodyData, CarControllerData>() };
-	carQuery->Foreach([&](TransformData& transform, RigidbodyData& rb, CarControllerData& car)
+	auto carQuery { world->QueryEntities<TransformData, RigidbodyData, CarControllerData, BoxColliderData>() };
+	carQuery->Foreach([&](TransformData& transform, RigidbodyData& rb, CarControllerData& car, BoxColliderData& collider)
 	{
 		const auto FORWARD = Vector3::Left(); //I'm doing this because the car is tilted 90deg and ugh.
-		f32 verticalDir { 0.0f };
-		verticalDir += input->keys[KeyCode::UpArrow].pressed;
-		verticalDir -= input->keys[KeyCode::DownArrow].pressed;
-		rb.linearVelocity += transform.rotation * FORWARD * verticalDir * car.acceleration * time->fixedDeltaTime;
+		const auto RIGHT = Vector3::Forward();
+		f32 verticalAxis { 0.0f };
+		verticalAxis += input->keys[KeyCode::UpArrow].pressed;
+		verticalAxis -= input->keys[KeyCode::DownArrow].pressed;
+		f32 horizontalAxis { 0.0f };
+		horizontalAxis += input->keys[KeyCode::RightArrow].pressed;
+		horizontalAxis -= input->keys[KeyCode::LeftArrow].pressed;
+
+		auto rotQuat = Quaternion::Euler(Vector3::Up() * horizontalAxis * car.turnSpeed * time->fixedDeltaTime);
+		transform.rotation = rotQuat * transform.rotation; 
+		rb.linearVelocity += transform.rotation * FORWARD * verticalAxis * car.acceleration * time->fixedDeltaTime;
+		
 		rb.linearVelocity = Vector3::ClampMagnitude(rb.linearVelocity, car.maxSpeed);
-		rb.linearVelocity += transform.rotation * -rb.linearVelocity * (Mathf::Approximately(verticalDir, 0.0f) ? 1.0f : 0.0f)  * car.drag * time->fixedDeltaTime;
+		f32 rightDot = Mathf::Abs(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * RIGHT));
+		f32 drag = Mathf::Lerp(car.drag, car.sidewaysDrag, rightDot);
+		f32 inputDragDiff = Mathf::Lerp(Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f, 1.0f, rightDot);
+		rb.linearVelocity +=
+			-rb.linearVelocity
+			* inputDragDiff
+			* drag * time->fixedDeltaTime;
 	});
 }

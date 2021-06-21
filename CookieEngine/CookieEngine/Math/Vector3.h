@@ -133,6 +133,14 @@ namespace cookie
                     );
             }
 
+            static T SignedAngle(const Vector3T<T>& from, const Vector3T<T>& to, const Vector3T<T> axis) noexcept
+            {
+                f32 unsignedAngle = Angle(from, to);
+                auto cross = Cross(from, to);
+                f32 sign = Mathf::Sign(Dot(axis, cross));
+                return unsignedAngle * sign;
+            }
+
             T Magnitude() const noexcept
             {
                 return glm::length(scast<vec3>(*this));
