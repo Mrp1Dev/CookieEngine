@@ -9,4 +9,5 @@ struct CarControllerData
 	f32 drag;
 	f32 turnSpeed;
 	f32 sidewaysDrag;
+	f32 breakStrength;
 };

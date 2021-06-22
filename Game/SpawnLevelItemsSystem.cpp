@@ -40,7 +40,7 @@ void SpawnLevelItemsSystem::SpawnCar(cookie::World* world)
 		carModel,
 		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3::Zero(), Vector3::Zero()),
 		RigidbodyData { RigidBodyMode::Dynamic, 100.0f },
-		CarControllerData { 40.0f, 15.0f, 0.6f, 1.5f, 4.0f }
+		CarControllerData { 40.0f, 15.0f, 0.6f, 1.45f, 4.0f, 1.0f }
 	);
 }
 

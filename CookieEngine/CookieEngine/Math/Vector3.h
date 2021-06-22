@@ -109,6 +109,13 @@ namespace cookie
                 return vec - normal * dot / sqrMag;
             }
 
+            static Vector3T<T> Project(const Vector3T<T> vector, const Vector3T<T> onto)
+            {
+                if(Mathf::Approximately(vector.SqrMagnitude(), 0.0f)) return Zero();
+                f32 dot = Dot(vector.Normalized(), onto.Normalized());
+                return vector * dot;
+            }
+
             static Vector3T<T> ClampMagnitude(const Vector3T<T>& vec, const T& mag)
             {
                 return vec.Normalized() * Mathf::Min(vec.Magnitude(), mag);
@@ -141,14 +148,14 @@ namespace cookie
                 return unsignedAngle * sign;
             }
 
-            T Magnitude() const noexcept
+            f32 Magnitude() const noexcept
             {
-                return glm::length(scast<vec3>(*this));
+                return glm::length(scast<glm::vec3>(*this));
             }
 
-            T SqrMagnitude() const noexcept
+            f32 SqrMagnitude() const noexcept
             {
-                return x * x + y * y + z * z;
+                return scast<f32>(x) * scast<f32>(x) + scast<f32>(y) * scast<f32>(y) + scast<f32>(z) * scast<f32>(z);
             }
 
             Vector3T Normalized() const noexcept
