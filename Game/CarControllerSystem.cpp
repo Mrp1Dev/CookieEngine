@@ -31,6 +31,7 @@ void CarControllerSystem::FixedUpdate(World* world)
 		f32 carLength = collider.extents.z * transform.scale.z;
 		f32 forwardSpeed = Vector3::Project(rb.linearVelocity, transform.rotation * FORWARD).Magnitude();
 		f32 turnSpeed = car.turnSpeed * Mathf::InverseLerp(0.0f, carLength, forwardSpeed);
+		turnSpeed = car.turnSpeed;
 		auto rotQuat = Quaternion::Euler(Vector3::Up() * horizontalAxis * turnSpeed * time->fixedDeltaTime * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD)));
 		transform.rotation = rotQuat * transform.rotation;
 

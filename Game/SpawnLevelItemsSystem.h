@@ -7,9 +7,10 @@
 class SpawnLevelItemsSystem : public ck::System
 {
 	void SpawnPlayer(ck::World* world);
-	void SpawnCity(cookie::World* world);
+	void SpawnCity(ck::World* world);
+	ck::Entity SpawnCar(ck::World* world);
 public:
 	virtual void Start(ck::World* world) override;
-	void SetUpDirLight(cookie::World* world);
-	void SpawnCar(cookie::World* world);
+	void SpawnCamera(cookie::World* world, const cookie::Entity& car);
+	void SetUpDirLight(ck::World* world);
 };

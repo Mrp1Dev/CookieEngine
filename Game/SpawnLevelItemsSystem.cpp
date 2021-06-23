@@ -5,6 +5,7 @@
 #include "TurnSpeedData.h"
 #include <Physics/PhysicsFuncs.h>
 #include "CarControllerData.h"
+#include "CarFollowCameraData.h"
 using namespace cookie;
 using namespace cookie::math;
 using namespace cookie::physics;
@@ -12,12 +13,18 @@ void SpawnLevelItemsSystem::Start(ck::World* world)
 {
 	SetUpDirLight(world);
 
-	SpawnPlayer(world);
+	//SpawnPlayer(world);
 
 	SpawnCity(world);
 
-	SpawnCar(world);
+	auto car = SpawnCar(world);
 
+	SpawnCamera(world, car);
+}
+
+void SpawnLevelItemsSystem::SpawnCamera(World* world, const Entity& car)
+{
+	world->EnqueueEntitySpawn(TransformData {}, CarFollowCameraData { car, Vector3(-13.0f, 15.75f, 0.0f), Quaternion::Euler(-12.0f, 0, 0) }, CameraData { 60.0f, true, 0.1f, 10000.0f });
 }
 
 void SpawnLevelItemsSystem::SetUpDirLight(cookie::World* world)
@@ -31,10 +38,10 @@ void SpawnLevelItemsSystem::SetUpDirLight(cookie::World* world)
 	});
 }
 
-void SpawnLevelItemsSystem::SpawnCar(cookie::World* world)
+Entity SpawnLevelItemsSystem::SpawnCar(World* world)
 {
 	auto carModel { AssetManager::GetModel("cars/LowPolyCars.obj", true) };
-	world->EnqueueEntitySpawn(
+	return world->EnqueueEntitySpawn(
 		TransformData { Vector3::Zero(), Vector3::Splat(2.5f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		carModel,
@@ -44,7 +51,7 @@ void SpawnLevelItemsSystem::SpawnCar(cookie::World* world)
 	);
 }
 
-void SpawnLevelItemsSystem::SpawnCity(cookie::World* world)
+void SpawnLevelItemsSystem::SpawnCity(World* world)
 {
 	auto model = AssetManager::GetModel("city/city.obj", true);
 	auto collider = physics::GenBoxColliderDataFromBoundingBox({ model.model->boundingBoxMin, model.model->boundingBoxMax });

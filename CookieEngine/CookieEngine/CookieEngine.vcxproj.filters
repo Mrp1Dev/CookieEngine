@@ -123,6 +123,8 @@
     <ClInclude Include="Math\MinMax.h" />
     <ClInclude Include="..\..\Game\CarControllerSystem.h" />
     <ClInclude Include="..\..\Game\CarControllerData.h" />
+    <ClInclude Include="..\..\Game\CarFollowCameraData.h" />
+    <ClInclude Include="..\..\Game\CarCameraSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -192,6 +194,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Game\CarControllerSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Game\CarCameraSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

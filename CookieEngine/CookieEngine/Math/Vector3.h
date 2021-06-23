@@ -175,6 +175,11 @@ namespace cookie
                 return Vector3T<T>(x * rhs.x, y * rhs.y, z * rhs.z);
             }
 
+            Vector3T X0Y() const noexcept
+            {
+                return Vector3T<T>(x, scast<T>(0.0), y);
+            }
+
             operator vec3() const noexcept
             {
                 return vec3 { x, y, z };
@@ -226,6 +231,7 @@ namespace cookie
             {
                 return *this = *this - rhs;
             }
+
 
             T x {};
             T y {};

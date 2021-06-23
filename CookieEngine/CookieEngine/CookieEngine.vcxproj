@@ -219,8 +219,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Game\CarCameraSystem.h" />
     <ClInclude Include="..\..\Game\CarControllerData.h" />
     <ClInclude Include="..\..\Game\CarControllerSystem.h" />
+    <ClInclude Include="..\..\Game\CarFollowCameraData.h" />
     <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
     <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
@@ -277,6 +279,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
+    <ClCompile Include="..\..\Game\CarCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\CarControllerSystem.cpp" />
     <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\game.cpp" />
