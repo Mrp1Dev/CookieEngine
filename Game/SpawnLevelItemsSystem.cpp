@@ -24,7 +24,7 @@ void SpawnLevelItemsSystem::Start(ck::World* world)
 
 void SpawnLevelItemsSystem::SpawnCamera(World* world, const Entity& car)
 {
-	world->EnqueueEntitySpawn(TransformData {}, CarFollowCameraData { car, Vector3(-13.0f, 15.75f, 0.0f), Quaternion::Euler(-12.0f, 0, 0) }, CameraData { 60.0f, true, 0.1f, 10000.0f });
+	world->EnqueueEntitySpawn(TransformData {}, CarFollowCameraData { car, Vector3(13.0f, 15.75f, 0.0f), Quaternion::Euler(-12.0f, 0, 0) }, CameraData { 60.0f, true, 0.1f, 10000.0f });
 }
 
 void SpawnLevelItemsSystem::SetUpDirLight(cookie::World* world)

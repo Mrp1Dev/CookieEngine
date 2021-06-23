@@ -108,10 +108,10 @@ namespace cookie
                 f32 invs = 1 / s;
 
                 return QuaternionT<T>(
-                    s * 0.5f,
                     rotationAxis.x * invs,
                     rotationAxis.y * invs,
-                    rotationAxis.z * invs
+                    rotationAxis.z * invs,
+                    s * 0.5f
                 );
             }
 
@@ -128,10 +128,10 @@ namespace cookie
 
                 // Find the rotation between the front of the object (that we assume towards +Z,
                 // but this depends on your model) and the desired direction
-                QuaternionT<T> rot1 = RotationBetweenVectors(Vector3T<T>(0.0f, 0.0f, 1.0f), direction);
+                QuaternionT<T> rot1 = RotationBetweenVectors(Vector3T<T>::Forward(), direction);
                 // Because of the 1rst rotation, the up is probably completely screwed up. 
                 // Find the rotation between the "up" of the rotated object, and the desired up
-                Vector3T<T> newUp = rot1 * Vector3T<T>(0.0f, 1.0f, 0.0f);
+                Vector3T<T> newUp = rot1 * Vector3T<T>::Up();
                 QuaternionT<T> rot2 = RotationBetweenVectors(newUp, desiredUp);
 
                 // Apply them
