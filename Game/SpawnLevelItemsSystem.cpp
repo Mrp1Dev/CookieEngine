@@ -24,7 +24,7 @@ void SpawnLevelItemsSystem::Start(ck::World* world)
 
 void SpawnLevelItemsSystem::SpawnCamera(World* world, const Entity& car)
 {
-	world->EnqueueEntitySpawn(TransformData {}, CarFollowCameraData { car, Vector3(13.0f, 15.75f, 0.0f), Quaternion::Euler(-12.0f, 0, 0) }, CameraData { 60.0f, true, 0.1f, 10000.0f });
+	world->EnqueueEntitySpawn(TransformData {}, CarFollowCameraData { car, Vector3(10.0f, 4.75f, 0.0f), Quaternion::Euler(-12.0f, 0, 0) }, CameraData { 60.0f, true, 0.1f, 10000.0f });
 }
 
 void SpawnLevelItemsSystem::SetUpDirLight(cookie::World* world)
@@ -47,7 +47,7 @@ Entity SpawnLevelItemsSystem::SpawnCar(World* world)
 		carModel,
 		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3::Zero(), Vector3::Zero()),
 		RigidbodyData { RigidBodyMode::Dynamic, 100.0f },
-		CarControllerData { 40.0f, 15.0f, 0.6f, 1.45f, 4.0f, 1.0f }
+		CarControllerData { 50.0f, 25.0f, 0.6f, 1.0f, 10.0f, 2.0f }
 	);
 }
 

@@ -53,14 +53,7 @@ namespace cookie
 
             static QuaternionT<T> AngleAxis(f32 angle, const Vector3T<T>& axis)
             {
-                auto result { QuaternionT<T>::Identity() };
-                const T s = Mathf::Sin(angle * scast<T>(0.5));
-
-                result.w = Mathf::Cos(angle * scast<T>(0.5));
-                result.x = axis.x * s;
-                result.y = axis.y * s;
-                result.z = axis.z * s;
-                return result;
+                return glm::angleAxis(angle, scast<glm::tvec3<T>>(axis));
             }
 
             static QuaternionT<T> Identity() noexcept
@@ -83,36 +76,28 @@ namespace cookie
                 start.Normalize();
                 dest.Normalize();
 
-                f32 cosTheta = Vector3T<T>::Dot(start, dest);
-                Vector3T<T> rotationAxis;
-
-                if (cosTheta < -1 + 0.001f)
+                f32 dot = Vector3::Dot(start, dest);
+                if (dot > 0.999f) return Identity();
+                if (dot < -0.999f)
                 {
-                    // special case when vectors in opposite directions :
-                    // there is no "ideal" rotation axis
-                    // So guess one; any will do as long as it's perpendicular to start
-                    // This implementation favors a rotation around the Up axis,
-                    // since it's often what you want to do.
-                    rotationAxis = Vector3T<T>::Cross(Vector3T<T>::Forward(), start);
-                    if (rotationAxis.SqrMagnitude() < 0.01) // bad luck, they were parallel, try again!
-                        rotationAxis = Vector3T<T>::Cross(Vector3T<T>::Right(), start);
+                    f32 x = abs(dest.x);
+                    f32 y = abs(dest.y);
+                    f32 z = abs(dest.z);
 
-                    rotationAxis.Normalize();
-                    return AngleAxis(Mathf::Deg2Rad * 180.0f, rotationAxis);
+                    Vector3 other = x < y ? (x < z ? Vector3::Right() : Vector3::Forward()) : (y < z ? Vector3::Up() : Vector3::Forward());
+                    auto cross = Vector3::Cross(dest, other);
+                    cross.Normalize();
+                    return QuaternionT<T>(cross.x, cross.y, cross.z, 0.0f);
                 }
 
-                // Implementation from Stan Melax's Game Programming Gems 1 article
-                rotationAxis = Vector3T<T>::Cross(start, dest);
-
-                f32 s = Mathf::Sqrt((1 + cosTheta) * 2);
-                f32 invs = 1 / s;
-
-                return QuaternionT<T>(
-                    rotationAxis.x * invs,
-                    rotationAxis.y * invs,
-                    rotationAxis.z * invs,
-                    s * 0.5f
-                );
+                QuaternionT<T> res { Identity() };
+                Vector3 a = Vector3::Cross(start, dest);
+                res.x = a.x;
+                res.y = a.y;
+                res.z = a.z;
+                res.w = Mathf::Sqrt((start.SqrMagnitude()) * (dest.SqrMagnitude())) + Vector3::Dot(start, dest);
+                res.Normalize();
+                return res;
             }
 
             static QuaternionT<T> LookRotation(Vector3T<T> direction, Vector3T<T> desiredUp = Vector3T<T>::Up())
@@ -120,7 +105,8 @@ namespace cookie
 
                 if (direction.SqrMagnitude() < 0.0001f)
                     return QuaternionT<T>::Identity();
-
+                direction.Normalize();
+                desiredUp.Normalize();
                 // Recompute desiredUp so that it's perpendicular to the direction
                 // You can skip that part if you really want to force desiredUp
                 Vector3T<T> right = Vector3T<T>::Cross(direction, desiredUp);
@@ -177,6 +163,11 @@ namespace cookie
             Mat4 ToMatrix()
             {
                 return glm::mat4_cast(scast<quat>(*this));
+            }
+
+            void Normalize()
+            {
+                *this = glm::normalize(scast<quat>(*this));
             }
 
             T x {};

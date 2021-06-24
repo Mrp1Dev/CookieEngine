@@ -12,7 +12,12 @@ void CarCameraSystem::Update(World* world)
 		transform.position = carTrans.position + carTrans.rotation * cam.baseOffset;
 		/*transform.rotation =
 			Quaternion::Euler(Vector3::Up() * Vector3::Angle((carTrans.position - transform.position).Normalized().X0Y(), (transform.rotation * Vector3::Forward()).Normalized().X0Y())) * cam.baseRotation;*/
-		std::cout << carTrans.position.x << ' ' << carTrans.position.y << ' ' << carTrans.position.z << '\n';
-		transform.rotation = Quaternion::LookRotation(carTrans.position - transform.position, Vector3::Up());
+		auto dir = (carTrans.position - transform.position).Normalized();
+		std::cout << dir.x << ' ' << dir.y << ' ' << dir.z << '\n';
+		transform.rotation = Quaternion::LookRotation(dir, Vector3::Up());
+		if (Vector3::Dot(transform.rotation * Vector3::Forward(), dir.Normalized()) < 0.99f)
+		{
+			std::cout << "Not seeing corrently" << '\n';
+		}
 	});
 }
