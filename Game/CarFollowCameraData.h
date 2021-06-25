@@ -6,4 +6,5 @@ struct CarFollowCameraData
 	cookie::Entity car;
 	cookie::math::Vector3 baseOffset {};
 	cookie::math::Quaternion baseRotation { cookie::math::Quaternion::Identity() };
+	f32 followEasing { 0.9f };
 };

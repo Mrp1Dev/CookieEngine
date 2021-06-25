@@ -180,6 +180,36 @@ namespace cookie
                 return Vector3T<T>(x, scast<T>(0.0), y);
             }
 
+            Vector3T WithY(T newY) const noexcept
+            {
+                return Vector3T<T>(x, newY, z);
+            }
+
+            Vector3T WithZ(T newZ) const noexcept
+            {
+                return Vector3T<T>(x, newZ, z);
+            }
+
+            Vector3T WithX(T newX) const noexcept
+            {
+                return Vector3T<T>(x, newX, z);
+            }
+
+            Vector3T WithXY(T newX, T newY) const noexcept
+            {
+                return Vector3T<T>(newX, newX, z);
+            }
+
+            Vector3T WithXZ(T newX, T newZ) const noexcept
+            {
+                return Vector3T<T>(newX, y, newZ);
+            }
+
+            Vector3T WithYZ(T newY, T newZ) const noexcept
+            {
+                return Vector3T<T>(x, newY, newZ);
+            }
+
             operator vec3() const noexcept
             {
                 return vec3 { x, y, z };

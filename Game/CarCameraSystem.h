@@ -4,5 +4,5 @@
 class CarCameraSystem final : public ck::System
 {
 public:
-	void Update(ck::World* world) override;
+	void FixedUpdate(ck::World* world) override;
 };
