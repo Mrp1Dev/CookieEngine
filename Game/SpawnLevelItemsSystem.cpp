@@ -46,7 +46,7 @@ Entity SpawnLevelItemsSystem::SpawnCar(World* world)
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		carModel,
 		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3::Zero(), Vector3::Zero()),
-		RigidbodyData { RigidBodyMode::Dynamic, 100.0f },
+		RigidbodyData { RigidBodyMode::Dynamic, 1000.0f, PhysicsMaterial{0.0f, 0.0f, 0.0f} },
 		CarControllerData { 50.0f, 25.0f, 0.6f, 1.0f, 10.0f, 2.0f }
 	);
 }
@@ -61,7 +61,7 @@ void SpawnLevelItemsSystem::SpawnCity(World* world)
 		TransformData { Vector3(44.0f, 12.0f, -44.0f), Vector3::Splat(0.1f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		model,
-		collider,
+		MeshColliderData {},
 		RigidbodyData { RigidBodyMode::Static }
 	);
 }

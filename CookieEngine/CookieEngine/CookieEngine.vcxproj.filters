@@ -125,6 +125,7 @@
     <ClInclude Include="..\..\Game\CarControllerData.h" />
     <ClInclude Include="..\..\Game\CarFollowCameraData.h" />
     <ClInclude Include="..\..\Game\CarCameraSystem.h" />
+    <ClInclude Include="Physics\MeshColliderData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">

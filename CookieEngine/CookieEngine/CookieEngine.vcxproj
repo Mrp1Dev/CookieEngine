@@ -250,6 +250,7 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="PhysicsComponents.h" />
     <ClInclude Include="Physics\BoxColliderData.h" />
+    <ClInclude Include="Physics\MeshColliderData.h" />
     <ClInclude Include="Physics\PhysicsFuncs.h" />
     <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />

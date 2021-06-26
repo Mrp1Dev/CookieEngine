@@ -4,6 +4,7 @@
 #include <Resources.h>
 #include <RenderingComponents.h>
 #include <ckMath.h>
+#include <Physics/MeshColliderData.h>
 namespace cookie
 {
 	namespace physics
@@ -81,7 +82,8 @@ namespace cookie
 			auto* query { world->QueryEntities<TransformData, RigidbodyData>() };
 			query->EntityForeach([&](Entity entity, TransformData& transform, RigidbodyData& rb)
 			{
-				auto collider = world->TryGetComponent<BoxColliderData>(entity);
+				auto boxCollider = world->TryGetComponent<BoxColliderData>(entity);
+				auto meshCollider = world->TryGetComponents<MeshColliderData, ModelRendererData, TransformData>(entity);
 				if (!rb.initialized)
 				{
 					px::PxRigidActor* rbActor { nullptr };
@@ -97,18 +99,79 @@ namespace cookie
 
 					if (!rbActor) std::cout << "SSHIT RB DYNAMIC IS NULL\n";
 
-					if (collider.has_value())
+					if (boxCollider.has_value())
 					{
-						px::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(
+						px::PxShape* shape = px::PxRigidActorExt::createExclusiveShape(
 							*rbActor,
-							px::PxBoxGeometry(collider.value()->extents.ScaledBy(transform.scale) / 2.0f),
+							px::PxBoxGeometry(boxCollider.value()->extents.ScaledBy(transform.scale) / 2.0f),
 							*physics->createMaterial(rb.physicsMaterial.staticFriction,
 													 rb.physicsMaterial.dynamicFriction, rb.physicsMaterial.restitution),
 							px::PxShapeFlag::eSIMULATION_SHAPE
 						);
-						shape->setLocalPose(px::PxTransform(collider.value()->offset.ScaledBy(transform.scale), Quaternion::Identity()));
+						shape->setLocalPose(px::PxTransform(boxCollider.value()->offset.ScaledBy(transform.scale), Quaternion::Identity()));
 						rb.pxShape = shape;
 					}
+					else if (meshCollider.has_value())
+					{
+						const auto& collider = *std::get<0>(meshCollider.value());
+						const auto& mesh = *std::get<1>(meshCollider.value());
+						const auto& transform = *std::get<2>(meshCollider.value());
+						u32 vertCount { 0 };
+						u32 indexCount { 0 };
+						for (u32 i = 0; i < mesh.model->meshes.size(); i++)
+						{
+							vertCount += mesh.model->meshes[i].vertices.size();
+							indexCount += mesh.model->meshes[i].indices.size();
+						}
+						std::vector<px::PxVec3> verts {};
+						verts.reserve(vertCount);
+						std::vector<u32> indices {};
+						indices.reserve(indexCount);
+						u32 indexOffset { 0 };
+						for (auto& modelMesh : mesh.model->meshes)
+						{
+							for (auto& vertex : modelMesh.vertices)
+							{
+								verts.push_back(scast<Vector3>(vertex.position));
+							}
+							for (auto& index : modelMesh.indices)
+							{
+								indices.push_back(index + indexOffset);
+							}
+							indexOffset += modelMesh.indices.size();
+						}
+						px::PxTriangleMeshDesc meshDesc;
+						meshDesc.points.count = vertCount;
+						meshDesc.points.stride = sizeof(px::PxVec3);
+						meshDesc.points.data = &verts[0];
+
+						meshDesc.triangles.count = indices.size() / 3;
+						meshDesc.triangles.stride = 3 * sizeof(px::PxU32);
+						meshDesc.triangles.data = &indices[0];
+
+						px::PxDefaultMemoryOutputStream writeBuffer;
+						px::PxTriangleMeshCookingResult::Enum result;
+						bool status = cooking->cookTriangleMesh(meshDesc, writeBuffer, &result);
+						if (!status)
+						{
+							std::cout << "ERROR::PHYSX: Couldn't create triangle mesh.\n";
+							return;
+						}
+
+						px::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+						auto triangleMesh = physics->createTriangleMesh(readBuffer);
+						px::PxMeshScale scale { transform.scale, transform.rotation };
+						auto geometry = px::PxTriangleMeshGeometry(triangleMesh, scale);
+						auto shape =
+							px::PxRigidActorExt::createExclusiveShape(
+								*rbActor,
+								geometry,
+								*physics->createMaterial(rb.physicsMaterial.staticFriction, rb.physicsMaterial.dynamicFriction, rb.physicsMaterial.restitution), px::PxShapeFlag::eSIMULATION_SHAPE
+							);
+						shape->setLocalPose(px::PxTransform(collider.offset.ScaledBy(transform.scale), Quaternion::Identity()));
+						rb.pxShape = shape;
+					}
+
 					rb.pxRbActor = rbActor;
 					scene->addActor(*rbActor);
 					rb.initialized = true;
