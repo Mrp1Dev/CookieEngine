@@ -46,7 +46,7 @@ namespace cookie
 				return;
 			}
 
-			dispatcher = px::PxDefaultCpuDispatcherCreate(1);
+			dispatcher = px::PxDefaultCpuDispatcherCreate(4);
 
 			auto desc = px::PxSceneDesc(scale);
 			desc.filterShader = filterShader;
@@ -171,14 +171,12 @@ namespace cookie
 						shape->setLocalPose(px::PxTransform(collider.offset.ScaledBy(transform.scale), Quaternion::Identity()));
 						rb.pxShape = shape;
 					}
-
 					rb.pxRbActor = rbActor;
 					scene->addActor(*rbActor);
 					rb.initialized = true;
 				}
 
 				auto pos = rb.pxRbActor->getGlobalPose().p;
-				rb.pxRbActor->setGlobalPose(px::PxTransform(pos, transform.rotation));
 				auto rot = rb.pxRbActor->getGlobalPose().q;
 				transform.position = pos;
 				transform.rotation = rot;
@@ -187,6 +185,9 @@ namespace cookie
 				{
 					auto rbd = scast<px::PxRigidDynamic*>(rb.pxRbActor);
 					rbd->setLinearVelocity(rb.linearVelocity);
+					rbd->setAngularVelocity(rb.angularVelocity);
+					rbd->setRigidDynamicLockFlags(px::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z | px::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
+					rbd->setAngularDamping(0.05f);
 					rbd->setMass(rb.mass);
 				}
 			});

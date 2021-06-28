@@ -83,10 +83,10 @@ i32 main()
     world.AddSystem(SetInputKeysSystem {});
     world.AddSystem(SetMouseInputSystem {});
 
-    InitGame(&world);
 
     world.AddSystem(PhysicsSystem {});
 
+    InitGame(&world);
     world.AddSystem(DirectionalLightSystem {});
     world.AddSystem(SetProjectionViewMatrices {});
     world.AddSystem(ModelRenderingSystem {});
