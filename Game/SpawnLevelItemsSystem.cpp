@@ -42,12 +42,12 @@ Entity SpawnLevelItemsSystem::SpawnCar(World* world)
 {
 	auto carModel { AssetManager::GetModel("cars/LowPolyCars.obj", true) };
 	return world->EnqueueEntitySpawn(
-		TransformData { Vector3::Zero(), Vector3::Splat(2.5f) },
+		TransformData { Vector3(0, 5, 0), Vector3::Splat(2.5f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		carModel,
 		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3::Zero(), Vector3::Zero()),
-		RigidbodyData { RigidBodyMode::Dynamic, 100.0f, PhysicsMaterial{0.0f, 0.0f, 0.0f} },
-		CarControllerData { 50.0f, 25.0f, 0.6f, 1.0f, 10.0f, 2.0f }
+		RigidbodyData { RigidBodyMode::Dynamic, 1.0f, PhysicsMaterial{1.0f, 1.0f, 0.0f} },
+		CarControllerData { 50.0f, 25.0f, 0.6f, 1.5f, 10.0f, 2.0f }
 	);
 }
 
@@ -62,13 +62,13 @@ void SpawnLevelItemsSystem::SpawnCity(World* world)
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		model,
 		MeshColliderData {},
-		RigidbodyData { RigidBodyMode::Static, 100.0f, PhysicsMaterial{0.0f, 0.0f, 0.0f} }
+		RigidbodyData { RigidBodyMode::Static, 1.0f, PhysicsMaterial{1.0f, 1.0f, 0.0f} }
 	);
 
 	world->EnqueueEntitySpawn(
-		TransformData { Vector3(0-15.0f, 10.0f, 0.0f), Vector3::Splat(0.1f) },
+		TransformData { Vector3(-15.0f, 10.0f, 0.0f), Vector3::Splat(10.0f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
-		AssetManager::GetModel("Cylinder.fbx"),
+		AssetManager::GetModel("cube.obj"),
 		MeshColliderData {},
 		RigidbodyData { RigidBodyMode::Static, 100.0f, PhysicsMaterial{0.0f, 0.0f, 0.0f} }
 	);

@@ -31,20 +31,24 @@ void CarControllerSystem::FixedUpdate(World* world)
 		f32 carLength = collider.extents.z * transform.scale.z;
 		f32 forwardSpeed = Vector3::Project(rb.linearVelocity, transform.rotation * FORWARD).Magnitude();
 		f32 turnSpeed = car.turnSpeed * Mathf::InverseLerp(0.0f, carLength, forwardSpeed);
-		
-		rb.angularVelocity = Vector3::Up() * horizontalAxis * turnSpeed * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD));
+
+		auto rbd = scast<physx::PxRigidDynamic*>(rb.pxRbActor);
+		rbd->setAngularVelocity(Vector3::Up() * horizontalAxis * car.turnSpeed * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD)));
+		//rbd->addTorque(Vector3::Up() * horizontalAxis * car.turnSpeed * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD)) * time->fixedDeltaTime);
 		//forward backward
-		rb.linearVelocity += transform.rotation * FORWARD * verticalAxis * car.acceleration * time->fixedDeltaTime;
+		rbd->addForce(transform.rotation * FORWARD * verticalAxis * car.acceleration * time->fixedDeltaTime, physx::PxForceMode::eIMPULSE);
 		//rb.linearVelocity = Vector3::ClampMagnitude(rb.linearVelocity, car.maxSpeed);
 
 		//Drag
 		f32 rightDot = Mathf::Abs(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * RIGHT));
 		f32 drag = Mathf::Lerp(car.drag, car.sidewaysDrag, rightDot);
 		f32 inputDragDiff = Mathf::Lerp(Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f, 1.0f, rightDot);
-		rb.linearVelocity +=
+		rbd->addForce(
 			-rb.linearVelocity
 			* inputDragDiff
-			* drag * time->fixedDeltaTime;
+			* drag * time->fixedDeltaTime,
+			physx::PxForceMode::eIMPULSE
+		);
 
 		//braking
 		if (!Mathf::Approximately(verticalAxis, 0.0f))
@@ -53,8 +57,8 @@ void CarControllerSystem::FixedUpdate(World* world)
 			{
 				auto projectedVel = Vector3::Project(rb.linearVelocity, transform.rotation * FORWARD);
 				auto dot = Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD);
-				if((dot > 0.0f && verticalAxis < 0.0f) || (dot < 0.0f && verticalAxis > 0.0f))
-				rb.linearVelocity -= rb.linearVelocity * car.breakStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis);
+				if ((dot > 0.0f && verticalAxis < 0.0f) || (dot < 0.0f && verticalAxis > 0.0f))
+					rbd->addForce(-rb.linearVelocity * car.breakStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis), physx::PxForceMode::eIMPULSE);
 			}
 		}
 	});

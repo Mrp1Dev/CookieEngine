@@ -38,7 +38,6 @@ namespace cookie
 			constexpr bool recordMemoryAllocations { true };
 			auto scale = px::PxTolerancesScale();
 			scale.length = 1;
-
 			physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, recordMemoryAllocations);
 			if (!physics)
 			{
@@ -54,6 +53,7 @@ namespace cookie
 			desc.broadPhaseType = px::PxBroadPhaseType::eABP;
 			desc.flags |= px::PxSceneFlag::eENABLE_CCD;
 			desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
+			
 			scene = physics->createScene(desc);
 			if (!scene)
 			{
@@ -174,6 +174,11 @@ namespace cookie
 					rb.pxRbActor = rbActor;
 					scene->addActor(*rbActor);
 					rb.initialized = true;
+					if (rb.mode == RigidBodyMode::Dynamic)
+					{
+						auto rbd = scast<px::PxRigidDynamic*>(rb.pxRbActor);
+						rbd->setMass(rb.mass);
+					}
 				}
 
 				auto pos = rb.pxRbActor->getGlobalPose().p;
@@ -181,14 +186,10 @@ namespace cookie
 				transform.position = pos;
 				transform.rotation = rot;
 
-				if (rb.mode == RigidBodyMode::Dynamic)
 				{
-					auto rbd = scast<px::PxRigidDynamic*>(rb.pxRbActor);
-					rbd->setLinearVelocity(rb.linearVelocity);
-					rbd->setAngularVelocity(rb.angularVelocity);
-					rbd->setRigidDynamicLockFlags(px::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z | px::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
-					rbd->setAngularDamping(0.05f);
-					rbd->setMass(rb.mass);
+					//rbd->addForce()
+					//rbd->setAngularVelocity(rb.angularVelocity);
+					//->setRigidDynamicLockFlags( px::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X);
 				}
 			});
 			scene->simulate(time->fixedDeltaTime);
