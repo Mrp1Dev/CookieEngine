@@ -14,9 +14,5 @@ void CarCameraSystem::FixedUpdate(World* world)
 		transform.position = carTrans.position + Vector3::ClampMagnitude(lerpedPos - carTrans.position, cam.baseOffset.X0Y().Magnitude() * 1.2f);
 		auto dir = (carTrans.position - transform.position).Normalized();
 		transform.rotation = Quaternion::LookRotation(dir, Vector3::Up());
-		if (Vector3::Dot(transform.rotation * Vector3::Forward(), dir.Normalized()) < 0.99f)
-		{
-			std::cout << "Not seeing corrently" << '\n';
-		}
 	});
 }

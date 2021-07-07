@@ -8,16 +8,15 @@
 using namespace ck;
 using namespace ck::math;
 using namespace ck::physics;
-
+using namespace physx;
 void CarControllerSystem::FixedUpdate(World* world)
 {
 	auto input { world->GetResource<Input>() };
 	auto time { world->GetResource<Time>() };
-	auto carQuery { world->QueryEntities<TransformData, RigidbodyData, CarControllerData, BoxColliderData>() };
-	carQuery->Foreach([&](TransformData& transform, RigidbodyData& rb, CarControllerData& car, BoxColliderData& collider)
+	auto carQuery { world->QueryEntities<TransformData, RigidBodyDynamicData, CarControllerData, BoxColliderData>() };
+	carQuery->Foreach([&](TransformData& transform, RigidBodyDynamicData& rb, CarControllerData& car, BoxColliderData& collider)
 	{
-		const auto FORWARD = Vector3::Left(); //I'm doing this because the car is tilted 90deg and ugh.
-		const auto RIGHT = Vector3::Forward();
+        const auto VC = PxForceMode::eVELOCITY_CHANGE;
 
 		//input
 		f32 verticalAxis { 0.0f };
@@ -26,40 +25,32 @@ void CarControllerSystem::FixedUpdate(World* world)
 		f32 horizontalAxis { 0.0f };
 		horizontalAxis += input->keys[KeyCode::RightArrow].pressed;
 		horizontalAxis -= input->keys[KeyCode::LeftArrow].pressed;
+        rb.pxRb->setAngularDamping(3.0f);
 
-		//turning
-		f32 carLength = collider.extents.z * transform.scale.z;
-		f32 forwardSpeed = Vector3::Project(rb.linearVelocity, transform.rotation * FORWARD).Magnitude();
-		f32 turnSpeed = car.turnSpeed * Mathf::InverseLerp(0.0f, carLength, forwardSpeed);
+        //Accel
+        rb.pxRb->addForce(transform.rotation * Vector3::Forward() * car.acceleration * time->fixedDeltaTime * verticalAxis, VC);
+        //Top speed clamp
+        auto forwardVel = Vector3::Project(rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Forward());
+//        rb.pxRb->addForce(forwardVel.Magnitude() > car.maxSpeed ? -(forwardVel - Vector3::ClampMagnitude(forwardVel, car.maxSpeed)) : Vector3::Zero(), VC);
+        //De-accel
+//        rb.pxRb->addForce(Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Forward()) * car.slowdown * time->fixedDeltaTime * (Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f), VC);
+        //Sideways 'Drag'
+ //       rb.pxRb->addForce(Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Right()) * car.sidewaysDrag * time->fixedDeltaTime, VC);
+        //Braking.
+        if (!Mathf::Approximately(verticalAxis, 0.0f))
+        {
+            if (Vector3(rb.pxRb->getLinearVelocity()).Magnitude() > 0.0f)
+            {
+                auto dot = Vector3::Dot(Vector3(rb.pxRb->getLinearVelocity()).Normalized(), transform.rotation * Vector3::Forward());
+                if ((dot > 0.0f && verticalAxis < 0.0f) || (dot < 0.0f && verticalAxis > 0.0f))
+   //                 rb.pxRb->addForce(-rb.pxRb->getLinearVelocity() * car.brakingStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis), VC);
+            }
+        }
+        //turning
+        f32 carLength = collider.extents.z * transform.scale.z;
+        auto actualTurnSpeed = car.turnSpeed * Mathf::InverseLerp(0.0f, carLength, forwardVel.Magnitude());
+        auto td = Mathf::Sign(horizontalAxis) == Mathf::Sign(rb.pxRb->getAngularVelocity().y) ? Mathf::Clamp(actualTurnSpeed * time->fixedDeltaTime, 0.0f, Mathf::Max(car.maxTurnSpeed - Vector3(rb.pxRb->getAngularVelocity()).Magnitude(), 0.0f)) : actualTurnSpeed * time->fixedDeltaTime;
+        rb.pxRb->addTorque(Vector3::Up() * horizontalAxis * td, VC);
 
-		auto rbd = scast<physx::PxRigidDynamic*>(rb.pxRbActor);
-		rbd->setAngularVelocity(Vector3::Up() * horizontalAxis * car.turnSpeed * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD)));
-		//rbd->addTorque(Vector3::Up() * horizontalAxis * car.turnSpeed * Mathf::Sign(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD)) * time->fixedDeltaTime);
-		//forward backward
-		rbd->addForce(transform.rotation * FORWARD * verticalAxis * car.acceleration * time->fixedDeltaTime, physx::PxForceMode::eIMPULSE);
-		//rb.linearVelocity = Vector3::ClampMagnitude(rb.linearVelocity, car.maxSpeed);
-
-		//Drag
-		f32 rightDot = Mathf::Abs(Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * RIGHT));
-		f32 drag = Mathf::Lerp(car.drag, car.sidewaysDrag, rightDot);
-		f32 inputDragDiff = Mathf::Lerp(Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f, 1.0f, rightDot);
-		rbd->addForce(
-			-rb.linearVelocity
-			* inputDragDiff
-			* drag * time->fixedDeltaTime,
-			physx::PxForceMode::eIMPULSE
-		);
-
-		//braking
-		if (!Mathf::Approximately(verticalAxis, 0.0f))
-		{
-			if (rb.linearVelocity.Magnitude() > 0.0f)
-			{
-				auto projectedVel = Vector3::Project(rb.linearVelocity, transform.rotation * FORWARD);
-				auto dot = Vector3::Dot(rb.linearVelocity.Normalized(), transform.rotation * FORWARD);
-				if ((dot > 0.0f && verticalAxis < 0.0f) || (dot < 0.0f && verticalAxis > 0.0f))
-					rbd->addForce(-rb.linearVelocity * car.breakStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis), physx::PxForceMode::eIMPULSE);
-			}
-		}
 	});
 }

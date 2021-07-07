@@ -223,10 +223,7 @@
     <ClInclude Include="..\..\Game\CarControllerData.h" />
     <ClInclude Include="..\..\Game\CarControllerSystem.h" />
     <ClInclude Include="..\..\Game\CarFollowCameraData.h" />
-    <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h" />
-    <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
-    <ClInclude Include="..\..\Game\TurnSpeedData.h" />
     <ClInclude Include="Constants\DefaultShaders.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="ECS\ComponentArray.h" />
@@ -252,10 +249,13 @@
     <ClInclude Include="Physics\BoxColliderData.h" />
     <ClInclude Include="Physics\MeshColliderData.h" />
     <ClInclude Include="Physics\PhysicsFuncs.h" />
+    <ClInclude Include="Physics\PhysicsHandler.h" />
     <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Physics\RigidbodyData.h" />
+    <ClInclude Include="Physics\RigidBodyDynamicData.h" />
     <ClInclude Include="Physics\RigidBodyMode.h" />
+    <ClInclude Include="Physics\RigidBodyStaticData.h" />
     <ClInclude Include="Rendering\BaseColorData.h" />
     <ClInclude Include="Rendering\CameraData.h" />
     <ClInclude Include="Constants.h" />
@@ -282,7 +282,6 @@
     <ClCompile Include="..\..\..\OpenGL\glad\src\glad.c" />
     <ClCompile Include="..\..\Game\CarCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\CarControllerSystem.cpp" />
-    <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp" />
     <ClCompile Include="..\..\Game\game.cpp" />
     <ClCompile Include="..\..\Game\SpawnLevelItemsSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -294,6 +293,7 @@
     <ClCompile Include="Cookie.h" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Physics\PhysicsFuncs.cpp" />
+    <ClCompile Include="Physics\PhysicsHandler.cpp" />
     <ClCompile Include="Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp" />
     <ClCompile Include="Rendering\Lighting\PointLightSystem.cpp" />

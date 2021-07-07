@@ -119,7 +119,7 @@ i32 main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    
     glfwTerminate();
 }
 

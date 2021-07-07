@@ -68,9 +68,6 @@
     <ClInclude Include="Rendering\BaseColorData.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Game\FirstPersonCameraSystem.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceTypes\Time.h">
       <Filter>ResourceTypes</Filter>
     </ClInclude>
@@ -93,7 +90,6 @@
     <ClInclude Include="Input\InitializeInputSystem.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Input\SetMouseInputSystem.h" />
-    <ClInclude Include="..\..\Game\FirstPersonControllerData.h" />
     <ClInclude Include="Constants\ShaderUniforms.h" />
     <ClInclude Include="Rendering\TextureType.h" />
     <ClInclude Include="Rendering\Lighting\DirectionalLightData.h" />
@@ -117,7 +113,6 @@
     <ClInclude Include="Physics\RigidBodyMode.h" />
     <ClInclude Include="Physics\PhysicsMaterial.h" />
     <ClInclude Include="..\..\Game\SpawnLevelItemsSystem.h" />
-    <ClInclude Include="..\..\Game\TurnSpeedData.h" />
     <ClInclude Include="Physics\PhysicsFuncs.h" />
     <ClInclude Include="Math\BoundingBox.h" />
     <ClInclude Include="Math\MinMax.h" />
@@ -126,6 +121,9 @@
     <ClInclude Include="..\..\Game\CarFollowCameraData.h" />
     <ClInclude Include="..\..\Game\CarCameraSystem.h" />
     <ClInclude Include="Physics\MeshColliderData.h" />
+    <ClInclude Include="Physics\RigidBodyStaticData.h" />
+    <ClInclude Include="Physics\RigidBodyDynamicData.h" />
+    <ClInclude Include="Physics\PhysicsHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cookie.h">
@@ -167,9 +165,6 @@
     <ClCompile Include="Rendering\ModelRenderingSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Game\FirstPersonCameraSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\Lighting\DirectionalLightSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,6 +193,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Game\CarCameraSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
