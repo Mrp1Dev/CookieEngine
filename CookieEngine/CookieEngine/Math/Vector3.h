@@ -112,7 +112,7 @@ namespace cookie
             static Vector3T<T> Project(const Vector3T<T> vector, const Vector3T<T> onto)
             {
                 if(Mathf::Approximately(vector.SqrMagnitude(), 0.0f)) return Zero();
-                f32 dot = Dot(vector.Normalized(), onto.Normalized());
+                f32 dot = Mathf::Abs(Dot(vector.Normalized(), onto.Normalized()));
                 return vector * dot;
             }
 

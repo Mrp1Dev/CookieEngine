@@ -1,6 +1,8 @@
 #pragma once
 #include <ECS/World.h>
-#include <PxPhysicsAPI.h>
+#include <Rendering/TransformData.h>
+#include <variant>
+#include <PhysicsComponents.h>
 namespace cookie
 {
     namespace physics
@@ -11,6 +13,7 @@ namespace cookie
             void Start(World* world) override;
             void FixedUpdate(World* world) override;
             void Destroy(World* world) override;
+            void InitializeRigidbody(World* world, std::variant<RigidBodyDynamicData*, RigidBodyStaticData*> rb, Entity entity, TransformData& transform);
         };
     }
 }

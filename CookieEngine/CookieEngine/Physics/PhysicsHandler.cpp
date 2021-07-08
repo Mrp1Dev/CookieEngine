@@ -35,7 +35,7 @@ namespace cookie::physics::PhysicsHandler
 		}
 		constexpr bool recordMemoryAllocations { true };
 		auto scale = PxTolerancesScale();
-		scale.length = 1;
+		//scale.length = 1;
 		ctx.physics = PxCreatePhysics(PX_PHYSICS_VERSION, *ctx.foundation, scale, recordMemoryAllocations);
 		if (!ctx.physics)
 		{
@@ -43,15 +43,14 @@ namespace cookie::physics::PhysicsHandler
 			return;
 		}
 
-		ctx.dispatcher = PxDefaultCpuDispatcherCreate(4);
+		ctx.dispatcher = PxDefaultCpuDispatcherCreate(1);
 
 		auto desc = PxSceneDesc(scale);
 		desc.filterShader = filterShader;
 		desc.cpuDispatcher = ctx.dispatcher;
-		desc.broadPhaseType = PxBroadPhaseType::eABP;
+	//	desc.broadPhaseType = PxBroadPhaseType::eABP;
 		desc.flags |= PxSceneFlag::eENABLE_CCD;
 		desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
-
 		ctx.scene = ctx.physics->createScene(desc);
 		if (!ctx.scene)
 		{
@@ -87,6 +86,7 @@ namespace cookie::physics::PhysicsHandler
 		pxRb->setAngularVelocity(angularVelocity);
 		pxRb->setLinearDamping(linearDamping);
 		pxRb->setAngularDamping(angularDamping);
+		pxRb->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		return rb;
 	}
 

@@ -25,17 +25,20 @@ void CarControllerSystem::FixedUpdate(World* world)
 		f32 horizontalAxis { 0.0f };
 		horizontalAxis += input->keys[KeyCode::RightArrow].pressed;
 		horizontalAxis -= input->keys[KeyCode::LeftArrow].pressed;
-        rb.pxRb->setAngularDamping(3.0f);
 
+        std::cout << Vector3(rb.pxRb->getLinearVelocity()).Magnitude() << '\n';
+        rb.pxRb->setAngularDamping(3.0f);
+        rb.pxRb->setRigidDynamicLockFlags(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
         //Accel
         rb.pxRb->addForce(transform.rotation * Vector3::Forward() * car.acceleration * time->fixedDeltaTime * verticalAxis, VC);
         //Top speed clamp
         auto forwardVel = Vector3::Project(rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Forward());
-//        rb.pxRb->addForce(forwardVel.Magnitude() > car.maxSpeed ? -(forwardVel - Vector3::ClampMagnitude(forwardVel, car.maxSpeed)) : Vector3::Zero(), VC);
+        rb.pxRb->addForce(forwardVel.Magnitude() > car.maxSpeed ? -(forwardVel - Vector3::ClampMagnitude(forwardVel, car.maxSpeed)) : Vector3::Zero(), VC);
         //De-accel
-//        rb.pxRb->addForce(Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Forward()) * car.slowdown * time->fixedDeltaTime * (Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f), VC);
+        auto deaccel = Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Forward()) * car.slowdown * (Mathf::Approximately(verticalAxis, 0.0f) ? 1.0f : 0.0f) * time->fixedDeltaTime;
+        rb.pxRb->addForce(deaccel, VC);
         //Sideways 'Drag'
- //       rb.pxRb->addForce(Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Right()) * car.sidewaysDrag * time->fixedDeltaTime, VC);
+        rb.pxRb->addForce(Vector3::Project(-rb.pxRb->getLinearVelocity(), transform.rotation * Vector3::Right()) * car.sidewaysDrag * time->fixedDeltaTime, VC);
         //Braking.
         if (!Mathf::Approximately(verticalAxis, 0.0f))
         {
@@ -43,7 +46,7 @@ void CarControllerSystem::FixedUpdate(World* world)
             {
                 auto dot = Vector3::Dot(Vector3(rb.pxRb->getLinearVelocity()).Normalized(), transform.rotation * Vector3::Forward());
                 if ((dot > 0.0f && verticalAxis < 0.0f) || (dot < 0.0f && verticalAxis > 0.0f))
-   //                 rb.pxRb->addForce(-rb.pxRb->getLinearVelocity() * car.brakingStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis), VC);
+                    rb.pxRb->addForce(-rb.pxRb->getLinearVelocity() * car.brakingStrength * time->fixedDeltaTime * Mathf::Abs(verticalAxis), VC);
             }
         }
         //turning
