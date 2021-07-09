@@ -10,8 +10,8 @@ void CarCameraSystem::FixedUpdate(World* world)
 	{
 		auto& carTrans = *world->TryGetComponent<TransformData>(cam.car).value();
 
-		auto lerpedPos = Vector3::Lerp(transform.position, carTrans.position + carTrans.rotation * cam.baseOffset, 1 - cam.followEasing);
-		transform.position = carTrans.position + Vector3::ClampMagnitude(lerpedPos - carTrans.position, cam.baseOffset.X0Y().Magnitude() * 1.2f);
+		auto lerpedPos = Vector3::Lerp(transform.position, carTrans.position + (carTrans.rotation * cam.baseOffset).WithY(cam.baseOffset.y), 1 - cam.followEasing);
+		transform.position = carTrans.position + Vector3::ClampMagnitude(lerpedPos - carTrans.position, cam.baseOffset.Magnitude() * 1.2f).WithY(lerpedPos.y - carTrans.position.y);
 		auto dir = (carTrans.position - transform.position).Normalized();
 		transform.rotation = Quaternion::LookRotation(dir, Vector3::Up());
 	});

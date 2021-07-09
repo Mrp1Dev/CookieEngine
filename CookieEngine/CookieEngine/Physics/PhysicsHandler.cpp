@@ -35,7 +35,7 @@ namespace cookie::physics::PhysicsHandler
 		}
 		constexpr bool recordMemoryAllocations { true };
 		auto scale = PxTolerancesScale();
-		//scale.length = 1;
+		scale.length = 1;
 		ctx.physics = PxCreatePhysics(PX_PHYSICS_VERSION, *ctx.foundation, scale, recordMemoryAllocations);
 		if (!ctx.physics)
 		{
@@ -48,7 +48,7 @@ namespace cookie::physics::PhysicsHandler
 		auto desc = PxSceneDesc(scale);
 		desc.filterShader = filterShader;
 		desc.cpuDispatcher = ctx.dispatcher;
-	//	desc.broadPhaseType = PxBroadPhaseType::eABP;
+	    desc.broadPhaseType = PxBroadPhaseType::eABP;
 		desc.flags |= PxSceneFlag::eENABLE_CCD;
 		desc.gravity = Vector3(0.0f, -9.806f, 0.0f);
 		ctx.scene = ctx.physics->createScene(desc);
@@ -58,8 +58,7 @@ namespace cookie::physics::PhysicsHandler
 			return;
 		}
 
-		ctx.pvd = PxCreatePvd(*ctx.foundation);
-
+		
 		ctx.cooking = PxCreateCooking(PX_PHYSICS_VERSION, *ctx.foundation, PxCookingParams(scale));
 		if (!ctx.cooking)
 		{
@@ -71,6 +70,16 @@ namespace cookie::physics::PhysicsHandler
 			std::cout << "ERROR::PHYSX: Couldn't init extensions.\n";
 			return;
 		}
+
+		/*physx::PxPvdTransport* mTransport = physx::PxDefaultPvdSocketTransportCreate("localhost", 5425, 10000);
+		if (!mTransport)
+		{
+			std::cout << "ERROR::PHYSX: Couldn't create pvd transport.\n";
+			return;
+		}
+		physx::PxPvdInstrumentationFlags flags = physx::PxPvdInstrumentationFlag::eALL;
+		ctx.pvd = physx::PxCreatePvd(*ctx.foundation);
+		ctx.pvd->connect(*mTransport, flags);*/
 	}
 
 	RigidBodyDynamicData CreateRigidBodyDynamic(f32 mass, Vector3 linearVelcoity, Vector3 angularVelocity, f32 linearDamping, f32 angularDamping)
@@ -98,6 +107,7 @@ namespace cookie::physics::PhysicsHandler
 		RigidBodyStaticData rb {};
 		rb.pxRb = pxRb;
 		ctx.scene->addActor(*pxRb);
+		
 		return rb;
 	}
 }

@@ -28,7 +28,7 @@ void CarControllerSystem::FixedUpdate(World* world)
 
         std::cout << Vector3(rb.pxRb->getLinearVelocity()).Magnitude() << '\n';
         rb.pxRb->setAngularDamping(3.0f);
-        rb.pxRb->setRigidDynamicLockFlags(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+        rb.pxRb->setRigidDynamicLockFlags(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z | PxRigidDynamicLockFlag::eLOCK_LINEAR_Y);
         //Accel
         rb.pxRb->addForce(transform.rotation * Vector3::Forward() * car.acceleration * time->fixedDeltaTime * verticalAxis, VC);
         //Top speed clamp

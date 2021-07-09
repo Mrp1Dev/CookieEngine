@@ -42,28 +42,30 @@ Entity SpawnLevelItemsSystem::SpawnCar(World* world)
 		TransformData { Vector3(0, 5, 0), Vector3::Splat(2.5f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
 		carModel,
-		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3::Zero(), Vector3::Zero(), PhysicsMaterial { 0.0f, 0.0f, 0.0f }),
+		physics::GenBoxColliderDataFromBoundingBox(BoundingBox(carModel.model->boundingBoxMin, carModel.model->boundingBoxMax), Vector3(1.f, 0.0f, 1.f), Vector3::Zero(), PhysicsMaterial { 0.0f, 0.0f, 0.0f }),
 		PhysicsHandler::CreateRigidBodyDynamic(1.0, Vector3::Zero(), Vector3::Zero(), 0.0f, 3.0f),
-		CarControllerData { 30.0f, 20.0f, 4.0f, 4.0f, 0.75f, 5.0f, 2.5f }
+		CarControllerData { 40.0f, 20.0f, 4.0f, 4.0f, 0.75f, 5.0f, 2.5f }
 	);
 }
 
 void SpawnLevelItemsSystem::SpawnCity(World* world)
 {
-	auto model = AssetManager::GetModel("city/city-no-stripes.obj", true);
+	auto model = AssetManager::GetModel("city/city.obj", true);
 	auto collider = physics::GenBoxColliderDataFromBoundingBox({ model.model->boundingBoxMin, model.model->boundingBoxMax }, Vector3::Zero(), Vector3::Zero(), PhysicsMaterial { 0.0f, 0.0f, 0.0f });
-	collider.extents.y = 10.0f;
-	collider.offset.y = -130.0f;
+	collider.extents.y = 1.0f;
+	collider.offset.y = -120.0f;
 	world->EnqueueEntitySpawn(
 		TransformData { Vector3(44.0f, 12.0f, 44.0f), Vector3::Splat(0.1f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
-		model
+		model,
+		collider,
+		PhysicsHandler::CreateRigidBodyStatic()
 	);
 
 	world->EnqueueEntitySpawn(
 		TransformData { Vector3(44.0f, 12.0f, 44.0f), Vector3::Splat(0.1f) },
 		AssetManager::GetShader(DefaultShaders::LIT_VERT, DefaultShaders::LIT_FRAG),
-		AssetManager::GetModel("city/city-collider.obj", false),
+		AssetManager::GetModel("city/city-collider-FINAL.obj", false),
 		MeshColliderData {},
 		PhysicsHandler::CreateRigidBodyStatic()
 	);
